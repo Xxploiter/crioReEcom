@@ -1,8 +1,8 @@
-BUG REMINDER - 11:00 am i have completed linking the Admin Assets css js everything to the
-BUG admin index.php changed few things in the config.php like created an constant variable 
-BUG ADMIN_THEME to point to the admin assets
-BUG created a new member function in the core controller class named viewAdmin which redirects to the 
-BUG right view
+IMP REMINDER - 11:00 am i have completed linking the Admin Assets css js everything to the
+IMP admin index.php changed few things in the config.php like created an constant variable 
+IMP ADMIN_THEME to point to the admin assets
+IMP created a new member function in the core controller class named viewAdmin which redirects to the 
+IMP right view
 
 IMP The ASSETS constant is the path to the assets folder (defined in index.php<outer most index.php>)
 IMP The ROOT has the absolute path (defined in index.php<outer most index.php>)
