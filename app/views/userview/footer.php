@@ -276,11 +276,15 @@
     <div class="footer-bottom">
 
         <div class="container">
-
-            <img src="<?php echo ASSETS; ?><?php echo THEME ?>assets/images/payment.png" alt="payment method" class="payment-img">
+        
+            <img src="<?php echo ASSETS.THEME ?>images/payment.png" alt="payment method" class="payment-img">
 
             <p class="copyright">
+                <?php if(isset($data['retailerAuthData']) && $data['retailerAuthData']->rank == 'admin'): ?>
+                    <p><a style="color: white;" href="<?php echo ROOT; ?>admin">LOGIN AS ADMIN</a></p>
+                <?php endif; ?>
                 Copyright &copy; <a href="#">CriO-Ecom</a> all rights reserved.
+
             </p>
 
         </div>

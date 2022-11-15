@@ -7,7 +7,7 @@ class Admin extends Controller{
       $retailerAuthData = $retailer->check_login(); 
     // the check_login() function is in crioRetailers.class.php
       // retailerAuthData contains an array if user exist and false if no user exist   
-      if(is_array($retailerAuthData)){
+      if(is_object($retailerAuthData)){
          // here if needed i can write code to unable users to enter the site 
          // if theyy dont have an account if no acc then simply redirect the control to the login page
          $data['retailerAuthData'] = $retailerAuthData;

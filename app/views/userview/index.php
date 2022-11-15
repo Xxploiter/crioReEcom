@@ -2465,7 +2465,7 @@
 
 </main>
 <!-- before showing the footer i have to be careful as include wont work as i am still in the home class so i can utilize the view function to show  -->
-<?php $this->view("footer"); ?>
+<?php $this->view("footer",$data); ?>
 
 
 

@@ -37,10 +37,9 @@ private function parseURL(){
         }
         // now we will use function array_values() to get the rest of the param from the url and assign it to the protected variable param
         $this->params = (count($url)>0)? array_values($url) : ['home'];
+        
         // show($this->params);
         call_user_func_array([$this->controller,$this->method],$this->params);
     }
-
-    
 }
 ?>
