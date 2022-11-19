@@ -16,7 +16,7 @@ class Crioretailers
         return $text;
     }
     // below function checks frr if user is login or not if true return all the users data
-    public function check_login(){
+    public function check_login($redirect = false){
         if(isset($_SESSION['user_url'])){
             $arr['url'] = $_SESSION['user_url'];
             $query = "SELECT * FROM crioretailers WHERE url_address = :url limit 1";
@@ -25,6 +25,10 @@ class Crioretailers
             if(is_array($result)){
                 return $result[0];
             }
+        }
+        if($redirect){
+            header("Location: " . ROOT . 'login');
+            die;
         }
         return false;
     }

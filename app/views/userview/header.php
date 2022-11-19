@@ -32,91 +32,6 @@
 <body>
 
 
-    <div class="overlay" data-overlay></div>
-
-    <!--
-    - MODAL
-  -->
-
-    <div class="modal" data-modal>
-
-        <div class="modal-close-overlay" data-modal-overlay></div>
-
-        <div class="modal-content">
-
-            <button class="modal-close-btn" data-modal-close>
-                <ion-icon name="close-outline"></ion-icon>
-            </button>
-
-            <div class="newsletter-img">
-                <img src="<?php echo ASSETS . THEME  ?>/images/newsletter.png" alt="subscribe newsletter" width="400" height="400">
-            </div>
-
-            <div class="newsletter">
-
-                <form action="#">
-
-                    <div class="newsletter-header">
-
-                        <h3 class="newsletter-title">Subscribe Newsletter.</h3>
-
-                        <p class="newsletter-desc">
-                            Subscribe the <b>CrioEcom</b> to get latest products and discount update.
-                        </p>
-
-                    </div>
-
-                    <input type="email" name="email" class="email-field" placeholder="Email Address" required>
-
-                    <button type="submit" class="btn-newsletter">Subscribe</button>
-
-                </form>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-
-
-    <!--
-    - NOTIFICATION TOAST
-  -->
-
-    <div class="notification-toast" data-toast>
-
-        <button class="toast-close-btn" data-toast-close>
-            <ion-icon name="close-outline"></ion-icon>
-        </button>
-
-        <div class="toast-banner">
-            <img src="<?php echo ASSETS . THEME  ?>/images/products/jewellery-1.jpg" alt="Rose Gold Earrings" width="80" height="70">
-        </div>
-
-        <div class="toast-detail">
-
-            <p class="toast-message">
-                Someone in new just bought
-            </p>
-
-            <p class="toast-title">
-                Rose Gold Earrings
-            </p>
-
-            <p class="toast-meta">
-                <time datetime="PT2M">2 Minutes</time> ago
-            </p>
-
-        </div>
-
-    </div>
-
-
-
-
 
     <!--
     - HEADER
@@ -209,7 +124,7 @@
                     <!-- please make sure not to use the php estension in anchor tags -->
                     <?php if (isset($data['retailerAuthData'])) : ?>
                         <button class="action-btn">
-                            <a href="login">
+                            <a href="profile">
                                 <ion-icon name="person-outline"></ion-icon>
                             </a>
                             <p style="font-size: 8px;" class="userNameIs"><?= $data['retailerAuthData']->name ?></p>
@@ -229,7 +144,7 @@
                         </button>
                         <button class="action-btn">
                             <a href="<?php echo ROOT; ?>login">
-                            <ion-icon name="log-in-outline"></ion-icon>
+                                <ion-icon name="log-in-outline"></ion-icon>
                             </a>
                             <p style="font-size: 8px;" class="userNameIs">LOGIN</p>
                         </button>
@@ -250,10 +165,91 @@
 
         </div>
 
+        
+        <?php if (isset($data['pageTitle']) && $data['pageTitle']!='Profile') : ?>
+            <!-- Dont wanna show certain elements of the header if its the Profile page -->
+            
+        <div class="overlay" data-overlay></div>
+
+        <!--
+        - MODAL
+        -->
+
+        <div class="modal" data-modal>
+
+        <div class="modal-close-overlay" data-modal-overlay></div>
+
+        <div class="modal-content">
+
+            <button class="modal-close-btn" data-modal-close>
+                <ion-icon name="close-outline"></ion-icon>
+            </button>
+
+            <div class="newsletter-img">
+                <img src="<?php echo ASSETS . THEME  ?>/images/newsletter.png" alt="subscribe newsletter" width="400" height="400">
+            </div>
+
+            <div class="newsletter">
+
+                <form action="#">
+
+                    <div class="newsletter-header">
+
+                        <h3 class="newsletter-title">Subscribe Newsletter.</h3>
+
+                        <p class="newsletter-desc">
+                            Subscribe the <b>CrioEcom</b> to get latest products and discount update.
+                        </p>
+
+                    </div>
+
+                    <input type="email" name="email" class="email-field" placeholder="Email Address" required>
+
+                    <button type="submit" class="btn-newsletter">Subscribe</button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        </div>
+
+        <!--
+        - NOTIFICATION TOAST
+        -->
+
+        <div class="notification-toast" data-toast>
+
+        <button class="toast-close-btn" data-toast-close>
+            <ion-icon name="close-outline"></ion-icon>
+        </button>
+
+        <div class="toast-banner">
+            <img src="<?php echo ASSETS . THEME  ?>/images/products/jewellery-1.jpg" alt="Rose Gold Earrings" width="80" height="70">
+        </div>
+
+        <div class="toast-detail">
+
+            <p class="toast-message">
+                Someone in new just bought
+            </p>
+
+            <p class="toast-title">
+                Rose Gold Earrings
+            </p>
+
+            <p class="toast-meta">
+                <time datetime="PT2M">2 Minutes</time> ago
+            </p>
+
+        </div>
+
+        </div>
+
+
         <nav class="desktop-navigation-menu">
-
             <div class="container">
-
                 <ul class="desktop-menu-category-list">
 
                     <li class="menu-category">
@@ -509,10 +505,10 @@
                     </li>
 
                 </ul>
-
             </div>
-
         </nav>
+
+        <?php endif; ?>
 
         <div class="mobile-bottom-navigation">
 
@@ -522,7 +518,6 @@
 
             <button class="action-btn">
                 <ion-icon name="bag-handle-outline"></ion-icon>
-
                 <span class="count">0</span>
             </button>
 

@@ -279,7 +279,7 @@
           - SIDEBAR
         -->
 
-      <div class="sidebar  has-scrollbar" data-mobile-menu>
+      <div class="sidebar has-scrollbar" data-mobile-menu>
 
         <div class="sidebar-category">
 

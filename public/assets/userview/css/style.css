@@ -2618,3 +2618,8 @@ footer {
   }
 
 }
+
+/* Extra utility classes */
+.margin2{
+  margin-top: 2rem;
+}
