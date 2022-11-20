@@ -548,10 +548,10 @@ h4, .h4 {
   font-size: 1.125rem; }
 
 h5, .h5 {
-  font-size: 1rem; }
+  font-size: .8rem; }
 
 h6, .h6 {
-  font-size: 0.938rem; }
+  font-size: 0.738rem; }
 
 .lead {
   font-size: 1.09375rem;
@@ -1803,6 +1803,7 @@ pre {
     .table-responsive-xxl > .table-bordered {
       border: 0; } }
 .table-responsive {
+  line-height: 6px;
   display: block;
   width: 100%;
   overflow-x: auto;
@@ -6371,7 +6372,7 @@ button.bg-dark:focus {
   padding-left: 0.5rem !important; }
 
 .p-3 {
-  padding: 1rem !important; }
+  padding: .6rem !important; }
 
 .pt-3,
 .py-3 {
@@ -6650,7 +6651,7 @@ button.bg-dark:focus {
 
   .mb-sm-5,
   .my-sm-5 {
-    margin-bottom: 3rem !important; }
+    margin-bottom: 0rem !important; }
 
   .ml-sm-5,
   .mx-sm-5 {
@@ -8530,10 +8531,10 @@ body {
   height: 100%;
   position: relative;
   max-width: 100%;
-  font-size: 0.875rem; }
+  font-size: 0.675rem; }
   @media only screen and (max-width: 991px) {
     body {
-      font-size: 0.875rem; } }
+      font-size: 0.675rem; } }
 
 h1,
 h2,
@@ -8588,26 +8589,26 @@ a {
   line-height: 1.4; }
 
 .fs-14 {
-  font-size: 14px !important;
+  font-size: 12px !important;
   line-height: 1.5; }
   @media only screen and (max-width: 1199px) {
     .fs-14 {
-      font-size: 12px !important; } }
+      font-size: 11px !important; } }
 
 .fs-15 {
-  font-size: 14px !important;
+  font-size: 12px !important;
   line-height: 1.5; }
 
 .fs-16 {
-  font-size: 16px !important;
+  font-size: 14px !important;
   line-height: 1.5; }
 
 .fs-18 {
-  font-size: 18px !important;
+  font-size: 16px !important;
   line-height: 1.5; }
 
 .fs-20 {
-  font-size: 20px !important;
+  font-size: 15px !important;
   line-height: 1.5; }
 
 .fs-22 {
@@ -8714,14 +8715,14 @@ a {
       padding-left: 15px;
       max-width: 100%; } }
 .content-body .container-fluid {
-  padding-top: 40px;
-  padding-right: 40px;
-  padding-left: 40px; }
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-left: 20px; }
   @media only screen and (max-width: 1200px) {
     .content-body .container-fluid {
-      padding-top: 30px;
-      padding-right: 30px;
-      padding-left: 30px; } }
+      padding-top: 10px;
+      padding-right: 20px;
+      padding-left: 20px; } }
   @media only screen and (max-width: 767px) {
     .content-body .container-fluid {
       padding-top: 20px;
@@ -12258,7 +12259,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
 .nav-label {
   margin: 10px 25px 0;
-  padding: 1.5625rem 0 10px;
+  padding: 1px 0 1px;
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 0.05rem;
@@ -12597,7 +12598,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
         padding-top: .5rem;
         padding-bottom: .5rem;
         position: relative;
-        font-size: 14px;
+        font-size: 13px;
         padding-left: 3.4rem;
         -webkit-transition: all 0.5s;
         -ms-transition: all 0.5s;
@@ -12897,7 +12898,7 @@ The smaller device rules always should write below the bigger device rules
 Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Component
 */
 [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li > a {
-  font-size: 14px;
+  font-size: 13px;
   padding: 12px 25px;
   -webkit-transition: all 0.5s;
   -ms-transition: all 0.5s;
@@ -12965,7 +12966,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
         content: none; }
     [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .deznav .metismenu li > ul {
       position: absolute;
-      left: 5rem;
+      left: 4rem;
       top: 0;
       width: 12rem;
       z-index: 1001;
@@ -22764,7 +22765,7 @@ button {
   padding: 0.6rem 0.9rem;
   border-radius: 0.3rem;
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 0.605rem;
   box-shadow: none; }
   .btn:hover, .btn:focus, .btn:active, .btn.active {
     outline: 0 !important;
@@ -23468,7 +23469,7 @@ button {
       margin-bottom: 0.938rem;
       height: calc(100% - 0.938rem); } }
   .card-body {
-    padding: 1.875rem; }
+    padding: .875rem; }
     @media only screen and (max-width: 575px) {
       .card-body {
         padding: 1rem; } }
@@ -23487,13 +23488,13 @@ button {
     border-color: #EEEEEE;
     position: relative;
     background: transparent;
-    padding: 1.5rem 1.875rem 1.25rem;
+    padding: .5rem .875rem .25rem;
     display: flex;
     justify-content: space-between;
     align-items: center; }
     @media only screen and (max-width: 575px) {
       .card-header {
-        padding: 1.25rem 1rem 1.25rem; } }
+        padding: .25rem .6rem .20rem; } }
     [data-theme-version="dark"] .card-header {
       border-color: #473F72; }
     .card-header .card-title {
@@ -25423,7 +25424,7 @@ code {
   .table thead th {
     border-bottom-width: 1px;
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.5px;
     border-color: #EEEEEE; }
@@ -26597,7 +26598,7 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
   position: relative;
   padding: 40px 30px; }
   .card-bx .card-info .num-text {
-    font-size: 28px; }
+    font-size: 20px; }
 
 .stacked {
   position: relative;
@@ -26686,10 +26687,10 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
   .card-coin:hover .currency-icon {
     box-shadow: none; }
 .card-coin h2 {
-  font-size: 30px; }
+  font-size: 19px; }
   @media only screen and (max-width: 1600px) {
     .card-coin h2 {
-      font-size: 22px; } }
+      font-size: 20px; } }
 
 .card-bx img {
   position: absolute;
@@ -26700,7 +26701,7 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
   object-fit: cover; }
 .card-bx .card-info {
   position: relative;
-  padding: 25px 30px; }
+  padding: 16px 30px; }
 
 .stacked {
   position: relative;
@@ -26714,7 +26715,7 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
     background: #5B5288;
     border: 0;
     justify-content: left;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     padding-left: 30px;
     min-width: 170px;
@@ -26830,11 +26831,11 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
     border: 0 !important; }
     .default-select.style-1 .btn:after {
       margin-left: 0.5em;
-      font-size: 16px; }
+      font-size: 14px; }
   .default-select.style-1 .dropdown-menu {
     z-index: 1; }
     .default-select.style-1 .dropdown-menu .dropdown-item {
-      font-size: 16px; }
+      font-size: 10px; }
   @media only screen and (max-width: 1400px) {
     .default-select.style-1 .btn {
       padding: 0.625rem 1rem;
@@ -26855,7 +26856,7 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
     border: 1px solid #EEEEEE !important; }
     .default-select.style-2 .btn:after {
       margin-left: 0.5em;
-      font-size: 16px; }
+      font-size: 12px; }
   .default-select.style-2 .dropdown-menu {
     z-index: 1; }
     .default-select.style-2 .dropdown-menu .dropdown-item {
@@ -27125,7 +27126,7 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
       width: 40px; } }
 
 .form-head h2 {
-  font-size: 34px; }
+  font-size: 28px; }
   @media only screen and (max-width: 575px) {
     .form-head h2 {
       font-size: 24px; } }
