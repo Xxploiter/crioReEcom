@@ -38,6 +38,8 @@
 	<script src="<?php echo ASSETS . ADMIN_THEME  ?>js/deznav-init.js"></script>
     <script src="<?php echo ASSETS . ADMIN_THEME  ?>js/demo.js"></script>
     <script src="<?php echo ASSETS . ADMIN_THEME  ?>js/styleSwitcher.js"></script>
-
+    <!-- Datatable -->
+    <script src="<?php echo ASSETS . ADMIN_THEME  ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="<?php echo ASSETS . ADMIN_THEME  ?>js/plugins-init/datatables.init.js"></script>
 </body>
 </html>

@@ -130,7 +130,7 @@
                             <p style="font-size: 8px;" class="userNameIs"><?= $data['retailerAuthData']->name ?></p>
                         </button>
                         <button class="action-btn">
-                            <a href="login">
+                            <a href="logout">
                                 <ion-icon name="log-out-outline"></ion-icon>
                             </a>
                             <p style="font-size: 8px;" class="userNameIs">LOGOUT</p>

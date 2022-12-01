@@ -1,21 +1,7 @@
-﻿
-<!DOCTYPE html>
-<html lang="en" class="h-100">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="keywords" content="">
-	<meta name="author" content="">
-	<meta name="robots" content="">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-	<meta name="format-detection" content="telephone=no">
-    <title>Not-Found </title>
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
-    <link href="css/style.css" rel="stylesheet">
-    
-</head>
-
+﻿<?php $this->viewAdmin("header", $data); ?>		
+<?php $this->viewAdmin("sidebar", $data); ?>
+<div class="content-body">
+    <div class="container-fluid">
 <body class="vh-100">
     <div class="authincation h-100">
         <div class="container h-100">
@@ -26,11 +12,13 @@
                         <h4><i class="fa fa-exclamation-triangle text-warning"></i> The page you were looking for is not found!</h4>
                         <p>You may have mistyped the address or the page may have moved.</p>
 						<div>
-                            <a class="btn btn-primary" href="index.html">Back to Home</a>
+                            <a class="btn btn-primary" href="index">Back to Home</a>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
         </div>
     </div>
 
@@ -38,9 +26,4 @@
 	Scripts
 ***********************************-->
 <!-- Required vendors -->
-<script src="vendor/global/global.min.js"></script>
-<script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-<script src="js/custom.min.js"></script>
-<script src="js/deznav-init.js"></script>
-</body>
-</html>
+<?php $this->viewAdmin("footer", $data); ?>		

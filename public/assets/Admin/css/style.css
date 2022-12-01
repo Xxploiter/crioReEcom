@@ -13226,7 +13226,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
         overflow: visible;
         border: 0;
         margin-left: 0;
-        left: 5rem;
+        left: 4rem;
         width: 13rem;
         border-radius: 0.35rem;
         border: 0;
@@ -25575,10 +25575,10 @@ table.dataTable tbody tr, table.dataTable tbody td {
 table.dataTable thead th {
   color: #000;
   white-space: nowrap;
-  font-size: 18px;
+  font-size: 13px;
   text-transform: capitalize;
-  font-weight: 500;
-  padding: 20px 15px; }
+  font-weight: 500!important;
+  padding: 20px 15px!important; }
   [data-theme-version="dark"] table.dataTable thead th {
     color: #fff; }
   @media only screen and (max-width: 1400px) {
@@ -25586,14 +25586,14 @@ table.dataTable thead th {
       font-size: 16px; } }
 
 table.dataTable tbody td {
-  padding: 18px 15px;
-  font-size: 16px; }
+  padding: 18px 15px!important;
+  font-size: 11px; }
   @media only screen and (max-width: 575px) {
     table.dataTable tbody td {
-      padding: 8px 5px; } }
+      padding: 8px 5px!important; } }
   @media only screen and (max-width: 1400px) {
     table.dataTable tbody td {
-      font-size: 14px;
+      font-size: 8px!important;
       padding: 8px 15px; } }
 
 table.dataTable tr.selected {

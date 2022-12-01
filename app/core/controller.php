@@ -6,18 +6,21 @@
 class Controller{
 
     public function view($path,$data=[]){
-
-        if(file_exists("../app/views/".THEME.$path.".php")){
-            include "../app/views/".THEME.$path.".php";
-        }else{
+    $fileName = "../app/views/".THEME.$path.".php";
+        if(file_exists($fileName)){
+            include $fileName;          
+        }else{    
             include "../app/views/".THEME."404.php";
         }
     }
     public function viewAdmin($path,$data=[]){
-
-        if(file_exists("../app/views/".ADMIN_THEME.$path.".php")){
-            include "../app/views/".ADMIN_THEME.$path.".php";
+        $AdminfileName = "../app/views/".ADMIN_THEME.$path.".php";
+        if(file_exists($AdminfileName)){ 
+            // show($AdminfileName);
+            // die; 
+            include $AdminfileName;
         }else{
+          
             include "../app/views/".ADMIN_THEME."404.php";
         }
     }
