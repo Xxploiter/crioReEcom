@@ -2,7 +2,7 @@
 // this is the database class IMP start reading the code from the $db = Database::getInstance(); line
 
 class Database{
-    public static $con;
+    public static $con=NULL;
     public function __construct(){
 
        try{

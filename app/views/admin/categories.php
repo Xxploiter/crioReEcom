@@ -57,7 +57,8 @@
                                                 </div>
                                                 <div class="card-body">
                                                     <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#addCataModal">Add New Category</button>
-                                                    <!-- Modal -->
+                                                    <!-- Modals Zone -->
+                                                    <!-- Add cata Modall here -->
                                                     <div class="modal fade" id="addCataModal">
                                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                                             <div class="modal-content">
@@ -94,6 +95,43 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <!-- Add category Modal ends here -->
+                                                    <!-- Edit category Modal starts here -->
+                                                    <div class="modal fade" id="editCategoryModal">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <form name="categoryForm">
+                                                                  
+                                                                    <div class="modal-body">
+
+                                                                        <div class="card">
+                                                                            <div class="card-header">
+                                                                                <h4 class="card-title">Edit Category</h4>
+                                                                            </div>
+                                                                            <div class="card-body">
+                                                                                <div class="basic-form">
+                                                                                    <div class="form-group">
+                                                                                        <input id="categoryEditName" type="text" name="category" class="form-control input-default " placeholder="Category Name" require>
+                                                                                        <input hidden  id="categoryEditId" type="text" name="categoryId" class="form-control input-default " value="">
+                                                                                    </div>
+                                                                                    <!-- <div class="form-group">
+                                                                                            <input type="text" class="form-control input-rounded" placeholder="input-rounded">
+                                                                                        </div> -->
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-danger light" data-dismiss="modal">Cancel</button>
+                                                                        <button onclick="saveEditCata(event)" type="submit" class="btn btn-primary"> Edit Category</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Edit Category Modal ends here -->
+                                                   
                                                     <!-- Modal end -->
                                                     <div class="table-responsive mt-4">
                                                         <table class="table table-responsive-md">
@@ -109,11 +147,8 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="categoryTableBody">
-                                                                <?php 
-                                                                $db = Database::newInstance();
-                                                                $categories = $db->read("SELECT * FROM categories ORDER BY id DESC");
-                                                                $category = $this->load_model("Category");
-                                                                $cataRows = $category->make_table($categories);
+                                                                <?php
+
                                                                 echo $cataRows;
                                                                 ?>
                                                             </tbody>
@@ -172,11 +207,11 @@
         }
         const data = cataData.value.trim()
         sendData({
-            data:data,
-            data_type:'add_category'
+            data: data,
+            data_type: 'add_category'
         })
     }
-
+    // sendData function to handle the sending of the data using ajax
     function sendData(data = {}) {
         const ajax = new XMLHttpRequest()
         ajax.addEventListener('readystatechange', function() {
@@ -187,30 +222,85 @@
         ajax.open("POST", "<?= ROOT ?>ajax", true)
         ajax.send(JSON.stringify(data))
     }
-
+    // handleResult for handling all the result from the sendData function
     function handleResult(result) {
-        console.log(result);
-        if(result != ''){
+        // console.log(result);
+        if (result != '') {
             const obj = JSON.parse(result)
-            console.log(obj.message_type + 'message type') 
-            if (typeof obj.message_type != 'undefined') {
-                if(obj.message_type == 'info'){
-                    alert(obj.message)
-                    $('#addCataModal').modal('toggle')
+            if (obj.data_type != 'undefined') {
+                if (obj.data_type == 'add_new') {
+                    // we check above the type of data recieved if success then we get a message type of info
+                    if (obj.message_type == 'info') {
+                        // alert(obj.message)
+                        $('#addCataModal').modal('hide')
+                        const tb = document.querySelector('#categoryTableBody')
+                        tb.innerHTML = obj.data;
+                    } else {
+                        alert(obj.message)
+                    }
+                } else if(obj.data_type == 'delete_row') {
                     const tb = document.querySelector('#categoryTableBody')
                     tb.innerHTML = obj.data;
-                }else{
-                    alert(obj.message)
-                }
+                } else if(obj.data_type == 'toggled_row'){
+                    const tb = document.querySelector('#categoryTableBody')
+                    tb.innerHTML = obj.data;
+                } else if(obj.data_type == 'edit_row'){
+                    const tb = document.querySelector('#categoryTableBody')
+                    tb.innerHTML = obj.data;
+                    $('#editCategoryModal').modal('hide')
+                } 
             }
         }
-        // alert(result)
-      
     }
 
-    const tb = document.querySelector('#categoryTableBody')
+    function toggleStateCategory(props) { 
+        const {
+            event,
+            id,
+            currentState
+        } = props
+       
+        sendData({
+            data_type: "toggleState_row",
+            id: id,
+            currentStateValue: currentState
+        })
+     }
 
+    function editCategoryModalData(props) {
+        const {
+            event,
+            id,
+            categoryName
+        } = props
+        document.querySelector('#categoryEditName').value = categoryName;
+        document.querySelector('#categoryEditId').value = id;
+    }
+    function saveEditCata(event) { 
+        event.preventDefault()
+        const editCataVal = document.querySelector('#categoryEditName').value ;
+        const editCataId = document.querySelector('#categoryEditId').value ;
+        sendData({
+            data_type: "edit_row",
+            id: editCataId,
+            category:editCataVal
+        })
 
+     }
+
+    function dltCategory(props) {
+        const {
+            event,
+            id
+        } = props
+        if (!confirm("Are you sure you want to delete this category")) {
+            return
+        }
+        sendData({
+            data_type: "delete_row",
+            id: id
+        })
+    }
 
 
 

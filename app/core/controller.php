@@ -6,6 +6,7 @@
 class Controller{
 
     public function view($path,$data=[]){
+        extract($data);
     $fileName = "../app/views/".THEME.$path.".php";
         if(file_exists($fileName)){
             include $fileName;          
@@ -14,6 +15,7 @@ class Controller{
         }
     }
     public function viewAdmin($path,$data=[]){
+        extract($data);
         $AdminfileName = "../app/views/".ADMIN_THEME.$path.".php";
         if(file_exists($AdminfileName)){ 
             // show($AdminfileName);
