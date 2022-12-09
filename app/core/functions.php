@@ -12,5 +12,8 @@ function check_error(){
     unset($_SESSION['ERROR']);
    } 
 }
+function esc($data){
+   return addslashes($data);
+}
 
 ?>

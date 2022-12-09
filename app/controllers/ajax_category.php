@@ -1,5 +1,5 @@
 <?php 
-class Ajax extends Controller{
+class Ajax_category extends Controller{
 
    public function index(){ 
     
@@ -54,7 +54,7 @@ class Ajax extends Controller{
             $arr['data_type'] = 'delete_row';
             echo json_encode($arr);
         } elseif($data->data_type == 'edit_row') {
-            $category->edit($data->id, $data->category);    
+            $category->edit($data);    
             $arr['message'] = "Row succecfully Edited";
             $_SESSION['error'] = '';
             $arr['message_type'] = 'info';
@@ -63,7 +63,6 @@ class Ajax extends Controller{
             $arr['data_type'] = 'edit_row';
             echo json_encode($arr);
         }
-        
     }
 
     }

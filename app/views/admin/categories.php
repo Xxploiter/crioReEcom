@@ -12,7 +12,14 @@
     }
 
     .form-control {
-        font-size: 0.775rem;
+    font-size: 0.575rem;
+}
+    .dropdown-menu .dropdown-item {
+        font-size: 9px;
+    }
+
+    .input-group-text {
+        font-size: 0.675rem;
     }
 </style>
 <div class="content-body">
@@ -77,11 +84,18 @@
                                                                             <div class="card-body">
                                                                                 <div class="basic-form">
                                                                                     <div class="form-group">
-                                                                                        <input id="categoryName" type="text" name="category" class="form-control input-default " placeholder="Category Name" require>
+                                                                                    <select id="categoryParent" class="form-control default-select" required>
+                                                                                                    <option selected="">Choose Product Parent Category...</option>
+                                                                                                    <?php if (is_array($categoryListEle)) : ?>
+                                                                                                        <?php foreach ($categoryListEle as $option) : ?>
+                                                                                                            <option value="<?= $option->id ?>"><?= $option->category ?></option>
+                                                                                                        <?php endforeach; ?>
+                                                                                                    <?php endif; ?>
+                                                                                                </select>
                                                                                     </div>
-                                                                                    <!-- <div class="form-group">
-                                                                                            <input type="text" class="form-control input-rounded" placeholder="input-rounded">
-                                                                                        </div> -->
+                                                                                    <div class="form-group">
+                                                                                        <input id="categoryName" type="text" name="category" class="form-control input-default " placeholder="Category Name" require>
+                                                                                    </div>                       
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -110,6 +124,17 @@
                                                                             </div>
                                                                             <div class="card-body">
                                                                                 <div class="basic-form">
+                                                                                <div class="form-group">
+                                                                                    <select id="categoryEditParentName" class="form-control" required>
+                                                                                                    <option selected="">Choose Product Parent Category...</option>
+                                                                                                    <?php if (is_array($categoryListEle)) : ?>
+                                                                                                        <?php foreach ($categoryListEle as $option) : ?>
+                                                                                                           
+                                                                                                            <option value="<?= $option->id ?>"><?= $option->category ?></option>
+                                                                                                        <?php endforeach; ?>
+                                                                                                    <?php endif; ?>
+                                                                                                </select>
+                                                                                    </div>
                                                                                     <div class="form-group">
                                                                                         <input id="categoryEditName" type="text" name="category" class="form-control input-default " placeholder="Category Name" require>
                                                                                         <input hidden  id="categoryEditId" type="text" name="categoryId" class="form-control input-default " value="">
@@ -139,6 +164,7 @@
                                                                 <tr>
                                                                     <th style="width:80px;"><strong>#</strong></th>
                                                                     <th><strong>CATEGORY</strong></th>
+                                                                    <th><strong>PARENT</strong></th>
                                                                     <!-- <th><strong>DR NAME</strong></th>
                                                                     <th><strong>DATE</strong></th>
                                                                     <th><strong>PRICE</strong></th> -->
@@ -202,12 +228,14 @@
         // let CataModal = document.getElementById('addCataModal')
         // var addCataModal = bootstrap.Modal.getOrCreateInstance(CataModal)
         const cataData = document.querySelector('#categoryName')
+        const categoryParent = document.querySelector('#categoryParent').value
         if (cataData.value.trim() == "" || !isNaN(cataData.value.trim())) {
             alert("Enter a valid Category")
         }
         const data = cataData.value.trim()
         sendData({
-            data: data,
+            category: data,
+            parentCategory: categoryParent,
             data_type: 'add_category'
         })
     }
@@ -219,7 +247,7 @@
                 handleResult(ajax.responseText)
             }
         })
-        ajax.open("POST", "<?= ROOT ?>ajax", true)
+        ajax.open("POST", "<?= ROOT ?>ajax_category", true)
         ajax.send(JSON.stringify(data))
     }
     // handleResult for handling all the result from the sendData function
@@ -271,19 +299,23 @@
         const {
             event,
             id,
-            categoryName
+            categoryName,
+            parent
         } = props
         document.querySelector('#categoryEditName').value = categoryName;
+        document.querySelector('#categoryEditParentName').value = parent;
         document.querySelector('#categoryEditId').value = id;
     }
     function saveEditCata(event) { 
         event.preventDefault()
         const editCataVal = document.querySelector('#categoryEditName').value ;
         const editCataId = document.querySelector('#categoryEditId').value ;
+        const editCataParent = document.querySelector('#categoryEditParentName').value ;
         sendData({
             data_type: "edit_row",
             id: editCataId,
-            category:editCataVal
+            category:editCataVal,
+            categoryParent:editCataParent
         })
 
      }

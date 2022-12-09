@@ -1,5 +1,5 @@
 <?php 
-class Home extends Controller{
+class AllProducts extends Controller{
 
    public function index(){ 
       
@@ -17,14 +17,14 @@ class Home extends Controller{
       $db = Database::newInstance();
       $productsMainSection = $db->read("SELECT * FROM products");
 
-    $data['pageTitle'] = "Home | Crio-Re";
+    $data['pageTitle'] = "All Products | Crio-Re";
     if ($productsMainSection) {
       foreach($productsMainSection as $singleProduct => $images){
          $productsMainSection[$singleProduct]->image1 = $imageProcessingClass->get_thumb_post($productsMainSection[$singleProduct]->image1); //doing this for only the first image as one img is needed for showing in home page our first image is image1
       }
     }
     $data['productsMainSection'] = $productsMainSection;
-       $this->view("index",$data);
+       $this->view("allProducts",$data);
 
     }
 }
