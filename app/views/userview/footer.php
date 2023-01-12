@@ -208,8 +208,8 @@
                     </div>
 
                     <address class="content">
-                        419 State 414 Rte
-                        Beaver Dams, New York(NY), 14812, USA
+                        21ST STREET 
+                        WESTBENGAL kolkata, DUM DUM(), 14812, IND
                     </address>
                 </li>
 
@@ -218,7 +218,7 @@
                         <ion-icon name="call-outline"></ion-icon>
                     </div>
 
-                    <a href="tel:+607936-8058" class="footer-nav-link">(607) 936-8058</a>
+                    <a href="tel:+607936-8058" class="footer-nav-link">(+91) 67936-8058</a>
                 </li>
 
                 <li class="footer-nav-item flex">

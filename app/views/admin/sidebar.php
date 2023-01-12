@@ -22,6 +22,7 @@
 							<li><a href="index-2.html">Dashboard Dark</a></li> -->
 							<!-- <li><a href="my-wallets.html">Wallet</a></li> -->
 							<li><a href="tranasactions.html">Transactions</a></li>
+							<li><a href="<?= ROOT ?>admin/addRetailer">Add retailer</a></li>
 							<!-- <li><a href="coin-details.html">Coin Details</a></li>
 							<li><a href="portofolio.html">Portofolio</a></li>
 							<li><a href="market-capital.html">Market Capital</a></li> -->

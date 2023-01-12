@@ -16,7 +16,7 @@
     <!--
     - custom css link
   -->
-    <!-- <link rel="stylesheet" href="<?php echo ASSETS . THEME  ?>/css/style-prefix.css"> -->
+    <link rel="stylesheet" href="<?php echo ASSETS . THEME  ?>/css/style-prefix.css">
     <link rel="stylesheet" href="<?php echo ASSETS . THEME  ?>/css/style.css">
 
     <!--
@@ -124,13 +124,13 @@
                     <!-- please make sure not to use the php estension in anchor tags -->
                     <?php if (isset($data['retailerAuthData'])) : ?>
                         <button class="action-btn">
-                            <a href="profile">
+                            <a href="<?php echo ROOT; ?>profile">
                                 <ion-icon name="person-outline"></ion-icon>
                             </a>
                             <p style="font-size: 8px;" class="userNameIs"><?= $data['retailerAuthData']->name ?></p>
                         </button>
                         <button class="action-btn">
-                            <a href="logout">
+                            <a href="<?php echo ROOT; ?>logout">
                                 <ion-icon name="log-out-outline"></ion-icon>
                             </a>
                             <p style="font-size: 8px;" class="userNameIs">LOGOUT</p>
@@ -155,7 +155,10 @@
                     </button>
 
                     <button class="action-btn">
+                    <a href="<?php echo ROOT; ?>cart">
                         <ion-icon name="bag-handle-outline"></ion-icon>
+                        </a>
+                        <p style="font-size: 8px;" class="userNameIs">CART</p>
                         <span class="count">0</span>
                     </button>
 

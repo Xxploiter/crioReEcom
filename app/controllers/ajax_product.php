@@ -3,11 +3,16 @@ class Ajax_product extends Controller{
 
    public function index(){ 
     
+    if(count($_POST)>0){
+        $data = (object)$_POST;
+    }else{
+        $data = json_decode(file_get_contents('php://input'));
+    }
     // $data = json_decode(file_get_contents('php://input'));
     // print_r($_POST);
     // print_r($_FILES);
     // die;
-    $data = (object)$_POST;
+    
     if(is_object($data) && isset($data->data_type)){
         $db = Database::getInstance();
         $product = $this->load_model('Product');
@@ -44,7 +49,7 @@ class Ajax_product extends Controller{
             $_SESSION['error'] = '';
             $arr['message_type'] = 'info';
             $allCategory = $product->getAll();
-            $arr['data'] = $product->make_table($allCategory, $categoryClass);
+            $arr['data'] = $product->make_table($allCategory, $categoryClass); //dependecny of this make_table function 
             $arr['data_type'] = 'toggled_row';
             echo json_encode($arr);
         }

@@ -884,7 +884,7 @@
   <!-- productsMainSection -->
   <?php if(is_array($productsMainSection)): ?>
   <?php foreach($productsMainSection as $singleMainProduct): ?>
-    <?php $this->view("singleProduct.inc",$singleMainProduct); ?>
+    <?php $this->view("singleProduct.inc",$singleMainProduct); //sending the data to another component where the html is build ?>
   <?php endforeach; ?>
   <?php endif; ?>
 <!-- productsMainSection ends here -->

@@ -62,7 +62,7 @@
     <p class="price">$<?= $data->price ?></p>
     <del>$75.00</del>
   </div>
-  <button class="add-cart-btnproduct">add to cart</button>
+  <a href="<?= ROOT ?>addToCart/<?= $data->id?>"><button class="add-cart-btnproduct">add to cart</button></a> 
 </div>
 
 </div>

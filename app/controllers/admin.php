@@ -76,9 +76,46 @@ class Admin extends Controller{
        $this->viewAdmin("products",$data);
 
     }
+    public function addRetailer(){
+
+      $retailer = $this->load_model('crioretailers');
+
+      $retailerAuthData = $retailer->check_login(true, ['admin']); 
+         // the check_login() function is in crioRetailers.class.php
+         // retailerAuthData contains an array if user exist and false if no user exist and true is passes then the user is redirected to the login page
+      if(is_object($retailerAuthData)){             
+         // here if needed i can write code to unable users to enter the site 
+         // if theyy dont have an account if no acc then simply redirect the control to the login page
+         $data['retailerAuthData'] = $retailerAuthData;
+      }
+
+      // later during refactoring make sure to create a model for the api fetching 
+      // TODO Here temporary call will be made to the API to fetch the retailers data from rishis API 
+// Later models should be made for this as its dealing with data
+$api_url = 'https://raiganj.crio77.com/api/retailer.php'; // put the retaillers all data url here
+
+// Read JSON file
+$json_data = file_get_contents($api_url);
+
+// Decode JSON data into PHP array
+$allRetailersApiData = json_decode($json_data);
+
+// show($allRetailersApiData);
+$data['allRetailersApiData'] = $allRetailersApiData;
+// All user data exists in 'data' object
+// $user_data = $response_data->data;
+
+// // Cut long data into small & select only first 10 records
+// $user_data = array_slice($user_data, 0, 9);
+
+// // Print data if need to debug
+// print_r($user_data);
+
+
+// fetching data from API ends here 
+      // api fetching ends here
+      $data['pageTitle'] = "Admin | Crio-Re";
+      $this->viewAdmin("addRetailer",$data);
+    }
 
 }
-
-
-
-?>

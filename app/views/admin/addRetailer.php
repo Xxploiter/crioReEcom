@@ -1,0 +1,138 @@
+<?php $this->viewAdmin("header", $data); ?>
+<?php $this->viewAdmin("sidebar", $data); ?>
+
+
+<style>
+    #main-wrapper>div.content-body>div>div {
+        margin-top: -36px;
+    }
+
+    .card-title {
+        font-size: 14px;
+    }
+
+    .form-control {
+        font-size: 0.675rem;
+    }
+
+    .dropdown-menu .dropdown-item {
+        font-size: 9px;
+    }
+
+    .input-group-text {
+        font-size: 0.675rem;
+    }
+</style>
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- here -->
+            <div class="col-xl-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header mt-1 p-4">
+                        <h4 class="card-title">Retailers Section</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Nav tabs -->
+                        <div class="custom-tab-1 ">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#addRetailer"><i class="la la-home mr-2"></i>Add</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#allRetailersAdded"><i class="la la-user mr-2"></i>View Added Retailers</a>
+                                </li>
+
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="addRetailer" role="tabpanel">
+                                    <!-- <div class="pt-4">
+                                        <h4>This is home title</h4>
+                                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.
+                                        </p>
+                                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.
+                                        </p>
+                                    </div> -->
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="card mt-lg-4">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">Add Retailer to The Crio-Re Environment</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="basic-form">
+                                                        <form>
+                                                        <div class="form-row">
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Select a Retailer</label>
+                                                                    <select id="inputState" class="form-control default-select">
+                                                                        <option selected="">Choose Retailer...</option>
+                                                                        <?php foreach ($allRetailersApiData as $singleRetailerDetails) : ?>
+                                                                            <?php echo "<option value=". $singleRetailerDetails->id ." >" . $singleRetailerDetails->name . "</option> ";  //sending the data to another component where the html is build 
+                                                                            ?>
+                                                                        <?php endforeach; ?>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-md-2">
+                                                                    <label>Zip</label>
+                                                                    <input type="text" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>First Name</label>
+                                                                    <input type="text" class="form-control" placeholder="Username of the retailer">
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Email</label>
+                                                                    <input type="email" class="form-control" placeholder="Email">
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Password</label>
+                                                                    <input type="password" class="form-control" placeholder="Password">
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>City</label>
+                                                                    <input type="text" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <!-- <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox">
+                                                                    <label class="form-check-label">
+                                                                        Check me out
+                                                                    </label>
+                                                                </div> -->
+                                                            </div>
+                                                            <button type="submit" class="btn btn-primary">Add Retailer</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="allRetailersAdded">
+                                    <div class="pt-4">
+                                        <h4>This is profile title</h4>
+                                        <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
+                                        </p>
+                                        <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- end -->
+        </div>
+    </div>
+</div>
+
+
+<?php $this->viewAdmin("footer", $data); ?>

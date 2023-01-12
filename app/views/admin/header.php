@@ -18,6 +18,13 @@
     <link href="<?php echo ASSETS . ADMIN_THEME  ?>css/style.css" rel="stylesheet">
 	
 </head>
+<style>
+	.dz-demo-panel .dz-demo-trigger {
+   
+    display: none;
+  
+}
+</style>
 <body>
 	
 
@@ -747,7 +754,7 @@
                                 <a class="nav-link" href="#" role="button" data-toggle="dropdown">
                                     <img src="<?= ASSETS . ADMIN_THEME ?>images/profile/port.jpg" width="20" alt="">
 									<div class="header-info">
-										<span> <?= $data['retailerAuthData']->name ?></span>
+										<span> <?= $data['retailerAuthData']?->name ?></span>
 										<small>Super Admin</small>
 									</div>
                                 </a>
