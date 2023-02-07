@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,12 +15,18 @@
     <!--
     - custom css link
   -->
-    <link rel="stylesheet" href="<?php echo ASSETS . THEME  ?>/css/style-prefix.css">
+    <!-- <link rel="stylesheet" href="<?php echo ASSETS . THEME  ?>/css/style-prefix.css"> -->
     <link rel="stylesheet" href="<?php echo ASSETS . THEME  ?>/css/style.css">
+    
 
     <!--
     - google font link
   -->
+  <!-- roadmap js css below -->
+  <!-- <link href="
+https://cdn.jsdelivr.net/npm/jquery-roadmap@1.4.0/dist/jquery.roadmap.min.css
+" rel="stylesheet"></link> -->
+<!-- roadmapjs ends here -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -112,7 +117,7 @@
 
                 <div class="header-search-container">
 
-                    <input type="search" name="search" class="search-field" placeholder="Enter your product name...">
+                    <input id="search-input" type="search" name="search" class="search-field" placeholder="Enter your product name...">
 
                     <button class="search-btn">
                         <ion-icon name="search-outline"></ion-icon>
@@ -780,3 +785,68 @@
         </nav>
 
     </header>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> -->
+    <script>
+let timeoutId;
+
+const input = document.getElementById('search-input');
+input.addEventListener('input', () => debouncedSendData(input.value));
+
+
+function debouncedSendData(data) {
+    if (timeoutId) {
+        clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+        // sendData(data);
+        console.log("debounce working " + data);
+    }, 2000);
+}
+// sendData function to handle the sending of the data using ajax
+function sendData(data = {}) {
+        const ajax = new XMLHttpRequest()
+        ajax.addEventListener('readystatechange', function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                handleResult(ajax.responseText)
+      // handle the search results
+      //TODO Create a ajax_universalSearch controller 
+      //TODO create a result modal
+      //TODO make sure to show all results ex:- ledger, retailer name, products, gst etc
+            }
+        })
+        ajax.open("POST", "<?= ROOT ?>ajax_universalSearch", true) 
+        ajax.send(JSON.stringify(data))
+    }
+    // TODO revamp the below request handler
+    function handleResult(result) {
+        // console.log(result);
+        if (result != '') {
+            const obj = JSON.parse(result)
+            if (obj.data_type != 'undefined') {
+                if (obj.data_type == 'add_new') {
+                    // we check above the type of data recieved if success then we get a message type of info
+                    if (obj.message_type == 'info') {
+                        // alert(obj.message)
+                        $('#addCataModal').modal('hide')
+                        const tb = document.querySelector('#categoryTableBody')
+                        tb.innerHTML = obj.data;
+                    } else {
+                        alert(obj.message)
+                    }
+                } else if(obj.data_type == 'delete_row') {
+                    const tb = document.querySelector('#categoryTableBody')
+                    tb.innerHTML = obj.data;
+                } else if(obj.data_type == 'toggled_row'){
+                    const tb = document.querySelector('#categoryTableBody')
+                    tb.innerHTML = obj.data;
+                } else if(obj.data_type == 'edit_row'){
+                    const tb = document.querySelector('#categoryTableBody')
+                    tb.innerHTML = obj.data;
+                    $('#editCategoryModal').modal('hide')
+                } 
+            }
+        }
+    }
+
+
+    </script>

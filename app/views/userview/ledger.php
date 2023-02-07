@@ -3,8 +3,6 @@
 
 <head>
    <meta charset="utf-8">
-   <!--  This file has been downloaded from bootdey.com @bootdey on twitter -->
-   <!--  All snippets are MIT license http://bootdey.com/license -->
    <title>Crio</title>
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -87,7 +85,7 @@
                            <td class="text-center">40</td>
                            <td class="text-right">$2,000.00</td>
                            <td class="text-right">$2,000.00</td>
-                        </tr>
+                        </tr>                      
                         <tr>
                            <td>
                               ghh
@@ -97,24 +95,7 @@
                            <td class="text-right">$2,500.00</td>
                            <td class="text-right">$2,500.00</td>
                         </tr>
-                        <tr>
-                           <td>
-                              ghh
-                           </td>
-                           <td class="text-center">$50.00</td>
-                           <td class="text-center">50</td>
-                           <td class="text-right">$2,500.00</td>
-                           <td class="text-right">$2,500.00</td>
-                        </tr>
-                        <tr>
-                           <td>
-                              ghh
-                           </td>
-                           <td class="text-center">$50.00</td>
-                           <td class="text-center">50</td>
-                           <td class="text-right">$2,500.00</td>
-                           <td class="text-right">$2,500.00</td>
-                        </tr>
+                        
                      </tbody>
                      <thead class="thead-dark">
                         <tr>

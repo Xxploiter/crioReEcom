@@ -1,0 +1,16 @@
+Read this before accessing the services 
+
+The IMP Factory Method pattern is used for accessing services. In this pattern,you can create
+ a Factory class responsible
+ for creating instances of different classes, including the RetailerService class. 
+ The load_service method in the controller can then be modified to use the Factory class 
+ to create an instance of the RetailerService class. This would improve the maintainability 
+ of the code and make it easier to add additional services in the future.
+
+IMP{when creating a file inside the services directory name should be all lowercase except
+the factory class(serviceFactory which is already named)}
+
+IMP{inside the factory class when using the switch case/ adding another service here make sure
+the name is in lowercase and the class's name is in StudlyCaps(ex: return new RetailerService();)
+the class name should also be StudlyCaps}
+

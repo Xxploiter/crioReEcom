@@ -337,14 +337,6 @@
 
 
 
-
-
-
-
-
-
-
-
     // creating a universal function for getting all form data and sending it using fetch and promise
 
     async function postData(url = '', data = {}) {

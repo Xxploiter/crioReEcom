@@ -1,5 +1,22 @@
 <?php $this->view("header", $data); ?>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo ASSETS . THEME  ?>css/jquery.roadmap.min.css" rel="stylesheet" type="text/css" />
 <style>
+  .close{
+    cursor: pointer;
+    width: 26px;
+    color: aqua;
+    background-color: aliceblue;
+    text-align: center;
+    font-size: 21px;
+    margin-left: 8px;
+    margin-top: 8px;
+  }
+  .modal {
+    animation: popup .5s ease-in-out .5s forwards;
+  }
+
   .showcase-status-bar {
     background: var(--cultured);
     position: relative;
@@ -36,152 +53,46 @@
   }
 
   /*-------- flex container --------*/
-  .flex-container {
-    display: flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: -webkit-flex;
-    justify-content: space-around;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    -webkit-flex-flow: row wrap;
-    position: relative;
-  }
-
-  .flex-item {
-    color: #fff;
-    height: 210px;
-    margin: 10px 0;
-    padding: 0;
-    width: 225px;
-    position: relative;
-  }
-
-  .flex-item-inner {
-    display: flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: -webkit-flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    height: 210px;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-  }
-
-  .flex-item-inner a {
-    color: #fff;
-    cursor: pointer;
-  }
-
-  /*-------- cards --------*/
-  .card-front,
-  .card-back {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 185px;
-    height: 170px;
-    padding: 20px;
-    margin: 0;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-transition: -webkit-transform 0.3s;
-    transition: transform 0.3s;
-    justify-content: flex-end;
-  }
-
-  .card-front i.tile-icon {
-    display: block;
-    margin: 10px auto 20px auto;
-    text-align: center;
-  }
-
-  .card-front h4 {
-    font-size: 18px;
-    font-weight: normal;
-    margin: 10px 0;
-  }
-
-  .card-front p.detail {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 0;
-  }
-
-  .card-front.bg-violet {
-    background-color: #E8E1D7;
-  }
-
-  .card-front.bg-magenta {
-    background-color: #36A2EB;
-  }
-
-  .card-front.bg-blue {
-    background-color: #F58861;
-  }
-
-  .card-front.bg-green {
-    background-color: #FF6384;
-  }
-
-  .card-back {
-    background-color: #1e1e1e;
-    -webkit-transform: rotateY(-180deg);
-    transform: rotateY(-180deg);
-  }
-
-  .card-back p.title {
-    color: #000;
-    margin-top: 0;
-    text-transform: uppercase;
-  }
-
-  .card-back p.desc {
-    color: #63666a;
-  }
-
-  .card-back p.link {
-    color: #702082;
-  }
-
-  .card-back.bg-violet {
-    background-color: #d8d7df;
-  }
-
-  .card-back.bg-magenta {
-    background-color: #ddd0cf;
-  }
-
-  .card-back.bg-blue {
-    background-color: #c8d7df;
-  }
-
-  .card-back.bg-green {
-    background-color: #d9e6dc;
-  }
-
-  /*-------- cards / flip effect --------*/
-  .flex-item:hover .card-front {
-    -webkit-transform: rotateY(-180deg);
-    transform: rotateY(-180deg);
-  }
-
-  .flex-item:hover .card-back {
-    -webkit-transform: rotateY(0);
-    transform: rotateY(0);
+  .amountTimeline {
+    font-size: var(--fs-7);
+    font-weight: var(--weight-700);
+    color: var(--salmon-pink);
   }
 </style>
 <style>
-  .graphs{
+  .graphs {
     width: 21rem;
   }
-   .graphsis{
+
+  .graphsis {
     justify-content: space-between;
+  }
+
+  /* timeline color */
+  .roadmap.roadmap--orientation-auto .roadmap__events:after {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: block;
+    content: "";
+    width: 0%;
+    height: 4px;
+    background-color: #FF8F9C;
+    border-radius: 2px;
+    -webkit-transition: all .5s linear;
+    -o-transition: all .5s linear;
+    transition: all .5s linear;
+  }
+
+  .roadmap.roadmap--orientation-auto .roadmap__events__event:after,
+  .roadmap.roadmap--orientation-auto .roadmap__events__event:before {
+    position: absolute;
+    content: "";
+    display: block;
+    background-color: #FF8F9C;
+    -webkit-transition: all .3s cubic-bezier(.25, .1, .25, 1.3);
+    -o-transition: all .3s cubic-bezier(.25, .1, .25, 1.3);
+    transition: all .3s cubic-bezier(.25, .1, .25, 1.3);
   }
 </style>
 
@@ -191,91 +102,7 @@
     <div class="testimonials-box mt-5">
       <div class="row">
         <!-- flex-container -->
-        <div class="col-md-12 flex-container">
-          <!-- flex-item -->
-          <div class="flex-item">
-            <div class="flex-item-inner">
-              <!-- card -->
-              <a href="#">
-                <div class="card-front bg-violet">
-                  <i class="fa fa-pie-chart fa-3x tile-icon icon-white"></i>
-                  <h4>Total Money spent</h4>
-                  <p class="detail">$XXX,XXX</p>
-                </div>
-                <div class="card-back bg-violet">
-                  <p class="title">Some Stats will be here</p>
-                  <!-- <p class="desc">Pellentesque magna nunc, fermentum nec ipsum non, consequat scelerisque dui.</p> -->
-                  <!-- <p class="link">Details <i class="fa fa-chevron-circle-right"></i></p> -->
-                </div>
-              </a>
-              <!-- /card -->
-            </div>
-          </div>
-          <!-- /flex-item -->
 
-          <!-- flex-item -->
-          <div class="flex-item">
-            <div class="flex-item-inner">
-              <!-- card -->
-              <a href="#">
-                <div class="card-front bg-magenta">
-                  <i class="fa fa-heart fa-3x tile-icon icon-white"></i>
-                  <h4>Debt Amount</h4>
-                  <p class="detail">$XXX,XXX</p>
-                </div>
-                <div class="card-back bg-magenta">
-                  <p class="title">Some Stats will be here</p>
-                  <!-- <p class="desc">Cras posuere consequat nisl, ut rhoncus odio finibus sit amet. Sed consectetur dapibus.</p> -->
-                  <!-- <p class="link">Details <i class="fa fa-chevron-circle-right"></i></p> -->
-                </div>
-              </a>
-              <!-- /card -->
-            </div>
-          </div>
-          <!-- /flex-item -->
-
-          <!-- flex-item -->
-          <div class="flex-item">
-            <div class="flex-item-inner">
-              <!-- card -->
-              <a href="#">
-                <div class="card-front bg-blue">
-                  <i class="fa fa-sun-o fa-3x tile-icon icon-white"></i>
-                  <h4>Total Products Purchased</h4>
-                  <p class="detail">$XXX,XXX</p>
-                </div>
-                <div class="card-back bg-blue">
-                  <p class="title">Some Stats will be here</p>
-                  <!-- <p class="desc">Etiam imperdiet ullamcorper dolor sit amet molestie. Quisque eu nibh in ligula.</p> -->
-                  <!-- <p class="link">Details <i class="fa fa-chevron-circle-right"></i></p> -->
-                </div>
-              </a>
-              <!-- /card -->
-            </div>
-          </div>
-          <!-- /flex-item -->
-
-          <!-- flex-item -->
-          <div class="flex-item">
-            <div class="flex-item-inner">
-              <!-- card -->
-              <a href="#">
-                <div class="card-front bg-green">
-                  <i class="fa fa-bar-chart fa-3x tile-icon icon-white"></i>
-                  <h4>Last Due Date</h4>
-                  <p class="detail">$XXX,XXX</p>
-                </div>
-                <div class="card-back bg-green">
-                  <p class="title">Some Stats will be here</p>
-                  <!-- <p class="desc">Nullam porttitor dui quis commodo mattis. Fusce posuere, nisl id ultrices pellentesque.</p> -->
-                  <!-- <p class="link">Details <i class="fa fa-chevron-circle-right"></i></p> -->
-                </div>
-              </a>
-              <!-- /card -->
-            </div>
-          </div>
-          <!-- flex-item -->
-        </div>
         <!-- /flex-container -->
       </div>
 
@@ -731,20 +558,113 @@
 
     <div class="testimonials-box graphsis ">
       <div class="product-showcase">
-      <h2 class="title mt-5">PAYMENT AMOUNT</h2>
+        <h2 class="title mt-5">PAYMENT AMOUNT</h2>
         <canvas style="display: block; box-sizing: border-box; height: 357.6px; width: 716px;" class="graphs" id="myChart"></canvas>
       </div>
-      
+
       <div class="product-showcase">
-      <h2 class="title mt-5">PRODUCTS BOUGHT</h2>
+        <h2 class="title mt-5">PRODUCTS BOUGHT</h2>
         <canvas class="graphs" id="myChartdonut"></canvas>
       </div>
+      <div id="my-roadmap"></div>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </div>
   </div>
 </div>
+<div id="myModal" class="modal">
+  <span class="close">&times;</span>
+  <div class="modal-content">
 
-
+    <p id="modalInvoiceData"></p>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="<?php echo ASSETS . THEME ?>js/jquery.roadmap.js" type="text/javascript"></script>
+<!-- below is the cdn for roadmap/timeline jquery -->
+<!-- Chart.js cdn -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+</script>
+
+
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    <?php
+    $roadmapData = [];
+    foreach ($timeLineData as $entry) {
+      if ($entry["transactionType"] == "order") {
+
+        $formatted_date = date("my", strtotime($entry["dateIs"]));
+        $number_of_digits = strlen((string)$entry["orderId"]);
+        if ($number_of_digits == 3) {
+          $endNumber = '0' . $entry["orderId"];
+        } elseif ($number_of_digits == 2) {
+          $endNumber = '00' . $entry["orderId"];
+        } elseif ($number_of_digits == 1) {
+          $endNumber = '000' . $entry["orderId"];
+        }
+        $particulars = 'CF/' . $formatted_date . '/INV' . $endNumber;
+
+        $roadmapData[] = [
+          "date" => $entry["dateIs"],
+          "content" => "<a href='' class='invoiceNo' data-invoice-no='" . $entry["orderId"] . "'>" . $particulars . "</a>" . "<p class='amountTimeline'> ORDER OF:	&#8377 " . (int)$entry["amountIs"] . "</p>",
+
+        ];
+      } else {
+
+        $roadmapData[] = [
+          "date" => $entry["dateIs"],
+          "content" => "<p class='amountTimeline'>PAID TO CriO: &#8377 " . (int)$entry["amountIs"] . "</p>",
+        ];
+      }
+    }
+    ?>
+    var timelinedatais = <?php echo json_encode($roadmapData); ?>
+
+
+    $('#my-roadmap').roadmap(timelinedatais, {
+      eventsPerSlide: 6,
+      slide: 1,
+      prevArrow: '<i class="material-icons">keyboard_arrow_left</i>',
+      nextArrow: '<i class="material-icons">keyboard_arrow_right</i>',
+      onBuild: function() {
+
+        $('.invoiceNo').click(function(e) {
+          e.preventDefault()
+          var invoiceData = $(this).data('invoice-no');
+          modal.css("display", "block");
+          $('#modalInvoiceData').text(invoiceData)
+
+        });
+        // modal code
+        // Get the modal and the close button
+        var modal = $("#myModal");
+        var closeBtn = $(".close");
+        // Get the trigger button
+        var triggerBtn = $(".invoiceNo");
+
+        // Hide the modal when the close button is clicked
+        closeBtn.click(function() {
+          modal.css("display", "none");
+        });
+
+        // modal code ends here
+
+
+
+
+      }
+    });
+
+  });
+</script>
+
+<script>
+
+</script>
 
 <script>
   // modal variables
@@ -777,30 +697,30 @@
 
 
 
-
+  // IMP this can be uncommented below
   // mobile menu variables
-  const mobileMenuOpenBtn = document.querySelectorAll('[data-mobile-menu-open-btn]');
-  const mobileMenu = document.querySelectorAll('[data-mobile-menu]');
-  const mobileMenuCloseBtn = document.querySelectorAll('[data-mobile-menu-close-btn]');
-  const overlay = document.querySelector('[data-overlay]');
-  console.log(mobileMenuCloseBtn);
-  for (let i = 0; i < mobileMenuOpenBtn.length; i++) {
+  // const mobileMenuOpenBtn = document.querySelectorAll('[data-mobile-menu-open-btn]');
+  // const mobileMenu = document.querySelectorAll('[data-mobile-menu]');
+  // const mobileMenuCloseBtn = document.querySelectorAll('[data-mobile-menu-close-btn]');
+  // const overlay = document.querySelector('[data-overlay]');
+  // console.log(mobileMenuCloseBtn);
+  // for (let i = 0; i < mobileMenuOpenBtn.length; i++) {
 
-    // mobile menu function
-    const mobileMenuCloseFunc = function() {
-      mobileMenu[i].classList.remove('active');
-      overlay.classList.remove('active');
-    }
+  //   // mobile menu function
+  //   const mobileMenuCloseFunc = function() {
+  //     mobileMenu[i].classList.remove('active');
+  //     overlay.classList.remove('active');
+  //   }
 
-    mobileMenuOpenBtn[i].addEventListener('click', function() {
-      mobileMenu[i].classList.add('active');
-      overlay.classList.add('active');
-    });
+  //   mobileMenuOpenBtn[i].addEventListener('click', function() {
+  //     mobileMenu[i].classList.add('active');
+  //     overlay.classList.add('active');
+  //   });
 
-    mobileMenuCloseBtn[i].addEventListener('click', mobileMenuCloseFunc);
-    overlay.addEventListener('click', mobileMenuCloseFunc);
+  //   mobileMenuCloseBtn[i].addEventListener('click', mobileMenuCloseFunc);
+  //   overlay.addEventListener('click', mobileMenuCloseFunc);
 
-  }
+  // }
 
 
 

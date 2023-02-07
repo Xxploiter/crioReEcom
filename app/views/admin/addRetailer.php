@@ -22,14 +22,30 @@
     .input-group-text {
         font-size: 0.675rem;
     }
+
+    #popup {
+        position: absolute;
+        left: -100%;
+        width: 300px;
+        height: 50px;
+        background: #57cd57;
+        padding: 20px;
+        transition: left 0.5s;
+        bottom: 0;
+        border-radius: 4px;
+        color: black;
+    }
 </style>
 
 <div class="content-body">
+
     <div class="container-fluid">
         <div class="row">
+
             <!-- here -->
             <div class="col-xl-12 col-lg-12">
                 <div class="card">
+
                     <div class="card-header mt-1 p-4">
                         <h4 class="card-title">Retailers Section</h4>
                     </div>
@@ -57,47 +73,49 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="card mt-lg-4">
-                                                <div class="card-header">
+                                                <div class="card-header mt-lg-2 mb-lg-3">
                                                     <h4 class="card-title">Add Retailer to The Crio-Re Environment</h4>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body ">
                                                     <div class="basic-form">
-                                                        <form>
-                                                        <div class="form-row">
+                                                        <form method="post">
+                                                            <div class="form-row">
                                                                 <div class="form-group col-md-4">
                                                                     <label>Select a Retailer</label>
-                                                                    <select id="inputState" class="form-control default-select">
+                                                                    <select name="crioRetailerId" id="inputState" class="form-control default-select">
                                                                         <option selected="">Choose Retailer...</option>
                                                                         <?php foreach ($allRetailersApiData as $singleRetailerDetails) : ?>
-                                                                            <?php echo "<option value=". $singleRetailerDetails->id ." >" . $singleRetailerDetails->name . "</option> ";  //sending the data to another component where the html is build 
-                                                                            ?>
+                                                                            <?php if (!in_array($singleRetailerDetails->id, $retailerAllIds)) {
+                                                                                echo "<option value=" . $singleRetailerDetails->id . " >" . $singleRetailerDetails->name . "</option> ";  //sending the data to another component where the html is build 
+                                                                            } ?>
+
                                                                         <?php endforeach; ?>
                                                                     </select>
                                                                 </div>
-                                                                <div class="form-group col-md-2">
+                                                                <!-- <div class="form-group col-md-2">
                                                                     <label>Zip</label>
                                                                     <input type="text" class="form-control">
-                                                                </div>
+                                                                </div> -->
                                                             </div>
                                                             <div class="form-row">
                                                                 <div class="form-group col-md-6">
-                                                                    <label>First Name</label>
-                                                                    <input type="text" class="form-control" placeholder="Username of the retailer">
+                                                                    <label>Secondary username of the retailer</label>
+                                                                    <input name="crioReUserName" type="text" class="form-control" placeholder="Username of the retailer">
                                                                 </div>
                                                                 <div class="form-group col-md-6">
-                                                                    <label>Email</label>
-                                                                    <input type="email" class="form-control" placeholder="Email">
+                                                                    <label>Secondary-Email</label>
+                                                                    <input name="crioReEmail" type="email" class="form-control" placeholder="Email" required>
                                                                 </div>
-                                                                <div class="form-group col-md-6">
+                                                                <!-- <div class="form-group col-md-6">
                                                                     <label>Password</label>
                                                                     <input type="password" class="form-control" placeholder="Password">
-                                                                </div>
-                                                                <div class="form-group col-md-6">
+                                                                </div> -->
+                                                                <!-- <div class="form-group col-md-6">
                                                                     <label>City</label>
                                                                     <input type="text" class="form-control">
-                                                                </div>
+                                                                </div> -->
                                                             </div>
-                                                            
+
                                                             <div class="form-group">
                                                                 <!-- <div class="form-check">
                                                                     <input class="form-check-input" type="checkbox">
@@ -116,23 +134,62 @@
                                 </div>
                                 <div class="tab-pane fade" id="allRetailersAdded">
                                     <div class="pt-4">
-                                        <h4>This is profile title</h4>
-                                        <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                                        </p>
-                                        <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                                        </p>
+                                        <div class="table-responsive mt-4">
+                                            <table class="table table-responsive-md">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:80px;"><strong>#</strong></th>
+                                                        <th><strong>NAME</strong></th>
+                                                        <th><strong>GST</strong></th>
+                                                        <th><strong>BRANCH</strong></th>
+                                                        <th><strong>OWNER</strong></th>
+                                                        <th><strong>DIST</strong></th>
+                                                        <th><strong>OPEN</strong></th>
+                                                        <th><strong>CLOSE</strong></th>
+                                                        <th><strong>CONTACT</strong></th>
+                                                        <!-- <th>Action</th> -->
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="productTableBody">
+                                                    <?php if (is_array($retailerAlldata)) : ?>
+                                                        <?php foreach ($retailerAlldata as $singleRetailerAllData) : ?>
+                                                            <?php $this->viewAdmin("singleRetailerTable.inc", $singleRetailerAllData); ?>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <br>
+                <?php
+                if (isset($_SESSION['LastRetailerAdded']) && $_SESSION['LastRetailerAdded'] != "") {
+                    echo ' <div id="popup">
+                    <p>' . $_SESSION['LastRetailerAdded'] . '!</p>
+                  </div>';
+                    unset($_SESSION['LastRetailerAdded']);
+                }
+                ?>
+
+
 
             </div>
+
             <!-- end -->
         </div>
     </div>
-</div>
 
+</div>
+<script>
+    var popup = document.getElementById("popup");
+    popup.style.left = "0";
+    setTimeout(function() {
+        popup.style.left = "-100%";
+    }, 3000);
+</script>
 
 <?php $this->viewAdmin("footer", $data); ?>

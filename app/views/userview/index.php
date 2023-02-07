@@ -1,17 +1,19 @@
-<!-- before showing the header i have to be careful as include wont work as i am still in the home class so i can utilize the view function to show  -->
 <?php $this->view("header", $data); ?>
+<!-- before showing the header i have to be careful as include wont work as i am still in the home class so i can utilize the view function to show  -->
 <style>
+  body>main>div.product-container>div>div.sidebar.has-scrollbar>div.wrapper {
+    margin-bottom: 1rem;
+    width: 15rem;
+  }
 
-body > main > div.product-container > div > div.sidebar.has-scrollbar > div.wrapper{
-  margin-bottom: 1rem;
-  width: 15rem;
-}
-body > main > div.product-container > div > div.sidebar.has-scrollbar > div.wrapper > div.price-input > div:nth-child(3) > span{
-  font-size: 14px;
-}
-body > main > div.product-container > div > div.sidebar.has-scrollbar > div.wrapper > div.price-input > div:nth-child(1) > span{
-  font-size: 14px;
-}
+  body>main>div.product-container>div>div.sidebar.has-scrollbar>div.wrapper>div.price-input>div:nth-child(3)>span {
+    font-size: 14px;
+  }
+
+  body>main>div.product-container>div>div.sidebar.has-scrollbar>div.wrapper>div.price-input>div:nth-child(1)>span {
+    font-size: 14px;
+  }
+
   .price-input {
     width: 100%;
     display: flex;
@@ -361,7 +363,7 @@ body > main > div.product-container > div > div.sidebar.has-scrollbar > div.wrap
       </div>
 
     </div>
-    
+
 
   </div>
 
@@ -863,26 +865,26 @@ body > main > div.product-container > div > div.sidebar.has-scrollbar > div.wrap
 
         </div>
         <div class="wrapper">
-      
-      <div class="price-input">
-        <div class="field">
-          <span>Min</span>
-          <input type="number" class="input-min" value="2500">
+
+          <div class="price-input">
+            <div class="field">
+              <span>Min</span>
+              <input type="number" class="input-min" value="2500">
+            </div>
+            <div class="separator">-</div>
+            <div class="field">
+              <span>Max</span>
+              <input type="number" class="input-max" value="7500">
+            </div>
+          </div>
+          <div class="slider">
+            <div class="progress"></div>
+          </div>
+          <div class="range-input">
+            <input type="range" class="range-min" min="0" max="10000" value="2500" step="100">
+            <input type="range" class="range-max" min="0" max="10000" value="7500" step="100">
+          </div>
         </div>
-        <div class="separator">-</div>
-        <div class="field">
-          <span>Max</span>
-          <input type="number" class="input-max" value="7500">
-        </div>
-      </div>
-      <div class="slider">
-        <div class="progress"></div>
-      </div>
-      <div class="range-input">
-        <input type="range" class="range-min" min="0" max="10000" value="2500" step="100">
-        <input type="range" class="range-max" min="0" max="10000" value="7500" step="100">
-      </div>
-    </div>
       </div>
 
 
@@ -2283,7 +2285,7 @@ body > main > div.product-container > div > div.sidebar.has-scrollbar > div.wrap
         <!--
             - TESTIMONIALS
           -->
-<!-- 
+        <!-- 
         <div class="testimonial">
 
           <h2 class="title">testimonial</h2>
@@ -2312,7 +2314,7 @@ body > main > div.product-container > div > div.sidebar.has-scrollbar > div.wrap
         <!--
             - CTA
           -->
-<!-- 
+        <!-- 
         <div class="cta-container">
 
           <img src="<?php echo ASSETS . THEME  ?>images/cta-banner.jpg" alt="summer collection" class="cta-banner">
@@ -2336,7 +2338,7 @@ body > main > div.product-container > div > div.sidebar.has-scrollbar > div.wrap
         <!--
             - SERVICE
           -->
-<!-- 
+        <!-- 
         <div class="service">
 
           <h2 class="title">Our Services</h2>

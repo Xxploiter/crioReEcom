@@ -22,7 +22,7 @@ class Admin extends Controller{
       
       $retailer = $this->load_model('crioretailers');
 
-      $retailerAuthData = $retailer->check_login(true, ['admin']); 
+      $retailerAuthData = $retailer->check_login(true, ['admin']);  //this func takes two params first is wether the user needs to be redirected or not second the list of user allowed
          // the check_login() function is in crioRetailers.class.php
          // retailerAuthData contains an array if user exist and false if no user exist and true is passes then the user is redirected to the login page
       if(is_object($retailerAuthData)){             
@@ -90,8 +90,21 @@ class Admin extends Controller{
       }
 
       // later during refactoring make sure to create a model for the api fetching 
-      // TODO Here temporary call will be made to the API to fetch the retailers data from rishis API 
-// Later models should be made for this as its dealing with data
+
+      if($_SERVER['REQUEST_METHOD'] == 'POST'){
+         $retailerId = $_POST['crioRetailerId'];
+$api_url = 'https://raiganj.crio77.com/api/retailer.php?id='.$retailerId.''; // put the retaillers all data url here
+$json_data = file_get_contents($api_url);
+// Decode JSON data into PHP array
+$allRetailersApiData = json_decode($json_data);
+         // $crioretailers=$this->load_model("Crioretailers");
+         $retailer->adminCreateRetailer($allRetailersApiData[0], $_POST);
+      }
+
+
+// TODO onlyy raiganj is available currently later other region should be added
+// url shhould be modified accordingly
+// IMP Later models should be made for this as its dealing with data
 $api_url = 'https://raiganj.crio77.com/api/retailer.php'; // put the retaillers all data url here
 
 // Read JSON file
@@ -100,8 +113,22 @@ $json_data = file_get_contents($api_url);
 // Decode JSON data into PHP array
 $allRetailersApiData = json_decode($json_data);
 
+// getting all the existing retailers Ids 
+$retailerAllIds = $retailer->allRetailersCrioId();
+// retaillers id ends here
+
+//get all the retailers details
+$retailerAlldata = $retailer->allRetailers();
+// show($retailerAlldata);
+// die;
+// all retailers details function ends here 
+
 // show($allRetailersApiData);
 $data['allRetailersApiData'] = $allRetailersApiData;
+$data['retailerAllIds'] = $retailerAllIds;
+$data['retailerAlldata'] = $retailerAlldata;
+// show($data['retailerAllIds']);
+// die;
 // All user data exists in 'data' object
 // $user_data = $response_data->data;
 

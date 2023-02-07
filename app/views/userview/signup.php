@@ -24,8 +24,9 @@
                 <div class="message">
                 <?php check_error() ?>
                 </div>
-            
-                <form method="post" class="login">
+            <!-- if the user hits this page with GET page is shown when POST is used it assuemd that the user submitted the data
+        and the $POST var is filled with data -->
+                <form method="post" class="login"> 
                     <div class="login__field">
                         <i class="login__icon fas fa-user"></i>
                         <input name="Name" type="text" class="login__input" placeholder="Name">

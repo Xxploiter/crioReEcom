@@ -43,7 +43,7 @@ class AllProducts extends Controller{
 // print_r($user_data);
 // TODO fetch all the images from the API as well 
 // API data ends here
-    $data['productsMainSection'] = $productsMainSection;
+    $data['productsMainSection'] = $productsMainSection; //this has the images
        $this->view("allProducts",$data);
 
     }

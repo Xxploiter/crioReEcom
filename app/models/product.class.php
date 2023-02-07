@@ -2,6 +2,24 @@
 
 class Product
 {
+    //TODO For below function to work we need magick library in the server and enabled in php.ini
+    // public function removeBackgroundWithImagick($image_path) {
+    //     // Create an instance of the Imagick class
+    //     $imagick = new \Imagick();
+    
+    //     // Read the image file
+    //     $imagick->readImage($image_path);
+    
+    //     // Set the background color to remove
+    //     $imagick->transparentPaintImage(new \ImagickPixel('white'), 0.0, 10000, true);
+    
+    //     // Save the new image
+    //     $imagick->writeImage($image_path);
+    
+    //     // Free up memory
+    //     $imagick->clear();
+    //     $imagick->destroy();
+    // }
 
     // below function takes in a string and makes it proper slag format or url fomrat
     public function str_to_url($url)
@@ -218,6 +236,30 @@ class Product
             }
         }
         return $result;
+    }
+    // below method is for synchronizing all the products from crio db to recreation db
+    public function synchronizeProductCrio($DATA, $FILES,$imageEditClass = null)
+    {
+        $_SESSION['error'] = '';
+        $db = Database::newInstance();
+        $arr['description'] = ucwords($DATA->description);
+        $arr['category'] = ucwords($DATA->category);
+        $arr['price'] = ucwords($DATA->price);
+        $arr['quantity'] = ucwords($DATA->quantity);
+        $arr['name'] = ucwords($DATA->name);
+        $arr['date'] = date("Y-m-d H:i:s");
+        $arr['user_url'] = $_SESSION['user_url'];
+        $arr['slag'] = $this->str_to_url($arr['name']);
+
+
+        if (!isset($_SESSION['error']) || $_SESSION['error'] == "") {
+            $query = "INSERT INTO products ( description, category, price, quantity, name, date, user_url, image1, image2, image3, image4, slag) VALUES ( :description, :category, :price, :quantity, :name, :date, :user_url, :image1, :image2, :image3, :image4, :slag)";
+            $check = $db->write($query, $arr);
+            if ($check) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

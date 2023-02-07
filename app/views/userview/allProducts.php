@@ -1,5 +1,5 @@
-<!-- before showing the header i have to be careful as include wont work as i am still in the home class so i can utilize the view function to show  -->
 <?php $this->view("header", $data); ?>
+<!-- before showing the header i have to be careful as include wont work as i am still in the home class so i can utilize the view function to show  -->
 <!--
     - MAIN
   -->

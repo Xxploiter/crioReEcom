@@ -1723,7 +1723,14 @@ footer {
 /*-----------------------------------*\
   #RESPONSIVE
 \*-----------------------------------*/
-
+@media screen and (max-width: 480px) {
+ header{
+  position: sticky;
+  z-index: 9;
+  top: 0;
+  background-color: white;
+ }
+}
 
 /**
  * responsive larger than 480px screen
@@ -1744,8 +1751,6 @@ footer {
     --fs-1: 1.875rem;
 
   }
-
-
 
   /**
    * #HEADER
@@ -1943,6 +1948,7 @@ footer {
   .blog-container { gap: 30px; }
 
   .blog-card { min-width: calc(50% - 15px); }
+
 
 }
 

@@ -5,7 +5,7 @@ class Signup extends Controller{
     $data['pageTitle'] = "Signup | Crio-Re";
    //  above is the $data[] array that is used to send any data to the respective views
 
-
+// when form is submitted the below method is invoked with the data in the $POST var
       if($_SERVER['REQUEST_METHOD'] == 'POST'){
          // show($_POST);
          $crioretailers=$this->load_model("Crioretailers");
@@ -17,6 +17,6 @@ class Signup extends Controller{
     }
 }
 
-
+//working on this one
 
 ?>

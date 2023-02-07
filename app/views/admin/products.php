@@ -34,10 +34,10 @@
                         <div class="custom-tab-1 ">
                             <ul class="nav nav-tabs">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#View"><i class="la la-home mr-2"></i>View</a>
+                                    <a class="nav-link" data-toggle="tab" href="#View"><i class="la la-home mr-2"></i>View</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#profile1"><i class="la la-user mr-2"></i>Product Feature-1 </a>
+                                    <a class="nav-link active" data-toggle="tab" href="#productSync"><i class="la la-user mr-2"></i>Product Feature-1 </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#contact1"><i class="la la-phone mr-2"></i>Product Feature-2 </a>
@@ -47,7 +47,7 @@
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane fade show active" id="View" role="tabpanel">
+                                <div class="tab-pane fade " id="View" role="tabpanel">
                                     <!-- <div class="pt-4">
                                         <h4>This is home title</h4>
                                         <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.
@@ -285,7 +285,6 @@
                                                             </thead>
                                                             <tbody id="productTableBody">
                                                                 <?php
-
                                                                 echo $productRows;
                                                                 ?>
                                                             </tbody>
@@ -296,13 +295,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="profile1">
+                                <div class="tab-pane fade show active" id="productSync">
                                     <div class="pt-4">
-                                        <h4>This is profile title</h4>
-                                        <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                                        </p>
-                                        <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                                        </p>
+                                        <h4>Sync Product</h4>
+                                        <button id="startSyncProduct" class="btn light btn-warning">start sync</button>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="contact1">
@@ -598,4 +594,56 @@
             
         }
     }
+</script>
+<script>
+const syncHandler = document.querySelector('#startSyncProduct')
+syncHandler.addEventListener('click', ()=>{
+    console.log('sync Handler working');
+    sendSyncRequest({
+            data_type: "sync",
+            sync: "product" 
+        })
+})
+
+function sendSyncRequest(data = {}) {
+    const ajax = new XMLHttpRequest()
+        ajax.addEventListener('readystatechange', function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                handleResult(ajax.responseText)
+            }
+        })
+        ajax.open("POST", "<?= ROOT ?>ajax_syncData", true)
+        ajax.send(JSON.stringify(data))
+    }
+
+    function handleSyncResult(result) {
+        console.log(result);
+        // if (result != '') {
+        //     const obj = JSON.parse(result)
+        //     if (obj.data_type != 'undefined') {
+        //         if (obj.data_type == 'add_new') {
+        //             // we check above the type of data recieved if success then we get a message type of info
+        //             if (obj.message_type == 'info') {
+        //                 // alert(obj.message)
+        //                 $('#addProductModal').modal('hide')
+        //                 const tb = document.querySelector('#productTableBody')
+        //                 tb.innerHTML = obj.data;
+        //             } else {
+        //                 alert(obj.message)
+        //             }
+        //         } else if (obj.data_type == 'delete_row') {
+        //             const tb = document.querySelector('#productTableBody')
+        //             tb.innerHTML = obj.data;
+        //         } else if (obj.data_type == 'toggled_row') {
+        //             const tb = document.querySelector('#productTableBody')
+        //             tb.innerHTML = obj.data;
+        //         } else if (obj.data_type == 'edit_product') {
+        //             const tb = document.querySelector('#productTableBody')
+        //             tb.innerHTML = obj.data;
+        //             $('#editProductModal').modal('hide')
+        //         }
+        //     }
+        // }
+    }
+
 </script>

@@ -16,3 +16,5 @@ IMP Here the users table is equivalent to crioretailers table in the database
 
 IMP TO change any business Logic go to the respective Models Example to change the rank of the user/retailer go to the crioretailers.class.php
 in models
+
+IMP SESSION-> the only item that is saved inside the session is the user_url
