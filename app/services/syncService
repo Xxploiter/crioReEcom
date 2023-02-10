@@ -15,10 +15,10 @@ class SyncService
         $sizeStatus = $processedJSONData[0]->size;
         $colorStatus = $processedJSONData[0]->color;
         // getting the local database data 
-        $sizeLastData = $productClass->getSizeLastUpdateData();
-        $colorLastData = $productClass->getColorLastUpdateData();
-        $itemLastData = $productClass->getItemLastUpdateData();
-        $brandLastData = $productClass->getBrandLastUpdateData();
+        $sizeLastData = $productClass->totalSizeCount();
+        $colorLastData = $productClass->totalColorCount();
+        $itemLastData = $productClass->totalProductsCount();
+        $brandLastData = $productClass->totalBrandsCount();
         
         // now lets check wther there is a need for syn or not, by subtracting 
        $itemUpdate = $itemStatus - $itemLastData;
@@ -31,7 +31,11 @@ class SyncService
     private function syncItem($productClass){
         [$itemSync, $sizeSync, $colorSync, $brandSync] = $this->getUpdateStatus($productClass);
         if($itemSync > 0){
-            
+            // here need to wtite the code for getting all the data after a specific id from an API TODO
+            // IMP
+            // this can be abstracted using a method where each item is passed inside foreach
+            // IMP
+            //  after that the data returned will be passed to a method in product Model TODO synchronizeProductCrio($data)
         }
     }
     private function syncSize($productClass){
@@ -51,6 +55,10 @@ class SyncService
         if($brandSync > 0){
 
         }
+    }
+    
+    public function syncAll(){
+        // here call all the sync private methods  
     }
 
    

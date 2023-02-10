@@ -12,7 +12,8 @@ class Ajax_syncData extends Controller{
         $db = Database::getInstance();
         $product = $this->load_model('Product');
         if($data->data_type == 'sync'){ 
-           
+        //    here i will call the synService and start the synchronization process
+        // TODO create a new product model instance pass it to the service
          }
         
     }

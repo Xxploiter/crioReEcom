@@ -240,6 +240,8 @@ class Product
     // below method is for synchronizing all the products from crio db to recreation db
     public function synchronizeProductCrio($DATA)
     {
+        // this method needs to be changed
+        // here this method will be called inside a foreach loop where assoc array will be passed here
         $_SESSION['error'] = '';
         $db = Database::newInstance();
         $arr['description'] = ucwords($DATA->description);
@@ -266,22 +268,22 @@ class Product
     // a need for sync or not 
     // IMP (these methods can be replaced if other better way is found)
 
-    public function getSizeLastUpdateData(){
+    public function totalSizeCount(){
         $db = Database::newInstance();
         $result = $db->read("SELECT COUNT(DISTINCT * ) FROM sizes;");
         return $result;
     }
-    public function getColorLastUpdateData(){
+    public function totalColorCount(){
         $db = Database::newInstance();
         $result = $db->read("SELECT COUNT(DISTINCT * ) FROM colors;");
         return $result;
     }
-    public function getItemLastUpdateData(){
+    public function totalProductsCount(){
         $db = Database::newInstance();
         $result = $db->read("SELECT COUNT(DISTINCT * ) FROM products;");
         return $result;
     }
-    public function getBrandLastUpdateData(){
+    public function totalBrandsCount(){
         $db = Database::newInstance();
         $result = $db->read("SELECT COUNT(DISTINCT * ) FROM brands;");
         return $result;
