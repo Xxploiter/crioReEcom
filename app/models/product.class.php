@@ -1,5 +1,5 @@
 <?php
-
+include_once './mapper/mapperFactory.php';
 class Product
 {
     //TODO For below function to work we need magick library in the server and enabled in php.ini
@@ -238,7 +238,7 @@ class Product
         return $result;
     }
     // below method is for synchronizing all the products from crio db to recreation db
-    public function synchronizeProductCrio($DATA, $FILES,$imageEditClass = null)
+    public function synchronizeProductCrio($DATA)
     {
         $_SESSION['error'] = '';
         $db = Database::newInstance();
@@ -261,5 +261,35 @@ class Product
         }
         return false;
     }
+
+    // below methods are used to get data from db for checking wether there is 
+    // a need for sync or not 
+    // IMP (these methods can be replaced if other better way is found)
+
+    public function getSizeLastUpdateData(){
+        $db = Database::newInstance();
+        $result = $db->read("SELECT COUNT(DISTINCT * ) FROM sizes;");
+        return $result;
+    }
+    public function getColorLastUpdateData(){
+        $db = Database::newInstance();
+        $result = $db->read("SELECT COUNT(DISTINCT * ) FROM colors;");
+        return $result;
+    }
+    public function getItemLastUpdateData(){
+        $db = Database::newInstance();
+        $result = $db->read("SELECT COUNT(DISTINCT * ) FROM products;");
+        return $result;
+    }
+    public function getBrandLastUpdateData(){
+        $db = Database::newInstance();
+        $result = $db->read("SELECT COUNT(DISTINCT * ) FROM brands;");
+        return $result;
+    }
+    // need to write below 4 methods to get the last insert ids
+    // of brand TODO
+    // size TODO
+    // color TODO
+    // product/item TODO
 
 }

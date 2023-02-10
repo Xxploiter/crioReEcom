@@ -6,12 +6,12 @@ class RetailerService
   private function getLedgerDataFromAPI($retailerId)
   {
 
-    $data = cacheHandler::getDataFromCacheOrAPI('ledger_data', 'https://raiganj.crio77.com/api/ledger_data.php?id=' . $retailerId, 60 * 60 * 24, $retailerId);
+    $data = cacheHandler::getRetailerDataFromCacheOrAPI('ledger_data', 'https://raiganj.crio77.com/api/ledger_data.php?id=' . $retailerId, 60 * 60 * 24, $retailerId);
     return $data;
   }
 
   public function returnJsonLedgerData($retailerId){
-    $data = cacheHandler::getDataFromCacheOrAPI('ledger_data', 'https://raiganj.crio77.com/api/ledger_data.php?id=' . $retailerId, 60 * 60 * 24, $retailerId);
+    $data = cacheHandler::getRetailerDataFromCacheOrAPI('ledger_data', 'https://raiganj.crio77.com/api/ledger_data.php?id=' . $retailerId, 60 * 60 * 24, $retailerId);
     return $data;
   }
 

@@ -1,6 +1,6 @@
 <?php 
 class Ajax_syncData extends Controller{
-// as it has extended the controller class it has access to services IMP
+// As it has extended the controller class it has access to services IMP
    public function index(){ 
     if(count($_POST)>0){
         $data = (object)$_POST;

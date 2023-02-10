@@ -1,0 +1,57 @@
+<?php
+
+class SyncService
+{
+    // about the getLedgerDataFromAPI function this gets data from the api the cache time is one day
+    private function getUpdateStatus($productClass)
+    {
+
+        $apiData = file_get_contents('https://raiganj.crio77.com/api/updateStatus.php');
+        // Perform data processing, if necessary
+        $processedJSONData = json_decode($apiData, true);
+        // parse the data and check which needs to be synchronized item, size, brand or color
+        $itemStatus = $processedJSONData[0]->item;
+        $brandStatus = $processedJSONData[0]->brand;
+        $sizeStatus = $processedJSONData[0]->size;
+        $colorStatus = $processedJSONData[0]->color;
+        // getting the local database data 
+        $sizeLastData = $productClass->getSizeLastUpdateData();
+        $colorLastData = $productClass->getColorLastUpdateData();
+        $itemLastData = $productClass->getItemLastUpdateData();
+        $brandLastData = $productClass->getBrandLastUpdateData();
+        
+        // now lets check wther there is a need for syn or not, by subtracting 
+       $itemUpdate = $itemStatus - $itemLastData;
+       $sizeUpdate = $sizeStatus - $sizeLastData;
+       $colorUpdate = $colorStatus - $colorLastData;
+       $brandUpdate = $brandStatus - $brandLastData;
+      
+        return array($itemUpdate,$sizeUpdate,$colorUpdate,$brandUpdate);
+    }
+    private function syncItem($productClass){
+        [$itemSync, $sizeSync, $colorSync, $brandSync] = $this->getUpdateStatus($productClass);
+        if($itemSync > 0){
+            
+        }
+    }
+    private function syncSize($productClass){
+        [$itemSync, $sizeSync, $colorSync, $brandSync] = $this->getUpdateStatus($productClass);
+        if($sizeSync > 0){
+
+        }
+    }
+    private function syncColor($productClass){
+        [$itemSync, $sizeSync, $colorSync, $brandSync] = $this->getUpdateStatus($productClass);
+        if($colorSync > 0){
+
+        }
+    }
+    private function syncBrand($productClass){
+        [$itemSync, $sizeSync, $colorSync, $brandSync] = $this->getUpdateStatus($productClass);
+        if($brandSync > 0){
+
+        }
+    }
+
+   
+}

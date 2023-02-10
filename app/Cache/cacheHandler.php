@@ -8,7 +8,7 @@
 class CacheHandler
 {
 
-    public static function getDataFromCacheOrAPI($cacheFile, $apiUrl, $ttl, $retailerId)
+    public static function getRetailerDataFromCacheOrAPI($cacheFile, $apiUrl, $ttl, $retailerId)
     {   
         $cacheFile = $cacheFile.$retailerId.'.cache';
         // Check if the cache file exists
@@ -24,5 +24,9 @@ class CacheHandler
         file_put_contents($cacheFile, serialize($processedLedgerData));
 
         return $processedLedgerData;
+    }
+    public static function getSyncFromCacheOrAPI($cacheFile, $apiUrl, $ttl, $retailerId)
+    {   
+    //    here some other method to get the data from cache or API
     }
 }
