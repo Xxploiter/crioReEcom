@@ -267,31 +267,26 @@ class Product
     // below methods are used to get data from db for checking wether there is 
     // a need for sync or not 
     // IMP (these methods can be replaced if other better way is found)
-
-    public function totalSizeCount(){
+    // fetching the last crioId from the our local database
+    public function sizesLastCrioId(){
         $db = Database::newInstance();
-        $result = $db->read("SELECT COUNT(DISTINCT * ) FROM sizes;");
+        $result = $db->read("SELECT MAX(crioId) FROM sizes;");
         return $result;
     }
-    public function totalColorCount(){
+    public function colorLastCrioId(){
         $db = Database::newInstance();
-        $result = $db->read("SELECT COUNT(DISTINCT * ) FROM colors;");
+        $result = $db->read("SELECT MAX(crioId) FROM colors;");
         return $result;
     }
-    public function totalProductsCount(){
+    public function productsLastCrioId(){
         $db = Database::newInstance();
-        $result = $db->read("SELECT COUNT(DISTINCT * ) FROM products;");
+        $result = $db->read("SELECT MAX(crioId) FROM products;");
         return $result;
     }
-    public function totalBrandsCount(){
+    public function brandsLastCrioId(){
         $db = Database::newInstance();
-        $result = $db->read("SELECT COUNT(DISTINCT * ) FROM brands;");
+        $result = $db->read("SELECT MAX(crioId) FROM brands;");
         return $result;
     }
-    // need to write below 4 methods to get the last insert ids
-    // of brand TODO
-    // size TODO
-    // color TODO
-    // product/item TODO
 
 }

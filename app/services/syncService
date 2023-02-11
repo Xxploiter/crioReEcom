@@ -6,25 +6,25 @@ class SyncService
     private function getUpdateStatus($productClass)
     {
 
-        $apiData = file_get_contents('https://raiganj.crio77.com/api/updateStatus.php');
+        $apiData = file_get_contents('https://raiganj.crio77.com/api/checkUpdate.php');
         // Perform data processing, if necessary
         $processedJSONData = json_decode($apiData, true);
         // parse the data and check which needs to be synchronized item, size, brand or color
-        $itemStatus = $processedJSONData[0]->item;
-        $brandStatus = $processedJSONData[0]->brand;
-        $sizeStatus = $processedJSONData[0]->size;
-        $colorStatus = $processedJSONData[0]->color;
+        $itemLastCrioId = $processedJSONData->itemCount;
+        $sizeLastCrioId = $processedJSONData->sizeCount;
+        $colorLastCrioId = $processedJSONData->colorCount;
+        $brandLastCrioId = $processedJSONData->brandCount;
         // getting the local database data 
-        $sizeLastData = $productClass->totalSizeCount();
-        $colorLastData = $productClass->totalColorCount();
-        $itemLastData = $productClass->totalProductsCount();
-        $brandLastData = $productClass->totalBrandsCount();
+        $itemLastData = $productClass->productsLastCrioId();
+        $sizeLastData = $productClass->sizesLastCrioId();
+        $colorLastData = $productClass->colorLastCrioId();
+        $brandLastData = $productClass->brandsLastCrioId();
         
         // now lets check wther there is a need for syn or not, by subtracting 
-       $itemUpdate = $itemStatus - $itemLastData;
-       $sizeUpdate = $sizeStatus - $sizeLastData;
-       $colorUpdate = $colorStatus - $colorLastData;
-       $brandUpdate = $brandStatus - $brandLastData;
+       $itemUpdate = $itemLastCrioId - $itemLastData;
+       $sizeUpdate = $sizeLastCrioId - $sizeLastData;
+       $colorUpdate = $colorLastCrioId - $colorLastData;
+       $brandUpdate = $brandLastCrioId - $brandLastData;
       
         return array($itemUpdate,$sizeUpdate,$colorUpdate,$brandUpdate);
     }
@@ -34,7 +34,7 @@ class SyncService
             // here need to wtite the code for getting all the data after a specific id from an API TODO
             // IMP
             // this can be abstracted using a method where each item is passed inside foreach
-            // IMP
+            // IMP......
             //  after that the data returned will be passed to a method in product Model TODO synchronizeProductCrio($data)
         }
     }
