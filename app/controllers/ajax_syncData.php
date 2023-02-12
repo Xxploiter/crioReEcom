@@ -15,6 +15,11 @@ class Ajax_syncData extends Controller{
         //    here i will call the synService and start the synchronization process
         // TODO create a new product model instance pass it to the service
          }
+         $syncData = $this->load_service('syncservice');
+         $status = $syncData->syncAll();
+         if($status){
+            echo'success';
+         }
         
     }
 

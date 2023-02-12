@@ -31,7 +31,7 @@ class Product
         $url = preg_replace('~[^-a-z0-9_]+~', '', $url);
         return $url;
     }
-    public function create($DATA, $FILES,$imageEditClass = null)
+    public function create($DATA, $FILES, $imageEditClass = null)
     {
         $_SESSION['error'] = '';
         $db = Database::newInstance();

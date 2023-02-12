@@ -58,7 +58,7 @@ class SyncService
     }
     
     public function syncAll(){
-        // here call all the sync private methods  
+        // here call all the sync private methods
     }
 
    
