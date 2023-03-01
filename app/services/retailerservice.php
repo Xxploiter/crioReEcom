@@ -120,17 +120,6 @@ class RetailerService
     </tr>
    </thead>
  </table>';
-  <thead class="thead-dark">
-   <tr>
-      <th style="border-bottom-left-radius: 20px 20px;">FROM</th>
-      <th class="text-center">TO</th>
-      <th class="text-center">NO. BILLS</th>
-
-      <th class="text-right" colspan="2" style="border-bottom-right-radius: 20px 20px;">CLOSING
-         BALANCE: ' . $balance . '</th>
-   </tr>
-  </thead>
-</table>';
     $style = '
 <style type="text/css">
 body {
@@ -590,10 +579,6 @@ div#modalInvoiceData {
 
     return array($style, $invoice, $orderInfo, $shopInfo, $payInfo, $deliveryInfo);
   }
-
-
-  // Devlopment by souvik started
-
 
   public function getMostSellingProduct($retId)
   {

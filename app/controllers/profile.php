@@ -26,16 +26,15 @@ class Profile extends Controller
 
       $data['mostSellingProduct'] = $mostSellingProduct;
 
-      $data['htmlGeneratedLedger'] = $htmlGeneratedLedger;
-      $data['timeLineData'] = $timeLineData['transaction'];
+     
 
 
        $htmlGeneratedLedger = $retailerService->createLedger($retailerCrioIdis); //provide retailer id 
       // show($retailerCrioIdis);
       // die;
       $timeLineData = $retailerService->returnJsonLedgerData($retailerCrioIdis);
-      // $data['htmlGeneratedLedger'] = $htmlGeneratedLedger;
-      //$data['timeLineData'] = $timeLineData['transaction'];
+      $data['htmlGeneratedLedger'] = $htmlGeneratedLedger;
+      $data['timeLineData'] = $timeLineData['transaction'];
       
       // fetching data from API ends here 
       $data['pageTitle'] = "Profile";

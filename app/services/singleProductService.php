@@ -1,4 +1,3 @@
-<!-- Devloped by Souvik -->
 <?php
 
 class SingleProductService
