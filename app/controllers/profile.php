@@ -20,14 +20,23 @@ class Profile extends Controller
       if (!$retailerService) {
          throw new Exception("RetailerService class file not found");
       }
-      // $htmlGeneratedLedger = $retailerService->createLedger($retailerCrioIdis); //provide retailer id 
+
+
+      $mostSellingProduct = $retailerService->getMostSellingProduct($retailerCrioIdis);
+
+      $data['mostSellingProduct'] = $mostSellingProduct;
+
+      $data['htmlGeneratedLedger'] = $htmlGeneratedLedger;
+      $data['timeLineData'] = $timeLineData['transaction'];
+
+
+       $htmlGeneratedLedger = $retailerService->createLedger($retailerCrioIdis); //provide retailer id 
       // show($retailerCrioIdis);
       // die;
       $timeLineData = $retailerService->returnJsonLedgerData($retailerCrioIdis);
       // $data['htmlGeneratedLedger'] = $htmlGeneratedLedger;
-      $data['timeLineData'] = $timeLineData['transaction'];
-      // show($data['timeLineData']);
-      // die;
+      //$data['timeLineData'] = $timeLineData['transaction'];
+      
       // fetching data from API ends here 
       $data['pageTitle'] = "Profile";
       $this->view("profile", $data);

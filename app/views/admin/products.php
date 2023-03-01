@@ -648,6 +648,11 @@
     }
 </script>
 <script>
+
+    const syncHandler = document.querySelector('#startSyncProduct')
+    syncHandler.addEventListener('click', () => {
+        console.log('sync Handler working');
+
   // Get the success modal and its message element
   const successModal = document.getElementById("success-modal");
   const successMessage = document.getElementById("success-message");

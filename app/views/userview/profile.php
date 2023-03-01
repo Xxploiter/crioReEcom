@@ -1,9 +1,117 @@
 <?php $this->view("header", $data); ?>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <link href="<?php echo ASSETS . THEME  ?>css/jquery.roadmap.min.css" rel="stylesheet" type="text/css" />
+<style>
+  .close{
+    cursor: pointer;
+    width: 26px;
+    color: aqua;
+    background-color: aliceblue;
+    text-align: center;
+    font-size: 21px;
+    margin-left: 8px;
+    margin-top: 8px;
+  }
+  .modal {
+    animation: popup .5s ease-in-out .5s forwards;
+  }
+
+  .showcase-status-bar {
+    background: var(--cultured);
+    position: relative;
+    height: 10px;
+    border-radius: 5px;
+
+  }
+
+  .testimonials-box {
+
+    justify-content: center;
+  }
+
+  .showcase-status-bar::before {
+    position: absolute;
+    content: '';
+    top: 3px;
+    left: 3px;
+    height: 4px;
+    width: 40%;
+    background: var(--salmon-pink);
+    border-radius: 4px;
+  }
+
+  .showcase-status .wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--eerie-black);
+    font-size: var(--fs-9);
+    font-weight: var(--weight-400);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  /*-------- flex container --------*/
+  .amountTimeline {
+    font-size: var(--fs-7);
+    font-weight: var(--weight-700);
+    color: var(--salmon-pink);
+  }
+</style>
+<style>
+  .graphs {
+    width: 21rem;
+  }
+
+  .graphsis {
+    justify-content: space-between;
+  }
+
+  /* timeline color */
+  .roadmap.roadmap--orientation-auto .roadmap__events:after {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: block;
+    content: "";
+    width: 0%;
+    height: 4px;
+    background-color: #FF8F9C;
+    border-radius: 2px;
+    -webkit-transition: all .5s linear;
+    -o-transition: all .5s linear;
+    transition: all .5s linear;
+  }
+
+  .roadmap.roadmap--orientation-auto .roadmap__events__event:after,
+  .roadmap.roadmap--orientation-auto .roadmap__events__event:before {
+    position: absolute;
+    content: "";
+    display: block;
+    background-color: #FF8F9C;
+    -webkit-transition: all .3s cubic-bezier(.25, .1, .25, 1.3);
+    -o-transition: all .3s cubic-bezier(.25, .1, .25, 1.3);
+    transition: all .3s cubic-bezier(.25, .1, .25, 1.3);
+  }
+
+  /* Style for apex chart */
+  @import url(https://fonts.googleapis.com/css?family=Roboto);
+
+  body{
+    font-family: Roboto, sans-serif;
+    }
+
+  #chart{
+    max-width: 650px;
+    margin: 35px auto;
+    }
+</style>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="<?php echo ASSETS . THEME  ?>css/userProfile.css"   rel="stylesheet" type="text/css"/>
+
 
 <div class="main margin2">
   <div class="container">
@@ -555,8 +663,12 @@
       </div>
 
       <div class="product-showcase">
-        <h2 class="title mt-5">PRODUCTS BOUGHT</h2>
+        <h2 class="title mt-5">AMOUNT OF PRODUCTS BOUGHT IN LAST 6 MONTH</h2>
         <canvas class="graphs" id="myChartdonut"></canvas>
+      </div>
+      <div class="product-showcase">
+        <h2 class="title mt-5">QUANTITY OF PRODUCTS BOUGHT IN LAST 6 MONTH</h2>
+        <canvas class="graphs" id="prodQty"></canvas>
       </div>
       <div id="my-roadmap"></div>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -678,68 +790,6 @@
 
 <script>
 
-</script>
-
-<script>
-  // modal variables
-  // const modal = document.querySelector('[data-modal]');
-  // const modalCloseBtn = document.querySelector('[data-modal-close]');
-  // const modalCloseOverlay = document.querySelector('[data-modal-overlay]');
-
-  // // modal function
-  // const modalCloseFunc = function() {
-  //   modal.classList.add('closed')
-  // }
-
-  // // modal eventListener
-  // modalCloseOverlay.addEventListener('click', modalCloseFunc);
-  // modalCloseBtn.addEventListener('click', modalCloseFunc);
-
-
-
-
-
-  // // notification toast variables
-  // const notificationToast = document.querySelector('[data-toast]');
-  // const toastCloseBtn = document.querySelector('[data-toast-close]');
-
-  // // notification toast eventListener
-  // toastCloseBtn.addEventListener('click', function() {
-  //   notificationToast.classList.add('closed');
-  // });
-
-
-
-
-  // IMP this can be uncommented below
-  // mobile menu variables
-  // const mobileMenuOpenBtn = document.querySelectorAll('[data-mobile-menu-open-btn]');
-  // const mobileMenu = document.querySelectorAll('[data-mobile-menu]');
-  // const mobileMenuCloseBtn = document.querySelectorAll('[data-mobile-menu-close-btn]');
-  // const overlay = document.querySelector('[data-overlay]');
-  // console.log(mobileMenuCloseBtn);
-  // for (let i = 0; i < mobileMenuOpenBtn.length; i++) {
-
-  //   // mobile menu function
-  //   const mobileMenuCloseFunc = function() {
-  //     mobileMenu[i].classList.remove('active');
-  //     overlay.classList.remove('active');
-  //   }
-
-  //   mobileMenuOpenBtn[i].addEventListener('click', function() {
-  //     mobileMenu[i].classList.add('active');
-  //     overlay.classList.add('active');
-  //   });
-
-  //   mobileMenuCloseBtn[i].addEventListener('click', mobileMenuCloseFunc);
-  //   overlay.addEventListener('click', mobileMenuCloseFunc);
-
-  // }
-
-
-
-
-
   // accordion variables
   const accordionBtn = document.querySelectorAll('[data-accordion-btn]');
   const accordion = document.querySelectorAll('[data-accordion]');
@@ -858,16 +908,19 @@
     config1
   );
 </script>
+
+<!-- // Devlopment by souvik starts -->
+<script>
+  // product data from php
+  const mostSellingProd=<?php echo json_encode($data['mostSellingProduct']) ;?>;
+</script>
+<!--Graph fro product vs amount of product bought in last 6 month -->
 <script>
   const dataDonut = {
-    labels: [
-      'leggings',
-      'shorts',
-      'pants'
-    ],
+    labels:mostSellingProd.product,
     datasets: [{
-      label: 'My First Dataset',
-      data: [300, 50, 100],
+      label: 'Amount',
+      data:mostSellingProd.amount,
       backgroundColor: [
         'rgb(255, 99, 132)',
         'rgb(54, 162, 235)',
@@ -884,6 +937,32 @@
     document.getElementById('myChartdonut'),
     configDonut
   );
+</script>
+
+<script>
+  // Graph for product vs quantity of the total product bought in last 6 month
+  const dataQtyChart = {
+    labels: mostSellingProd.product,
+    datasets: [{
+      label: 'Quantity',
+      data: mostSellingProd.quantity,
+      backgroundColor: [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(255, 205, 86)'
+      ],
+      hoverOffset: 4
+    }]
+  };
+  const configQtyChart = {
+    type: 'doughnut',
+    data: dataQtyChart,
+  };
+  const prodQty = new Chart(
+    document.getElementById('prodQty'),
+    configQtyChart
+  );
+          
 </script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>

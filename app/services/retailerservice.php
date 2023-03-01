@@ -33,19 +33,19 @@ class RetailerService
     $balance = 0;
     $ledger = '';
     $ledger .= '
-               <!-- begin table-responsive -->
-               <div class="table-responsive">
-                  <table class="table table-invoice">
-                     <thead class="thead-dark">
-                        <tr>
-                           <th style="border-top-left-radius: 20px 20px;">DATE</th>
-                           <th class="text-center">PARTICULARS</th>
-                           <th class="text-center">CREDIT</th>
-                           <th class="text-center">DEBIT</th>
-                           <th class="text-right" style="border-top-right-radius: 20px 20px;">BALANCE</th>
-                        </tr>
-                     </thead>
-                     <tbody>';
+                <!-- begin table-responsive -->
+                <div class="table-responsive">
+                   <table class="table table-invoice">
+                      <thead class="thead-dark">
+                         <tr>
+                            <th style="border-top-left-radius: 20px 20px;">DATE</th>
+                            <th class="text-center">PARTICULARS</th>
+                            <th class="text-center">CREDIT</th>
+                            <th class="text-center">DEBIT</th>
+                            <th class="text-right" style="border-top-right-radius: 20px 20px;">BALANCE</th>
+                         </tr>
+                      </thead>
+                      <tbody>';
 
     foreach ($transactions as $transaction) {
 
@@ -108,6 +108,18 @@ class RetailerService
     }
 
     $ledger .= '</tbody>
+
+   <thead class="thead-dark">
+    <tr>
+       <th style="border-bottom-left-radius: 20px 20px;">FROM</th>
+       <th class="text-center">TO</th>
+       <th class="text-center">NO. BILLS</th>
+ 
+       <th class="text-right" colspan="2" style="border-bottom-right-radius: 20px 20px;">CLOSING
+          BALANCE: ' . $balance . '</th>
+    </tr>
+   </thead>
+ </table>';
   <thead class="thead-dark">
    <tr>
       <th style="border-bottom-left-radius: 20px 20px;">FROM</th>
@@ -575,6 +587,32 @@ div#modalInvoiceData {
 </style>
 ';
 
+
     return array($style, $invoice, $orderInfo, $shopInfo, $payInfo, $deliveryInfo);
+  }
+
+
+  // Devlopment by souvik started
+
+
+  public function getMostSellingProduct($retId)
+  {
+    $url = "https://raiganj.crio77.com/api/products.php?id=" . $retId . "&limit=180Days";
+    //First we need to get the data from api
+    $response = file_get_contents($url);
+    $decodedResponce = json_decode($response, true);
+
+    //Now we need to process data
+    for ($i = 0; $i < sizeof($decodedResponce); $i++) {
+      $product[$i] = $decodedResponce[$i]['itemName'];
+      $quantity[$i] = $decodedResponce[$i]['totQuantity'];
+      $amount[$i] = $decodedResponce[$i]['totAmount'];
+    }
+    $data = array(
+      'product' => $product,
+      'quantity' => $quantity,
+      'amount' => $amount
+    );
+    return $data;
   }
 }

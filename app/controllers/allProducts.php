@@ -7,6 +7,11 @@ class AllProducts extends Controller{
       
       $retailer = $this->load_model('crioretailers');
       $imageProcessingClass = $this->load_model('Image');
+      // Devlopment by souvik starts
+      // This is for product model in this model all the transection with product table has been done
+      $productModel = $this->load_model('product');
+      // Devlopment by souvik ends
+
       $retailerAuthData = $retailer->check_login();
       // retailerAuthData contains an array if user exist and false if no user exist   
       if(is_object($retailerAuthData)){
@@ -25,6 +30,7 @@ class AllProducts extends Controller{
       $productsMainSection = $paginationData['items'];
       $data['prevPage'] = ($paginationData['currentPage'] - 1)? $data['prevPage'] = $paginationData['currentPage'] - 1 : 'noPrevPage';
       $data['nextPage'] = ($paginationData['currentPage'] + 1);
+
 
     $data['pageTitle'] = "All Products | Crio-Re";
     if ($productsMainSection) {

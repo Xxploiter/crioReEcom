@@ -31,7 +31,7 @@ class Crioretailers
             $result = $db->read($query, $arr);
             if (is_array($result)) {
                 $result = $result[0];
-                if (in_array($result->rank, $allowed)){
+                if (in_array($result->rank, $allowed)) {
                     return $result;
                 }
                 // if we find the user is not authorized we redirect the user to index/homepage
@@ -81,7 +81,7 @@ class Crioretailers
 
     // the function below will be used to signup a user
     public function signup($POST)
-    {   
+    {
         // $newPost = array($POST);
         // show(json_encode($newPost[0]));
         // die();
@@ -154,7 +154,7 @@ class Crioretailers
     public function adminCreateRetailer($retailerAPIData, $formData = null)
     {
         $db = Database::newInstance();
-       
+
         // IMP here using the $retailerAPIData var getting all the names of the form submission
         $preparingQuery = array();
         $preparingQuery['url_address'] = $this->get_random_string_max(60);
@@ -163,7 +163,7 @@ class Crioretailers
         // we are gonna prepare a custom password for the user below
         $preparingQuery['password'] = $this->get_random_string_max(16);
         // custom paswrd creation ends here
-        
+
         $preparingQuery['phone']    = trim($retailerAPIData->contact);
         $preparingQuery['branch']    = trim($retailerAPIData->branch);
         $preparingQuery['crioDbRetailerId']    = trim($retailerAPIData->id);
@@ -183,11 +183,11 @@ class Crioretailers
         $preparingQuery['transport']    = trim($retailerAPIData->transport);
         $preparingQuery['review']    = trim($retailerAPIData->review);
 
-        
+
         // the data from the $post variable
         $preparingQuery['crioReEmail']    = trim($formData['crioReEmail']);
         $preparingQuery['crioReUserName']    = trim($formData['crioReUserName']);
-        
+
         // checking if random url_address exist almost impossible still making sure        
         $sqlCheckUrlExist = "SELECT * FROM crioretailers WHERE url_address = :url_address LIMIT 1";
         $urlExist['url_address'] = $preparingQuery['url_address'];
@@ -195,7 +195,7 @@ class Crioretailers
         if (is_array($checkUrl)) {
             $preparingQuery['url_address'] = $this->get_random_string_max(60);
         }
-       
+
         if ($this->error == "") {
             // save the data to database
             //IMP HERE will prepare all the ranks or anything that is needed for the user signup
@@ -204,17 +204,17 @@ class Crioretailers
             // $preparingQuery['password'] = hash('sha1',$preparingQuery['password']);
             $preparingQuery['date'] = date('Y-m-d H:i:s');
             // preparing the query
-          
+
             $query = "INSERT INTO crioretailers (url_address,name,email,password,date,rank,phone,branch,crioDbRetailerId,joining,owner,dist,area,address,opentime,closetime,launchtime,offday,gst,state,due,paycondition,transport,review,crioReEmail,crioReUserName) values (:url_address,:name,:email,:password,:date,:rank,:phone,:branch,:crioDbRetailerId,:joining,:owner,:dist,:area,:address,:opentime,:closetime,:launchtime,:offday,:gst,:state,:due,:paycondition,:transport,:review,:crioReEmail,:crioReUserName)";
             //    the db was initialized above in line 22 IMP
             $result = $db->write($query, $preparingQuery);
-          
+
             if ($result) {
-                $_SESSION['LastRetailerAdded'] =  $preparingQuery['name'] .'-'. ' Added succesfully';
+                $_SESSION['LastRetailerAdded'] =  $preparingQuery['name'] . '-' . ' Added succesfully';
                 // if true head the user to the login page
                 header("Location:" . ROOT . "admin/addRetailer");
                 die;
-            }else{
+            } else {
                 $_SESSION['RetailerAdded'] =  'Error please fix the Retailer Model';
                 header("Location:" . ROOT . "admin/addRetailer");
                 die;
@@ -227,17 +227,18 @@ class Crioretailers
     // adminCreateRetailer ends here
 
     // Get all retailers ID only
-    public function allRetailersCrioId(){
+    public function allRetailersCrioId()
+    {
         $db = Database::newInstance();
         $result = $db->read("SELECT crioDbRetailerId FROM crioretailers ORDER BY id DESC");
         $IdsOnly = array_column($result, 'crioDbRetailerId'); //this function extracts the value of the property from array of assoc_array
-        return $IdsOnly;    
-        
+        return $IdsOnly;
     }
     // allRetailersCrioId func ends here
 
     // Get all retailers data
-    public function allRetailers(){
+    public function allRetailers()
+    {
         $db = Database::newInstance();
         $result = $db->read("SELECT * FROM crioretailers ORDER BY id DESC");
         return $result;
