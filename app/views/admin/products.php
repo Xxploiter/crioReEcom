@@ -559,54 +559,55 @@
         if (name == 'image1') {
             const previewImg1 = document.querySelector('#image1editUrl')
             previewImg1.src = URL.createObjectURL(file);
-            
+
         } else if (name == 'image2') {
             const previewImg2 = document.querySelector('#image2editUrl')
             previewImg2.src = URL.createObjectURL(file);
-            
+
         } else if (name == 'image3') {
             const previewImg3 = document.querySelector('#image3editUrl')
             previewImg3.src = URL.createObjectURL(file);
-            
+
         } else if (name == 'image4') {
             const previewImg4 = document.querySelector('#image4editUrl')
             previewImg4.src = URL.createObjectURL(file);
-            
+
         }
     }
+
     function displayPreviewAddProduct(file, name) {
 
         if (name == 'image1') {
             const previewImg1 = document.querySelector('#image1AddUrl')
             previewImg1.src = URL.createObjectURL(file);
-            
+
         } else if (name == 'image2') {
             const previewImg2 = document.querySelector('#image2AddUrl')
             previewImg2.src = URL.createObjectURL(file);
-            
+
         } else if (name == 'image3') {
             const previewImg3 = document.querySelector('#image3AddUrl')
             previewImg3.src = URL.createObjectURL(file);
-            
+
         } else if (name == 'image4') {
             const previewImg4 = document.querySelector('#image4AddUrl')
             previewImg4.src = URL.createObjectURL(file);
-            
+
         }
     }
 </script>
 <script>
-const syncHandler = document.querySelector('#startSyncProduct')
-syncHandler.addEventListener('click', ()=>{
-    console.log('sync Handler working');
-    sendSyncRequest({
+    const syncHandler = document.querySelector('#startSyncProduct')
+    syncHandler.addEventListener('click', () => {
+        console.log('sync Handler working');
+        sendSyncRequest({
             data_type: "sync",
-            sync: "product" 
+            sync: "product"
         })
-})
+    })
 
-function sendSyncRequest(data = {}) {
-    const ajax = new XMLHttpRequest()
+    function sendSyncRequest(data = {}) {
+        const ajax = new XMLHttpRequest()
         ajax.addEventListener('readystatechange', function() {
             if (ajax.readyState == 4 && ajax.status == 200) {
                 handleResult(ajax.responseText)
@@ -645,5 +646,4 @@ function sendSyncRequest(data = {}) {
         //     }
         // }
     }
-
 </script>

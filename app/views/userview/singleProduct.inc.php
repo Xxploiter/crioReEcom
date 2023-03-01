@@ -46,7 +46,7 @@
 
   <a href="#" class="showcase-category"><?= $data->category ?></a>
 
-  <a href="<?php echo ROOT ?>productDetails/<?= $data->slag ?>">
+  <a href="<?php echo ROOT ?>productDetails/<?= $data->id ?>">
     <h3 class="showcase-title"><?= $data->name ?></h3>
   </a>
 

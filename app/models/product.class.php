@@ -1,21 +1,20 @@
 <?php
-include_once './mapper/mapperFactory.php';
 class Product
 {
     //TODO For below function to work we need magick library in the server and enabled in php.ini
     // public function removeBackgroundWithImagick($image_path) {
     //     // Create an instance of the Imagick class
     //     $imagick = new \Imagick();
-    
+
     //     // Read the image file
     //     $imagick->readImage($image_path);
-    
+
     //     // Set the background color to remove
     //     $imagick->transparentPaintImage(new \ImagickPixel('white'), 0.0, 10000, true);
-    
+
     //     // Save the new image
     //     $imagick->writeImage($image_path);
-    
+
     //     // Free up memory
     //     $imagick->clear();
     //     $imagick->destroy();
@@ -68,7 +67,7 @@ class Product
         $query = "SELECT slag FROM products WHERE slag = :slag limit 1";
         $check = $db->read($query, $checkSlagRepetition);
         if ($check) {
-            $arr['slag'] .= '-' .rand(0,999999);
+            $arr['slag'] .= '-' . rand(0, 999999);
         }
         // slag end
 
@@ -90,13 +89,13 @@ class Product
         foreach ($FILES as $actualImagePathName => $image) {
             if ($image['error'] == 0 && in_array($image['type'], $allowedFileTypes)) {
                 if ($image['size'] < $allowedFileSizeInMB) {
-                    
+
                     $destination = $imageDirectory . $image['name'];
                     move_uploaded_file($image['tmp_name'], $destination);
-                    $arr[$actualImagePathName] = $destination;//here we are moving the image to the destination folder path 
+                    $arr[$actualImagePathName] = $destination; //here we are moving the image to the destination folder path 
                     // as the image is moved we can perform some editing on it 
-                   $imageEditClass->resize_image($destination, $destination, 1280, 720); // here we are taking the image destination and as source and the final destination as
-                //    $destination as well as we want to replace the same file after doing some processing on it and 1200 * 1200 is the resolution
+                    $imageEditClass->resize_image($destination, $destination, 1280, 720); // here we are taking the image destination and as source and the final destination as
+                    //    $destination as well as we want to replace the same file after doing some processing on it and 1200 * 1200 is the resolution
                 } else {
                     $_SESSION['error'] .= $actualImagePathName . 'PLease provide a small size image';
                 }
@@ -114,8 +113,8 @@ class Product
         }
         return false;
     }
-// IMP------------------------------------------------------------EDIT function
-    public function edit($data, $FILES, $imageEditClass = null) 
+    // IMP------------------------------------------------------------EDIT function
+    public function edit($data, $FILES, $imageEditClass = null)
     {
         $db = Database::newInstance();
 
@@ -138,7 +137,7 @@ class Product
                     move_uploaded_file($image['tmp_name'], $destination); //here we are moving the image to the destination folder path 
                     // as the image is moved we can perform some editing on it 
                     $arr[$actualImagePathName] = $destination; // $arr[image1] = uploads/imageNameis.jpg then the ppdo will do its thing and set the result to image1 column
-                    $imageEditClass->resize_image($destination, $destination,1200, 1200);// here we are taking the image destination and as source and the final destination as
+                    $imageEditClass->resize_image($destination, $destination, 1200, 1200); // here we are taking the image destination and as source and the final destination as
                     //    $destination as well as we want to replace the same file after doing some processing on it 
                     $images .= "," . $actualImagePathName . "= :$actualImagePathName"; //Building the image query, later i am using the $image variable in the query to edit 
                 } else {
@@ -162,7 +161,7 @@ class Product
         $result = $db->write($query, $arr);
         return $result;
     }
-// ---------------------------------------------------DELETE function
+    // ---------------------------------------------------DELETE function
     public function delete($id)
     {
         $db = Database::newInstance();
@@ -172,16 +171,47 @@ class Product
         die;
         $result = $db->write($query);
         return $result;
-        
     }
-// ---------------------------------------------------ALL PRODUCTS
+    // ---------------------------------------------------ALL PRODUCTS
     public function getAll()
     {
         $db = Database::newInstance();
         $result = $db->read("SELECT * FROM products ORDER BY id DESC");
         return $result;
     }
-// ---------------------------------------------------MAKE TABLE
+
+    // Devlopment by Souvik starts
+    // ---------------------------------------------------Products BY CATEGORIES
+    public function productsByCategories($cat)
+    {
+        $db = Database::newInstance();
+        $category = $cat;
+
+        $qry = "SELECT * FROM products WHERE cata = '$category' AND disabled = 0 ORDER BY id DESC";
+        $result = $db->read($qry);
+
+        return $result;
+    }
+
+    //-----------------------------------------------------PRODUCTS BY ITEMTYPE
+    public function getByItemType($itemType)
+    {
+        $db = Database::newInstance();
+        $result = $db->read("SELECT * FROM products WHERE itemType LIKE $itemType ORDER BY id DESC");
+
+        return $result;
+    }
+
+    // ----------------------------------------------------PRODUCTS BY TITLE
+    public function getByItemTitle($title)
+    {
+        $db = Database::newInstance();
+        $result = $db->read("SELECT * FROM products WHERE title LIKE $title ORDER BY id DESC");
+
+        return $result;
+    }
+    // Devlopment by Souvik ends
+    // ---------------------------------------------------MAKE TABLE
     public function make_table($allProducts, $model = NULL)
     {
         $result = "";
@@ -268,25 +298,28 @@ class Product
     // a need for sync or not 
     // IMP (these methods can be replaced if other better way is found)
     // fetching the last crioId from the our local database
-    public function sizesLastCrioId(){
+    public function sizesLastCrioId()
+    {
         $db = Database::newInstance();
         $result = $db->read("SELECT MAX(crioId) FROM sizes;");
         return $result;
     }
-    public function colorLastCrioId(){
+    public function colorLastCrioId()
+    {
         $db = Database::newInstance();
         $result = $db->read("SELECT MAX(crioId) FROM colors;");
         return $result;
     }
-    public function productsLastCrioId(){
+    public function productsLastCrioId()
+    {
         $db = Database::newInstance();
         $result = $db->read("SELECT MAX(crioId) FROM products;");
         return $result;
     }
-    public function brandsLastCrioId(){
+    public function brandsLastCrioId()
+    {
         $db = Database::newInstance();
         $result = $db->read("SELECT MAX(crioId) FROM brands;");
         return $result;
     }
-
 }
