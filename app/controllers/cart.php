@@ -46,7 +46,9 @@ class Cart extends Controller{
     $data['pageTitle'] = "Cart | Crio-Re";
     if ($productsMainSection) {
       foreach($productsMainSection as $singleProduct => $images){
-         $productsMainSection[$singleProduct]->image1 = $imageProcessingClass->get_thumb_post($productsMainSection[$singleProduct]->image1); //doing this for only the first image as one img is needed for showing in home page our first image is image1
+         if(isset( $productsMainSection[$singleProduct]->image1)){
+            $productsMainSection[$singleProduct]->image1 = $imageProcessingClass->get_thumb_post($productsMainSection[$singleProduct]->image1); //doing this for only the first image as one img is needed for showing in home page our first image is image1
+         }
       }
     }
     $data['productsMainSection'] = $productsMainSection;

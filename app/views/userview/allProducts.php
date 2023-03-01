@@ -3,7 +3,16 @@
 <!--
     - MAIN
   -->
-
+<style>
+ .pagination{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 30px;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+</style>
 <main class="mt-5">
 
   <!--
@@ -875,23 +884,38 @@
         <!--
             - PRODUCT GRID
           -->
-<!-- IMP -->
+        <!-- IMP -->
         <div class="product-main">
 
           <h2 class="title">New Products</h2>
 
           <div class="product-grid">
-  <!-- productsMainSection -->
-  <?php if(is_array($productsMainSection)): ?>
-  <?php foreach($productsMainSection as $singleMainProduct): ?>
-    <?php $this->view("singleProduct.inc",$singleMainProduct); //sending the data to another component where the html is build ?>
-  <?php endforeach; ?>
-  <?php endif; ?>
-<!-- productsMainSection ends here -->
+            <!-- productsMainSection -->
+            <?php if (is_array($productsMainSection)) : ?>
+              <?php foreach ($productsMainSection as $singleMainProduct) : ?>
+                <?php $this->view("singleProduct.inc", $singleMainProduct); //sending the data to another component where the html is build 
+                ?>
+              <?php endforeach; ?>
+            <?php endif; ?>
+            <!-- productsMainSection ends here -->
 
           </div>
 
         </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  <div class="mt-4">
+
+    <div class="container">
+
+      <div class="pagination ">
+
+      <a class="paginationArrows" style="display:<?php  is_numeric($prevPage)? print('block') :  print'none'; ?>" href="<?php echo ROOT; ?>allProducts/<?php echo $prevPage ?>"><ion-icon name="arrow-back-outline"></ion-icon></a> 
+      <a class="paginationArrows" href="<?php echo ROOT; ?>allProducts/<?php echo $nextPage ?>"><ion-icon name="arrow-forward-outline"></ion-icon></a> 
 
       </div>
 
@@ -906,7 +930,7 @@
 
 </main>
 <!-- before showing the footer i have to be careful as include wont work as i am still in the home class so i can utilize the view function to show  -->
-<?php $this->view("footer",$data); ?>
+<?php $this->view("footer", $data); ?>
 
 
 

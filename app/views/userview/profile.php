@@ -109,16 +109,47 @@
     }
 </style>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="<?php echo ASSETS . THEME  ?>css/userProfile.css"   rel="stylesheet" type="text/css"/>
+
+
 <div class="main margin2">
   <div class="container">
-    <h2>DASHBOARD</h2>
+    <!-- <h2>DASHBOARD</h2>
     <div class="testimonials-box mt-5">
       <div class="row">
-        <!-- flex-container -->
-
-        <!-- /flex-container -->
       </div>
 
+    </div> -->
+    <div class="product-showcase">
+      <h2 class="title mt-5">DASHBOARD</h2>
+      <div class="sectionInfo">
+        <div class="itemUserInfo">
+          <div class="icon" style="background-color: #5b72ee">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="title">SALES</h3>
+          <p class="text">  <span class="reportsUser"> &#x20B9; </span>100045</p>
+        </div>
+
+        <div class="itemUserInfo">
+          <div class="icon" style="background-color: #29b9e7">
+            <i class="fas fa-area-chart"></i>
+          </div>
+          <h3 class="title">DUE</h3>
+          <p class="text">  <span class="reportsUser"> &#x20B9; </span>4500</p>
+        </div>
+
+        <div class="itemUserInfo">
+          <div class="icon" style="background-color: #f48c06">
+            <i class="fas fa-bar-chart"></i>
+          </div>
+          <h3 class="title">LEDGER</h3>
+          <p class="text">  <span class="reportsUser">&#x20B9; </span>34000</p>
+          <a href="<?= ROOT ?>profile/ledger">View Ledger</a>
+        </div>
+
+      </div>
     </div>
 
     <div class="testimonials-box">
@@ -259,7 +290,7 @@
     </div>
 
     <div class="product-box mt-3">
-      <h2>MOST SELLING PRODUCTS AND THEIR CATEGORIES</h2>
+      <h2>MOST SELLING PRODUCTS </h2>
 
       <div class="product-minimal mt-5">
 
@@ -568,6 +599,62 @@
 
       </div>
     </div>
+    <div class="product-showcase">
+
+      <div class="containerRedeem">
+        <h1>Redeem Rewards</h1>
+        <div class="rowRedeem">
+          <div class="serviceRedeem">
+            <i class="fas fa-shirt"></i>
+            <h2>Shirts</h2>
+            <p>
+              Redeem this reward for :
+            </p>
+            <p class="redeemBtn">100:POINTS</p>
+          </div>
+          <div class="serviceRedeem">
+            <i class="fas fa-chart-line"></i>
+            <h2>Pants</h2>
+            <p>
+              Redeem this reward for :
+            </p>
+            <p class="redeemBtn">100:POINTS</p>
+          </div>
+          <div class="serviceRedeem">
+            <i class="fab fa-sketch"></i>
+            <h2>Leggings</h2>
+            <p>
+              Redeem this reward for :
+            </p>
+            <p class="redeemBtn">500:POINTS</p>
+          </div>
+          <div class="serviceRedeem">
+            <i class="fas fa-database"></i>
+            <h2>T-Shirts</h2>
+            <p>
+              Redeem this reward for :
+            </p>
+            <p class="redeemBtn">150:POINTS</p>
+          </div>
+          <div class="serviceRedeem">
+            <i class="fas fa-mobile-alt"></i>
+            <h2>Top</h2>
+            <p>
+              Redeem this reward for :
+            </p>
+            <p class="redeemBtn">100:POINTS</p>
+          </div>
+          <div class="serviceRedeem">
+            <i class="fas fa-file-invoice"></i>
+            <h2>One Piece</h2>
+            <p>
+              Redeem this reward for :
+            </p>
+            <p class="redeemBtn">100:POINTS</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="testimonials-box graphsis ">
       <div class="product-showcase">
@@ -590,9 +677,8 @@
 </div>
 <div id="myModal" class="modal">
   <span class="close">&times;</span>
-  <div class="modal-content">
+  <div class="modal-content" id="modalInvoiceData">
 
-    <p id="modalInvoiceData"></p>
   </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -630,7 +716,7 @@
           "content" => "<a href='' class='invoiceNo' data-invoice-no='" . $entry["orderId"] . "'>" . $particulars . "</a>" . "<p class='amountTimeline'> ORDER OF:	&#8377 " . (int)$entry["amountIs"] . "</p>",
 
         ];
-      } else {
+      } elseif($entry["transactionType"] == "pay"){
 
         $roadmapData[] = [
           "date" => $entry["dateIs"],
@@ -652,8 +738,30 @@
         $('.invoiceNo').click(function(e) {
           e.preventDefault()
           var invoiceData = $(this).data('invoice-no');
-          modal.css("display", "block");
-          $('#modalInvoiceData').text(invoiceData)
+          // console.log(invoiceData + 'invoice data');
+          // get the ajax data TODO
+          // Render the invoice TODO
+          $.ajax({
+            method: "POST",
+            url: "<?= ROOT ?>ajax_ledgerInvoice",
+            data: {
+              data_type: 'invoice',
+              invoiceData: invoiceData
+            },
+
+            success: function(response) {
+              
+             
+              response = JSON.parse(response);
+              const style = response.style;
+              $('head style').remove();
+               $('head').append(style);
+              modal.css("display", "block");
+              $('#modalInvoiceData').html(response.invoice)
+            }
+          });
+
+
 
         });
         // modal code
@@ -666,6 +774,7 @@
         // Hide the modal when the close button is clicked
         closeBtn.click(function() {
           modal.css("display", "none");
+          $('head style').remove();
         });
 
         // modal code ends here

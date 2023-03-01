@@ -9,16 +9,18 @@ class Ajax_syncData extends Controller{
     }
 
     if(is_object($data) && isset($data->data_type)){
-        $db = Database::getInstance();
+    //    its working
+        
         $product = $this->load_model('Product');
         if($data->data_type == 'sync'){ 
         //    here i will call the synService and start the synchronization process
         // TODO create a new product model instance pass it to the service
-         }
-         $syncData = $this->load_service('syncservice');
-         $status = $syncData->syncAll();
-         if($status){
-            echo'success';
+        $syncData = $this->load_service('syncservice');
+        $status = $syncData->syncAll($product);
+        if($status == 'success'){
+          $data['status'] = $status;
+        }
+       echo json_encode($data);
          }
         
     }

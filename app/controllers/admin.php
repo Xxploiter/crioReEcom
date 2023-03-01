@@ -73,6 +73,12 @@ class Admin extends Controller{
       $data['categoryListEle'] = $categoryListEle;
       // fetching catagories ending here
     $data['pageTitle'] = "Admin | Crio-Re";
+
+      // gonna call the syncService here 
+      // $syncService = $this->load_service('syncservice');
+      // $syncService->syncAll$product);
+
+
        $this->viewAdmin("products",$data);
 
     }

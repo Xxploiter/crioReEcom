@@ -3,6 +3,9 @@ require_once 'retailerservice.php';
 require_once 'InventoryService.php';
 require_once 'syncService.php';
 require_once 'SingleProductService.php';
+
+require_once 'paginationService.php';
+
 // please while writing the services take care of your spelling it is case sensitive
 class ServiceFactory
 {
@@ -22,6 +25,9 @@ class ServiceFactory
                 break;
             case 'singleproductservice':
                 return new SingleProductService();
+                break;
+            case 'paginationservice':
+                return new PaginationService();
                 break;
             default:
                 return false;

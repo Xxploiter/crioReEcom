@@ -313,7 +313,7 @@ class Product
     public function productsLastCrioId()
     {
         $db = Database::newInstance();
-        $result = $db->read("SELECT MAX(crioId) FROM products;");
+        $result = $db->read("SELECT MAX(crioId) FROM products");
         return $result;
     }
     public function brandsLastCrioId()
