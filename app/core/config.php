@@ -17,6 +17,7 @@ define('ADMIN_THEME', 'admin/');
 if(DEBUG){
     // ini setting is used to tell php how to run or configure php
     ini_set('display_errors', 1);
+    // error_reporting(E_ERROR | E_PARSE);
 }else{
     ini_set('display_errors', 0);
 }

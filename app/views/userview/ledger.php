@@ -1,3 +1,7 @@
+<?php 
+// show();
+// die;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,126 +14,7 @@
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
-<body>
-   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-   <div class="container">
-      <div class="col-md-12">
-         <div class="invoice">
-            <img class="ledgerheader" src="<?php echo ASSETS . THEME  ?>imagesLup.png" alt="" srcset="">
-            <!-- begin invoice-company -->
-            <!-- <div class="invoice-company text-inverse f-w-600">
-            <span class="pull-right hidden-print">
-            <a href="javascript:;" class="btn btn-sm btn-white m-b-10 p-l-5"><i class="fa fa-file t-plus-1 text-danger fa-fw fa-lg"></i> Export as PDF</a>
-            <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-white m-b-10 p-l-5"><i class="fa fa-print t-plus-1 fa-fw fa-lg"></i> Print</a>
-            </span>
-            Company Name, Inc
-         </div> -->
-            <!-- end invoice-company -->
-            <!-- begin invoice-header -->
-            <div class="invoice-header">
-               <div class="invoice-from">
-                  <small>from</small>
-                  <address class="m-t-5 m-b-5">
-                     <strong class="text-inverse">Twitter, Inc.</strong><br>
-                     Street Address<br>
-                     City, Zip Code<br>
-                     Phone: (123) 456-7890<br>
-                     Fax: (123) 456-7890
-                  </address>
-               </div>
-               <!-- <div class="invoice-to">
-               <small>to</small>
-               <address class="m-t-5 m-b-5">
-                  <strong class="text-inverse">Company Name</strong><br>
-                  Street Address<br>
-                  City, Zip Code<br>
-                  Phone: (123) 456-7890<br>
-                  Fax: (123) 456-7890
-               </address>
-            </div> -->
-
-            </div>
-            <!-- end invoice-header -->
-            <!-- begin invoice-content -->
-            <div class="invoice-content">
-               <div>
-                  <img class="bg-img" src="<?php echo ASSETS . THEME  ?>imagestransparentIcon.png" alt="" srcset="">
-               </div>
-               <!-- begin table-responsive -->
-               <div class="table-responsive">
-                  <table class="table table-invoice">
-                     <thead class="thead-dark">
-                        <tr>
-                           <th style="border-top-left-radius: 20px 20px;">DATE</th>
-                           <th class="text-center">PARTICULARS</th>
-                           <th class="text-center">CREDIT</th>
-                           <th class="text-right">DEBIT</th>
-                           <th class="text-right" style="border-top-right-radius: 20px 20px;">BALANCE</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr>
-                           <td>
-                              hh
-                           </td>
-                           <td class="text-center">$50.00</td>
-                           <td class="text-center">50</td>
-                           <td class="text-right">$2,500.00</td>
-                           <td class="text-right">$2,500.00</td>
-                        </tr>
-                        <tr>
-                           <td>
-                              ghh
-                           </td>
-                           <td class="text-center">$50.00</td>
-                           <td class="text-center">40</td>
-                           <td class="text-right">$2,000.00</td>
-                           <td class="text-right">$2,000.00</td>
-                        </tr>                      
-                        <tr>
-                           <td>
-                              ghh
-                           </td>
-                           <td class="text-center">$50.00</td>
-                           <td class="text-center">50</td>
-                           <td class="text-right">$2,500.00</td>
-                           <td class="text-right">$2,500.00</td>
-                        </tr>
-                        
-                     </tbody>
-                     <thead class="thead-dark">
-                        <tr>
-                           <th style="border-bottom-left-radius: 20px 20px;">FROM</th>
-                           <th class="text-center">TO</th>
-                           <th class="text-center">NO. BILLS</th>
-
-                           <th class="text-right" colspan="2" style="border-bottom-right-radius: 20px 20px;">CLOSING
-                              BALANCE: 21.30.2022</th>
-                        </tr>
-                     </thead>
-                  </table>
-               </div>
-               <!-- end table-responsive -->
-               <!-- begin invoice-price -->
-
-               <!-- end invoice-price -->
-            </div>
-            <!-- end invoice-content -->
-            <!-- begin invoice-note -->
-
-            <!-- end invoice-note -->
-            <!-- begin invoice-footer -->
-            <!-- <div class="invoice-footer">
-            
-         </div> -->
-            <!-- end invoice-footer -->
-            <img class="footerImg" src="<?php echo ASSETS . THEME  ?>imagesld3.png" alt="" srcset="">
-            <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-white m-b-10 p-l-5"><i class="fa fa-print t-plus-1 fa-fw fa-lg"></i> Print</a>
-         </div>
-      </div>
-   </div>
-
-   <style type="text/css">
+<style type="text/css">
       body {
          margin-top: 20px;
          background: #eee;
@@ -138,7 +23,7 @@
       .bg-img {
          position: absolute;
          width: 39rem;
-         margin-left: 215px;
+         margin-left: 145px;
          /* margin-bottom: 122px; */
          bottom: 13rem;
       }
@@ -165,11 +50,17 @@
       }
 
       .invoice-header {
-         margin: 0 -20px;
-         background: white;
-         padding: 20px
+         display: flex;
+    margin: 0 -20px;
+    background: white;
+    padding: 20px;
+    flex-direction: column;
+    POSITION: absolute;
+    margin-top: -15rem;
       }
-
+p{
+   margin-bottom: 1px;
+}
       .invoice-date,
       .invoice-from,
       .invoice-to {
@@ -182,7 +73,7 @@
          padding-right: 20px;
          font-size: 20px;
          width: 50%;
-         position: absolute;
+         /* position: absolute; */
          bottom: 57rem;
       }
 
@@ -264,9 +155,7 @@
       }
 
       .invoice>div:not(.invoice-footer) {
-         margin-bottom: 172px;
-
-
+         /* margin-bottom: 172px; */
       }
 
       .btn.btn-white,
@@ -285,7 +174,53 @@
          border: none;
          background-color: #015349;
       }
+      .invoice-content {
+    margin-top: 4rem;
+}
+.infoLedger{
+   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+   font-size: 20px;
+}
    </style>
+<body>
+   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+   <div class="container">
+      <div class="col-md-12">
+         <div class="invoice">
+            <img class="ledgerheader" src="<?php echo ASSETS . THEME  ?>images/Lup.png" alt="" srcset="">
+           
+            <div class="invoice-header">
+               <!-- <p class="infoLedger">LEDGER ACCOUNT:</p> -->
+               <P class="infoLedger">SHOP-NAME: <?php echo $retailerAuthData->name ?></P>
+
+               <P class="infoLedger">OWNER:<?php echo $retailerAuthData->owner ?></P>
+               <P class="infoLedger">GSTIN:<?php echo $retailerAuthData->gst ?></P>
+               <address class="m-t-2 m-b-2 infoLedger">
+               <P class="infoLedger">DIST:<?php echo $retailerAuthData->dist ?></P>
+               <P class="infoLedger">AREA:<?php echo $retailerAuthData->area ?></P>
+               <P class="infoLedger">PHONE:<?php echo $retailerAuthData->phone ?></P>
+               <?php echo $retailerAuthData->address ?>
+                  </address>
+
+            </div>
+            <!-- end invoice-header -->
+            <!-- begin invoice-content -->
+            <div class="invoice-content">
+               <div>
+                  <img class="bg-img" src="<?php echo ASSETS . THEME  ?>images/transparentIcon.png" alt="" srcset="">
+               </div>
+
+               <?php echo $htmlGeneratedLedger;
+                ?>
+            
+            </div>
+          
+            <img class="footerImg" src="<?php echo ASSETS . THEME  ?>images/ld3.png" alt="" srcset="">
+            <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-white m-b-10 p-l-5"><i class="fa fa-print t-plus-1 fa-fw fa-lg"></i> Print</a>
+         </div>
+      </div>
+   </div>
+
 
    <script type="text/javascript">
 

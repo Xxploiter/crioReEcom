@@ -1,7 +1,9 @@
 <?php 
+// IMPthis is the page only products will be shown no adds nothing and all the filers and everything will lead to here
 class AllProducts extends Controller{
 
-   public function index(){ 
+   public function index($params){ // the params here will probably be page number
+      is_numeric($params)? $pageNo = $params : $pageNo = 1;
       
       $retailer = $this->load_model('crioretailers');
       $imageProcessingClass = $this->load_model('Image');
@@ -15,34 +17,24 @@ class AllProducts extends Controller{
       }
 
       $db = Database::newInstance();
-      $productsMainSection = $db->read("SELECT * FROM products");
+
+      // loading in the service to handle pagination
+      $paginationServive = $this->load_service('paginationservice');
+      $paginationData = $paginationServive->getItemsPaginated($db,"SELECT * FROM products", $pageNo);
+      // $productsMainSection = $db->read("SELECT * FROM products");
+      $productsMainSection = $paginationData['items'];
+      $data['prevPage'] = ($paginationData['currentPage'] - 1)? $data['prevPage'] = $paginationData['currentPage'] - 1 : 'noPrevPage';
+      $data['nextPage'] = ($paginationData['currentPage'] + 1);
 
     $data['pageTitle'] = "All Products | Crio-Re";
     if ($productsMainSection) {
       foreach($productsMainSection as $singleProduct => $images){
-         $productsMainSection[$singleProduct]->image1 = $imageProcessingClass->get_thumb_post($productsMainSection[$singleProduct]->image1); //doing this for only the first image as one img is needed for showing in home page our first image is image1
+         if(isset( $productsMainSection[$singleProduct]->image1)){
+            $productsMainSection[$singleProduct]->image1 = $imageProcessingClass->get_thumb_post($productsMainSection[$singleProduct]->image1); //doing this for only the first image as one img is needed for showing in home page our first image is image1
+         }
       }
     }
-// TODO fetch the allproducts data from the API provided here 
-// $api_url = 'https://dummy.restapiexample.com/api/v1/employees'; // put the retaillers all data url here
 
-// // Read JSON file
-// $json_data = file_get_contents($api_url);
-
-// // Decode JSON data into PHP array
-// $response_data = json_decode($json_data);
-
-// // All user data exists in 'data' object
-// $user_data = $response_data->data;
-
-// // Cut long data into small & select only first 10 records
-// $user_data = array_slice($user_data, 0, 9);
-
-
-// // Print data if need to debug
-// print_r($user_data);
-// TODO fetch all the images from the API as well 
-// API data ends here
     $data['productsMainSection'] = $productsMainSection; //this has the images
        $this->view("allProducts",$data);
 

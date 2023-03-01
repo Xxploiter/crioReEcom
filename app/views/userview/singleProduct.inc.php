@@ -15,8 +15,8 @@
 
 <div class="showcase-banner">
 
-  <img src="<?php echo ROOT ?><?= $data->image1 ?>" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-  <img src="<?php echo ASSETS . THEME  ?>images/products/jacket-4.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+  <img src="<?php echo ROOT ?><?= $data->image1 ?>" alt="<?= $data->title ?>" width="300" class="product-img default">
+  <img src="<?php echo ROOT ?><?= $data->image2 ?>" alt="<?= $data->title ?>" width="300" class="product-img hover">
 
   <p class="showcase-badge">15%</p>
 
@@ -47,7 +47,7 @@
   <a href="#" class="showcase-category"><?= $data->category ?></a>
 
   <a href="<?php echo ROOT ?>productDetails/<?= $data->slag ?>">
-    <h3 class="showcase-title"><?= $data->name ?></h3>
+    <h3 class="showcase-title"><?= $data->name? $data->title : $data->title ?></h3>
   </a>
 
   <div class="showcase-rating">

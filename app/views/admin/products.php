@@ -20,6 +20,42 @@
     .input-group-text {
         font-size: 0.675rem;
     }
+   /* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+} 
 </style>
 <div class="content-body">
     <div class="container-fluid">
@@ -297,6 +333,21 @@
                                 </div>
                                 <div class="tab-pane fade show active" id="productSync">
                                     <div class="pt-4">
+                                        <!-- Success Modal -->
+                                        <div id="success-modal" class="modal">
+                                            <div class="modal-content">
+                                                <span class="close">&times;</span>
+                                                <p id="success-message"></p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Processing Modal -->
+                                        <div id="processing-modal" class="modal">
+                                            <div class="modal-content">
+                                                <p>Processing...</p>
+                                            </div>
+                                        </div>
+
                                         <h4>Sync Product</h4>
                                         <button id="startSyncProduct" class="btn light btn-warning">start sync</button>
                                     </div>
@@ -559,56 +610,93 @@
         if (name == 'image1') {
             const previewImg1 = document.querySelector('#image1editUrl')
             previewImg1.src = URL.createObjectURL(file);
-            
+
         } else if (name == 'image2') {
             const previewImg2 = document.querySelector('#image2editUrl')
             previewImg2.src = URL.createObjectURL(file);
-            
+
         } else if (name == 'image3') {
             const previewImg3 = document.querySelector('#image3editUrl')
             previewImg3.src = URL.createObjectURL(file);
-            
+
         } else if (name == 'image4') {
             const previewImg4 = document.querySelector('#image4editUrl')
             previewImg4.src = URL.createObjectURL(file);
-            
+
         }
     }
+
     function displayPreviewAddProduct(file, name) {
 
         if (name == 'image1') {
             const previewImg1 = document.querySelector('#image1AddUrl')
             previewImg1.src = URL.createObjectURL(file);
-            
+
         } else if (name == 'image2') {
             const previewImg2 = document.querySelector('#image2AddUrl')
             previewImg2.src = URL.createObjectURL(file);
-            
+
         } else if (name == 'image3') {
             const previewImg3 = document.querySelector('#image3AddUrl')
             previewImg3.src = URL.createObjectURL(file);
-            
+
         } else if (name == 'image4') {
             const previewImg4 = document.querySelector('#image4AddUrl')
             previewImg4.src = URL.createObjectURL(file);
-            
+
         }
     }
 </script>
 <script>
-const syncHandler = document.querySelector('#startSyncProduct')
-syncHandler.addEventListener('click', ()=>{
-    console.log('sync Handler working');
-    sendSyncRequest({
-            data_type: "sync",
-            sync: "product" 
-        })
-})
+  // Get the success modal and its message element
+  const successModal = document.getElementById("success-modal");
+  const successMessage = document.getElementById("success-message");
 
-function sendSyncRequest(data = {}) {
-    const ajax = new XMLHttpRequest()
+  // Get the processing modal
+  const processingModal = document.getElementById("processing-modal");
+
+  // Function to show the success modal with the given message
+  function showSuccessModal(message) {
+    // Set the success message
+    successMessage.textContent = message;
+
+    // Show the success modal
+    successModal.style.display = "block";
+
+    // Hide the success modal after 3 seconds
+    setTimeout(function() {
+      successModal.style.display = "none";
+    }, 4000);
+  }
+
+  // Function to show the processing modal
+  function showProcessingModal() {
+    // Show the processing modal
+    processingModal.style.display = "block";
+  }
+
+  // Function to hide the processing modal
+  function hideProcessingModal() {
+    // Hide the processing modal
+    processingModal.style.display = "none";
+  }
+
+
+    const syncHandler = document.querySelector('#startSyncProduct')
+    syncHandler.addEventListener('click', () => {
+        console.log('sync Handler working');
+        showProcessingModal();
+        sendSyncRequest({
+            data_type: "sync",
+            sync: "product"
+        })
+    })
+
+    function sendSyncRequest(data = {}) {
+        const ajax = new XMLHttpRequest()
         ajax.addEventListener('readystatechange', function() {
             if (ajax.readyState == 4 && ajax.status == 200) {
+                hideProcessingModal();
                 handleResult(ajax.responseText)
             }
         })
@@ -618,6 +706,10 @@ function sendSyncRequest(data = {}) {
 
     function handleSyncResult(result) {
         console.log(result);
+        const obj = JSON.parse(result)
+        if (obj.status == success) {
+            showSuccessModal(obj.status);
+        }
         // if (result != '') {
         //     const obj = JSON.parse(result)
         //     if (obj.data_type != 'undefined') {
@@ -645,5 +737,4 @@ function sendSyncRequest(data = {}) {
         //     }
         // }
     }
-
 </script>

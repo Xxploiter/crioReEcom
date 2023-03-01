@@ -1,5 +1,4 @@
 <?php
-include_once './mapper/mapperFactory.php';
 class Product
 {
     //TODO For below function to work we need magick library in the server and enabled in php.ini
@@ -280,7 +279,7 @@ class Product
     }
     public function productsLastCrioId(){
         $db = Database::newInstance();
-        $result = $db->read("SELECT MAX(crioId) FROM products;");
+        $result = $db->read("SELECT MAX(crioId) FROM products");
         return $result;
     }
     public function brandsLastCrioId(){
