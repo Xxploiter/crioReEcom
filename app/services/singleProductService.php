@@ -63,7 +63,7 @@ class SingleProductService
 
     public function getUniqueColorAndSize($itemId, $colorId = null)
     {
-
+       
         $uniqueColors = $this->getAvailableColorsFromInventoryByItemId($itemId);
         $uniqueSizes = $this->getAvailableSizesFromInventoryByItemId($itemId);
 
