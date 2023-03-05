@@ -1,11 +1,5 @@
 <?php $this->view("header", $data); ?>
 
-<!-- Devlopment by Souvik starts -->
-<!-- <script>
-  const colors = <?php echo json_encode($data['availableColors']); ?>;
-
-  const sizes = <?php echo json_encode($data['availableSizes']); ?>;
-</script> -->
 <style>
   .colorPallete {
     display: flex;
@@ -95,6 +89,7 @@
       scroll-snap-type: none;
     }
 
+
     .product-featured .showcase-container {
       min-width: 100%;
       padding: 30px;
@@ -102,9 +97,18 @@
       border-radius: var(--border-radius-md);
       scroll-snap-align: start;
     }
+
+    .product-featured .showcase-container .allOrders {}
   }
 
   @media screen and (max-width:420px) {
+    select.form-control {
+      width: 78px !important;
+      font-size: 10px !important;
+      border: 2px solid var(--salmon-pink) !important;
+      height: 33px !important;
+      border-radius: 8px !important;
+    }
 
     .product-featured .showcase-wrapper {
       display: flex;
@@ -123,6 +127,23 @@
       scroll-snap-align: start;
     }
 
+    .showcase-container.allOrders {
+      min-width: 181%;
+      padding: 30px;
+      border: none;
+      border-radius: var(--border-radius-md);
+      scroll-snap-align: start;
+    }
+
+
+
+    .button-container .form-control {
+      max-width: 38px;
+      text-align: center;
+      display: inline-block;
+      margin: 0px 5px;
+    }
+
     .cart-qty-plus,
     .cart-qty-minus {
       width: 22px;
@@ -139,9 +160,51 @@
       width: 44px;
       font-size: 14px;
     }
+
+    .showcaseVariation .add-cart-btn {
+      background: var(--salmon-pink);
+      padding: 7px 15px;
+      color: var(--white);
+      font-weight: var(--fs-9);
+      font-weight: bolder;
+      text-transform: uppercase;
+      border-radius: var(--border-radius-md);
+      margin-bottom: 32px;
+      transition: var(--transition-timing);
+      width: 70px;
+      font-size: 5px;
+    }
   }
 </style>
 
+<style>
+  .add-cart-btn {
+    background: var(--salmon-pink);
+    padding: 8px 15px;
+    color: var(--white);
+    font-weight: var(--fs-9);
+    font-weight: var(--weight-700);
+    text-transform: uppercase;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 15px;
+    transition: var(--transition-timing);
+  }
+
+  select.form-control {
+    width: 129px;
+    font-size: medium;
+    border: 2px solid var(--salmon-pink);
+    height: 33px;
+    border-radius: 8px;
+  }
+
+  .showcaseVariation {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 20px;
+  }
+</style>
 
 <style>
   .swiper-android .swiper-slide,
@@ -156,9 +219,44 @@
     /* Prevents buttons from wrapping to the next line */
   }
 </style>
-<!-- below is the style for price dropdown -->
+<!-- below is the style available and sold styles to dynamically change -->
 <style>
+  <?php
+  function convertToPercent($num)
+  {
+    if ($num <= 0) {
+      return '0%';
+    } elseif ($num >= 100) {
+      return rand(60, 80) . '%';
+    } else {
+      return $num . '%';
+    }
+  }
+  // echo $percentage . "%"; // Output the percentage
+  if (is_string($availableQuantityOfItem)) {
+    $availabilityStyle = '100%';
+  } else {
+    $availabilityStyle = convertToPercent($availableQuantityOfItem);
+  }
 
+  ?>.product-featured .showcase-status-bar::before {
+    position: absolute;
+    content: '';
+    top: 3px;
+    left: 3px;
+    height: 4px;
+    width: <?= $availabilityStyle ?>;
+    background: var(--salmon-pink);
+    border-radius: 4px;
+  }
+
+  .allVariants {
+    color: var(--salmon-pink);
+    font-size: var(--fs-6);
+    font-weight: var(--weight-600);
+    text-transform: uppercase;
+    margin-bottom: 15px;
+  }
 </style>
 
 <!--
@@ -183,10 +281,10 @@
                 <div class="showcase-banner">
                   <div class="swiper mynewSwiper">
                     <div class="swiper-wrapper">
-                      <img src="<?= ROOT .   $singleProductDetails->image1 ?>" alt="shampoo, conditioner & facewash packs" class="showcase-img swiper-slide">
-                      <img src="<?php echo ASSETS . THEME  ?>images/products/shampoo.jpg" alt="shampoo, conditioner & facewash packs" class="showcase-img swiper-slide">
-                      <img src="<?php echo ASSETS . THEME  ?>images/products/shampoo.jpg" alt="shampoo, conditioner & facewash packs" class="showcase-img swiper-slide">
-
+                      <img src="<?= empty($singleProductDetails->image1) ? ROOT . "/uploads/not_available.jpg" : ROOT . $singleProductDetails->image1 ?>" alt="<?= $singleProductDetails->description ?>" class="showcase-img swiper-slide">
+                      <img src="<?= empty($singleProductDetails->image2) ? ROOT . "/uploads/not_available.jpg" : ROOT . $singleProductDetails->image2 ?>" alt="<?= $singleProductDetails->description ?>" class="showcase-img swiper-slide">
+                      <img src="<?= empty($singleProductDetails->image3) ? ROOT . "/uploads/not_available.jpg" : ROOT . $singleProductDetails->image3 ?>" alt="<?= $singleProductDetails->description ?>" class="showcase-img swiper-slide">
+                      <img src="<?= empty($singleProductDetails->image4) ? ROOT . "/uploads/not_available.jpg" : ROOT . $singleProductDetails->image4 ?>" alt="<?= $singleProductDetails->description ?>" class="showcase-img swiper-slide">
                     </div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
@@ -218,39 +316,67 @@
 
                     <del>$200.00</del>
                   </div>
-                  <!-- Devlopment by Souvik starts -->
                   <div id="renderedColors">
                     <div class="colorPallete">
-                      Colors: <?php foreach ($availableColors as $color) {
-                                echo '<button class="' . $color['colorName'] . ' color"  colorValue="' . $color['colorId'] . '" style="margin-left:5px ; margin-top:5px ; border-radius: 10px ; background-color: ' . $color['hexCode'] . ';"> <button/>';
+                      Colors: <?php if (isset($availableColors)) {
+                                foreach ($availableColors as $color) {
+                                  echo '<button class="' . $color['colorName'] . ' color"  colorValue="' . $color['colorId'] . '" style="margin-left:5px ; margin-top:5px ; border-radius: 10px ; background-color: ' . $color['hexCode'] . ';"> </button>';
+                                }
+                              } else {
+                                echo '<a href="#orderTable"><button class="allVariants">Select color Variants</button></a>';
                               } ?>
                     </div>
                   </div>
                   <div id=" renderedSizes">
                     <div class="sizePallete">
-                      Sizes: <?php foreach ($availableSizes as $size) {
-                                echo '<button class="' . $size['sizeName'] . ' size"> ' . $size['sizeName'] . '<button/>';
+                      Sizes: <?php if (isset($availableSizes)) {
+                                foreach ($availableSizes as $size) {
+                                  echo '<button class="' . $size['sizeName'] . ' size"> ' . $size['sizeName'] . '</button>';
+                                }
+                              } else {
+                                echo '<a href="#orderTable"><button class="allVariants">Select size Variants</button></a>';
                               } ?>
                     </div>
                   </div>
-
-
-                  <!-- Devlopment by Souvik ends -->
-                  <button class=" add-cart-btn">add to cart</button>
-
-                  <div class="showcase-status">
+                  <a href="#orderTable"><button class=" add-cart-btn">Select Variants</button></a>
+                  <?php
+                  if (is_string($availableQuantityOfItem)) {
+                    $availableQuantityOfItem = 'Late delivery';
+                    echo '
+                        <div class="showcase-status">
                     <div class="wrapper">
                       <p>
-                        already sold: <b>20</b>
+                        already bought by more than: <b>20</b> retailer
                       </p>
 
                       <p>
-                        available: <b>40</b>
+                        Availability: <b>' . $availableQuantityOfItem . '</b>
                       </p>
                     </div>
 
                     <div class="showcase-status-bar"></div>
                   </div>
+                        ';
+                  } else {
+                    echo '
+                    <div class="showcase-status">
+                    <div class="wrapper">
+                      <p>
+                        already bought by more than: <b>20</b> retailer
+                      </p>
+
+                      <p>
+                        available: <b>' . $availableQuantityOfItem . '</b>
+                      </p>
+                    </div>
+
+                    <div class="showcase-status-bar"></div>
+                  </div>
+                    ';
+                  }
+
+                  ?>
+
 
                   <div class="countdown-box">
 
@@ -262,24 +388,24 @@
 
                       <div class="countdown-content">
 
-                        <p class="display-number">360</p>
+                        <p id="countDownDays" class="display-number">360</p>
 
                         <p class="display-text">Days</p>
 
                       </div>
 
                       <div class="countdown-content">
-                        <p class="display-number">24</p>
+                        <p id="countDownHour" class="display-number">24</p>
                         <p class="display-text">Hours</p>
                       </div>
 
                       <div class="countdown-content">
-                        <p class="display-number">59</p>
+                        <p id="countDownMin" class="display-number">59</p>
                         <p class="display-text">Min</p>
                       </div>
 
                       <div class="countdown-content">
-                        <p class="display-number">00</p>
+                        <p id="countDownSec" class="display-number">00</p>
                         <p class="display-text">Sec</p>
                       </div>
 
@@ -310,55 +436,75 @@
         <h2 class="title">Shopping Cart</h2>
     </div> -->
       <div class="showcase-wrapper">
-        <div class="showcase-container">
-          <div class="showcase">
-            <table id="myTable" class="table">
+        <div class="showcase-container allOrders">
+          <div class="showcaseVariation">
+            <table id="orderTable" class="table">
               <thead>
                 <tr>
                   <th>COLOR</th>
                   <th>SIZE</th>
                   <th>QTY</th>
-                  <th>PRICE</th>
-                  <th class="text-right"><span id="amount" class="amount">AMOUNT</span> </th>
                   <th>REMOVE</th>
                 </tr>
               </thead>
               <tbody>
                 <tr class="itemRow">
+
                   <td class="colorCell">
-                  <?php foreach ($availableColors as $color) {
-                                echo '<button class="' . $color['colorName'] . ' color"  colorValue="' . $color['colorId'] . '" style="margin-left:5px ; margin-top:5px ; border-radius: 10px ; background-color: ' . $color['hexCode'] . ';"> <button/>';
-                              } ?>
+                    <select name="" class="colorSelect form-control">
+                      <option selected value="">select color</option>
+                      <?php if ($availableColors) {
+                        foreach ($availableColors as $color) {
+                          echo '<option class="' . $color['colorName'] . ' colorSelectOption"  value="' . $color['colorId'] . '" style=" background-color: ' . $color['hexCode'] . ';"> ' . $color['colorName'] . ' </option>';
+                        }
+                      } else {
+                        foreach ($availableColorsDb as $color) {
+                          echo '<option class="' . $color->name . ' colorSelectOption"  value="' . $color->crioId . '" style=" background-color: ' . $color->hex . ';"> ' . $color->name . ' </option>';
+                        }
+                      }
+                      ?>
+                    </select>
+
                   </td>
                   <td class="sizeCell">
-                    <p></p>
+                    <select name="" class="sizeSelect form-control">
+                      <option selected value="">select size</option>
+                      <?php
+                      if ($availableSizes) {
+                        foreach ($availableSizes as $size) {
+                          echo '<option class="' . $size['sizeName'] . ' sizeSelectOption"  value="' . $size['sizeId'] . '" style=" "> ' . $size['sizeName'] . ' </option>';
+                        }
+                      } else {
+                        foreach ($availableSizesDb as $size) {
+                          echo '<option class="' . $size->size . ' sizeSelectOption"  value="' . $size->crioId . '" style=" "> ' . $size->size . ' </option>';
+                        }
+                      }
+                      ?>
+
+                    </select>
 
                   </td>
-                  <td>
-                    <input type="hidden" class="productId" style="display: none;" name="productIdValue" value="" />
+                  <td class="qtyCell">
                     <div class="button-container">
-                      <button class="cart-qty-plus" type="button" value="+">+</button>
-                      <input id="qtyValIs" type="text" name="qty" min="0" class="qty form-control" value="" />
-                      <button class="cart-qty-minus" type="button" value="-">-</button>
+                      <button class="cart-qty-plus" id="1" qtyVal='1' type="button" value="+">+</button>
+                      <input type="text" name="qty" min="0" id="qty_1" class="qty form-control" value="" />
+                      <button class="cart-qty-minus" id="1" qtyVal='1' type="button" value="-">-</button>
                     </div>
                   </td>
-                  <td class="priceCell">
-                    <input type="text" value="" class="price form-control" disabled>
-                  </td>
-                  <td>$ <span id="amount" class="amount">0</span></td>
-                  <td style="cursor: pointer; color:red" class="removeItem" onclick="">
-                    <a href="">X</a>
+                  <td style="cursor: pointer; color:red" class="removeItem">
+                    <a href="javascript:void(0)">X</a>
                   </td>
                 </tr>
-
               </tbody>
               <tfoot>
-                <tr>
+                <!-- <tr>
                   <td colspan="4"></td>
                   <td><strong>TOTAL = $ <span id="total" class="total">0</span></strong></td>
-                </tr>
+                </tr> -->
               </tfoot>
             </table>
+            <Button id="sendToCart" class="add-cart-btn">Add to cart</Button>
+            <Button class="add-cart-btn">Order now</Button>
           </div>
         </div>
       </div>
@@ -471,7 +617,7 @@
   -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-<script src="<?php echo ASSETS . THEME  ?>js/script.js"></script>
+<!-- <script src="<?php echo ASSETS . THEME  ?>js/script.js"></script> -->
 <script>
   var swiper = new Swiper(".mynewSwiper", {
     navigation: {
@@ -481,63 +627,168 @@
   });
 </script>
 <script>
-  function handleResponse(event, response) {
-    const renderElements = JSON.parse(response);
-    const [size, color, quantity] = renderElements;
+  function getQtyFromColorSize() {
+    var selectedColorValue = $(this).closest('.itemRow').find('.colorSelect').val();
+    var selectedSizeValue = $(this).closest('.itemRow').find('.sizeSelect').val();
 
+    if (selectedColorValue != '' && selectedSizeValue != '') {
+      $.ajax({
+        method: 'POST',
+        url: '<?= ROOT ?>ajax_productDetails',
+        data: {
+          data_type: 'getQtyFromColorSize',
+          color: selectedColorValue,
+          size: selectedSizeValue
+        },
+        success: function(response) {
+
+
+          addRow()
+          console.log(response);
+        }
+      });
+    }
+  }
+
+
+
+  function addRow() {
+    var newRow = $('.itemRow:last').clone();
+    console.log(newRow);
+
+    var newQtyId = 'qty_' + Date.now(); // generate a unique ID
+    newRow.find('.qty').attr('id', newQtyId);
+    newRow.find('.cart-qty-plus').attr('id', newQtyId);
+    newRow.find('.cart-qty-minus').attr('id', newQtyId);
+
+    newRow.find('.colorSelect, .sizeSelect').val('');
+    newRow.find('.qty').val(0);
+    $('#orderTable tbody').append(newRow);
+    addEventListeners();
+  }
+
+  function removeRow() {
+    // cloning the last row and keeping the reference
+    var newRow = $('.itemRow:last').clone();
+    newRow.find('.colorSelect, .sizeSelect').val('');
+    newRow.find('.qty').val(0);
+
+    // before removing i have to check wether this is the last row or not and keep a copy everytime an item is removed
+    // if it is the last item then append the above cloned row else equating the clone to null to destroy 
+    $(this).closest('.itemRow').remove();
+    if ($('#orderTable tbody tr').length == 0) {
+      $('#orderTable tbody').append(newRow);
+      addEventListeners();
+    } else {
+      addEventListeners();
+    }
+  }
+
+  function addEventListeners() {
+    // removing all listeners from rows
+    //IMP removing eventlistners and adding them again so one reference doesnt get copied to all the rows
+    $('#orderTable tbody tr').off('change', '.colorSelect, .sizeSelect');
+    $('#orderTable tbody tr').off('click', '.removeItem');
+    $('.cart-qty-plus').off('click', incrementQty);
+    $('.cart-qty-minus').off('click', decrementQty);
+    // Add event listener to last row
+    $('#orderTable tbody tr:last').on('change', '.colorSelect, .sizeSelect', getQtyFromColorSize);
+    $('.removeItem').on('click', removeRow);
+    $('.cart-qty-plus').on('click', incrementQty);
+    $('.cart-qty-minus').on('click', decrementQty);
 
   }
 
-  function asyncApiCall({
-    itemId,
-    size = "",
-    color = ""
-  } = {}) {
-    const data = {
-      itemId: itemId,
-      ...(size && {
-        size: size
-      }),
-      ...(color && {
-        color: color
-      })
-    };
-    $.ajax({
-      method: "POST",
-      url: "<?php ROOT ?>ajax_productDetails",
-      data: data,
-      success: function(response) {
-        handleResponse(event, response)
-        // put the response into the respective element
+  $(document).ready(function() {
+    addEventListeners(); //adding all the eventlistners when the page loads
+  });
 
+
+  $('#sendToCart').click(function() {
+    var items = [];
+
+    $('.itemRow').each(function() {
+      var color = $(this).find('.colorCell select').val();
+      var colorName = $(this).find('.colorCell select').find('option:selected').text()
+      var size = $(this).find('.sizeCell select').val();
+      var sizeName = $(this).find('.sizeCell select').find('option:selected').text()
+      var qty = $(this).find('.qtyCell input').val()
+
+      if (qty != 0) {
+        // add item to items array only if all values are present
+        (color && size && qty) ? items.push({
+          colorId: color,
+          colorName: colorName,
+          sizeName: sizeName,
+          sizeId: size,
+          quantity: qty
+        }): null
       }
-    })
+
+    });
+    console.log(items);
+    // send items to server using AJAX
+  });
+
+  function incrementQty() {
+    var $n = $(this)
+      .parent(".button-container")
+      .find(".qty");
+    $n.val(Number($n.val()) + 1); //incrementing the qty
+    // ajax can be used here
+  }
+
+  function decrementQty() {
+    var $n = $(this)
+      .parent(".button-container")
+      .find(".qty");
+    var QtyVal = Number($n.val());
+    if (QtyVal > 0) {
+      $n.val(QtyVal - 1);
+    }
   }
 
 
-  const colorClass = document.querySelectorAll(".color");
 
-  colorClass.forEach(function(singleColor) {
-    singleColor.addEventListener("click", function(e) {
-      const clickedBtnClassName = e.target.className;
-      const colorId = this.getAttribute("colorValue")
+  // below i am writing code for the countdowwn
+  function startCountdown() {
+    // below i am Setting the target date to 360 days from now
+    var targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + 360);
 
+    // Updating the countdown timer every second
+    var countdownInterval = setInterval(function() {
+      // Get the current date and time
+      var now = new Date();
 
-      console.log(colorId)
-      console.log(clickedBtnClassName)
+      // Calculating the remaining time in milliseconds
+      var remainingTime = targetDate - now;
 
-      // add an gray overlay to the selected color
+      // Calculate the remaining days, hours, minutes, and seconds
+      var days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
-      e.target.style.border = "3px solid gray";
-      e.target.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 0, 0, 0.2)";
+      // Update the countdown timer display
+      document.getElementById("countDownDays").innerHTML = days;
+      document.getElementById("countDownHour").innerHTML = hours;
+      document.getElementById("countDownMin").innerHTML = minutes;
+      document.getElementById("countDownSec").innerHTML = seconds;
 
-      // invoke the ajax function here
-      // ajax function should get all the sizes of the sent color
-      // dynamically render/changee the sizes 
-      // add the result data to the div with id renderedSizes
-    })
+      // Stop the countdown timer when the target date is reached
+      if (remainingTime < 0) {
+        clearInterval(countdownInterval);
+        document.getElementById("countDownDays").innerHTML = "0";
+        document.getElementById("countDownHour").innerHTML = "0";
+        document.getElementById("countDownMin").innerHTML = "0";
+        document.getElementById("countDownSec").innerHTML = "0";
+      }
+    }, 1000);
+  }
 
-  })
+  // Start the countdown timer
+  startCountdown();
 </script>
 <?php $this->view("footer", $data); ?>
 

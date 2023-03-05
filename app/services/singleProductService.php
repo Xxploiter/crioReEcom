@@ -53,12 +53,17 @@ class SingleProductService
 
         $response = file_get_contents($url);
         $decodedResponce = json_decode($response, true);
-
-        for ($i = 0; $i < sizeof($decodedResponce); $i++) {
-            $quantity = $quantity + $decodedResponce[$i]['quantityIs'];
+       
+        if($decodedResponce){
+            for ($i = 0; $i < sizeof($decodedResponce); $i++) {
+                $quantity = $quantity + $decodedResponce[$i]['quantityIs'];
+            }
+            return $quantity;
+        }else{
+            return 'notAvailable';
         }
 
-        return $quantity;
+        
     }
 
     public function getUniqueColorAndSize($itemId, $colorId = null)
@@ -82,6 +87,15 @@ class SingleProductService
         show('i am in ' . $itemId);
         die;
     }
+
+      // getting all the colors and sizes 
+      public function getAllColorsSizesFromDb(){
+        $db = Database::newInstance();
+        $colors = $db->read("SELECT * FROM colors;");
+        $sizes = $db->read("SELECT * FROM sizes;");
+        return array($colors, $sizes);
+    }
+
 }
 
 ?>

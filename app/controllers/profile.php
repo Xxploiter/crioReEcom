@@ -21,15 +21,11 @@ class Profile extends Controller
          throw new Exception("RetailerService class file not found");
       }
 
-
       $mostSellingProduct = $retailerService->getMostSellingProduct($retailerCrioIdis);
 
       $data['mostSellingProduct'] = $mostSellingProduct;
 
-     
-
-
-       $htmlGeneratedLedger = $retailerService->createLedger($retailerCrioIdis); //provide retailer id 
+      $htmlGeneratedLedger = $retailerService->createLedger($retailerCrioIdis); //provide retailer id 
       // show($retailerCrioIdis);
       // die;
       $timeLineData = $retailerService->returnJsonLedgerData($retailerCrioIdis);

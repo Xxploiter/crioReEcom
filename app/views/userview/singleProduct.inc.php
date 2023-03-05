@@ -50,6 +50,9 @@
   <a href="<?php echo ROOT ?>productDetails/<?= $data->id ?>">
     <h3 class="showcase-title"><?= $data->name ?></h3>
   </a>
+  <a href="<?php echo ROOT ?>productDetails/<?= $data->id ?>">
+    <h3 class="showcase-title"><?= $data->title ?></h3>
+  </a>
 
   <div class="showcase-rating">
     <ion-icon name="star"></ion-icon>

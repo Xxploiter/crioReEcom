@@ -322,4 +322,5 @@ class Product
         $result = $db->read("SELECT MAX(crioId) FROM brands;");
         return $result;
     }
+  
 }
