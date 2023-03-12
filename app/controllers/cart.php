@@ -33,6 +33,9 @@ class Cart extends Controller{
          }     
         }
    }
+   $singleProductDetailsService = $this->load_service('singleproductservice');
+   $allProductsAndPrice = $singleProductDetailsService->getPriceForProducts($_SESSION['CART'] ?? 0);
+   // IMP here i have to provide the data which contains the variants of a specific product
     $data['cartAllProductDetails'] = $cartAllProductDetails;
        $this->view("cart",$data);
 

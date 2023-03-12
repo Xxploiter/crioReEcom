@@ -270,6 +270,8 @@
       <div class="product-featured ">
 
         <h2 class="title">Deal of the day</h2>
+        <p style="display:none" id="productId"><?= $singleProductDetails->id ?></p>
+        <p style="display:none" id="productCrioId"><?= $singleProductDetails->crioId ?></p>
         <?php if ($singleProductDetails) : ?>
           <!-- below had class has-scollbar -->
           <div class="showcase-wrapper">
@@ -293,28 +295,29 @@
                 </div>
 
                 <div class="showcase-content">
-
+                  <h2><?= $brandName[0]->name ?? '' ?></h2>
                   <div class="showcase-rating">
                     <ion-icon name="star"></ion-icon>
                     <ion-icon name="star"></ion-icon>
                     <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
                     <ion-icon name="star-outline"></ion-icon>
                   </div>
 
                   <a href="#">
-                    <h3 class="showcase-title"><?= $singleProductDetails->name ?></h3>
+                    <h3 class="showcase-title"><?= empty($singleProductDetails->name) ? $singleProductDetails->title : $singleProductDetails->name ?> (<?= $singleProductDetails->itemtype ?>) </h3>
                   </a>
 
                   <p class="showcase-desc">
-                    Lorem ipsum dolor sit amet consectetur Lorem ipsum
-                    dolor dolor sit amet consectetur Lorem ipsum dolor
+                  <h3 class="footer-category-title">HSN : <span> <?= $singleProductDetails->hsn ?></span> </h3>
+                  <?= $singleProductDetails->description ?>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum quibusdam nisi quam, culpa eligendi magni dicta, obcaecati voluptatum a id quod nemo?
                   </p>
 
                   <div class="price-box">
-                    <p class="price">$<?= $singleProductDetails->price ?></p>
+                    <p class="price">&#x20B9;<?= empty($singleProductDetails->price) ? $singleProductDetails->defaultPrice : $singleProductDetails->price ?></p>
 
-                    <del>$200.00</del>
+                    <del>&#x20B9;500.00</del>
                   </div>
                   <div id="renderedColors">
                     <div class="colorPallete">
@@ -448,6 +451,61 @@
                 </tr>
               </thead>
               <tbody>
+                <?php
+               
+                if(isset($_SESSION['CART'])){
+                $idsInCart = array_column($_SESSION['CART'], "id");       
+                if (in_array($singleProductDetails->id, $idsInCart)) {
+                  $productsKey = array_search($singleProductDetails->id, $idsInCart);
+                  foreach ($_SESSION['CART'][$productsKey]['variants'] as $itemRow) {
+                    // show($itemRow['quantity']);
+                    echo '
+                      <tr class="itemRow">
+                  
+                  <td class="colorCell">
+                    <select name="" class="colorSelect form-control">
+                      <option selected value="'.$itemRow['colorId'].'">'.$itemRow['colorName'].'</option>';
+                    if ($availableColors) {
+                      foreach ($availableColors as $color) {
+                        echo '<option class="' . $color['colorName'] . ' colorSelectOption"  value="' . $color['colorId'] . '" style=" background-color: ' . $color['hexCode'] . ';"> ' . $color['colorName'] . ' </option>';
+                      }
+                    } 
+                    echo '
+                    </select>
+
+                  </td>
+                  <td class="sizeCell">
+                    <select name="" class="sizeSelect form-control">
+                      <option selected value="'.$itemRow['sizeId'].'">'.$itemRow['sizeName'].'</option>';
+
+                    if ($availableSizes) {
+                      foreach ($availableSizes as $size) {
+                        echo '<option class="' . $size['sizeName'] . ' sizeSelectOption"  value="' . $size['sizeId'] . '" style=" "> ' . $size['sizeName'] . ' </option>';
+                      }
+                    } 
+
+                    echo '
+                    </select>
+
+                  </td>
+                  <td class="qtyCell">
+                    <div class="button-container">
+                      <button class="cart-qty-plus" id="1" qtyVal="1" type="button" value="+">+</button>
+                      <input type="text" name="qty" min="0" id="qty_1" class="qty form-control" value="'.$itemRow['quantity'].'" />
+                      <button class="cart-qty-minus" id="1" qtyVal="1" type="button" value="-">-</button>
+                    </div>
+                  </td>
+                  <td style="cursor: pointer; color:red" class="removeItem">
+                    <a href="javascript:void(0)">X</a>
+                  </td>
+                </tr>
+                      ';
+                  }
+                }
+
+              }
+                ?>
+
                 <tr class="itemRow">
 
                   <td class="colorCell">
@@ -641,8 +699,6 @@
           size: selectedSizeValue
         },
         success: function(response) {
-
-
           addRow()
           console.log(response);
         }
@@ -682,6 +738,29 @@
     } else {
       addEventListeners();
     }
+    var itemsMap = {};
+    itemsMap = getItems('.itemRow')
+    // convert items map to array
+    var items = Object.values(itemsMap);
+
+    console.log(items);
+    itemId = $('#productId').text()
+    itemCrioId = $('#productCrioId').text()
+    console.log(itemId, itemCrioId);
+    $.ajax({
+      method: 'POST',
+      url: '<?= ROOT ?>ajax_addToCart',
+      data: {
+        data_type: 'addToCart',
+        variants: items,
+        itemId: itemId,
+        itemCrioId: itemCrioId,
+      },
+      success: function(response) {
+        // addRow()
+        console.log(response);
+      }
+    });
   }
 
   function addEventListeners() {
@@ -689,6 +768,7 @@
     //IMP removing eventlistners and adding them again so one reference doesnt get copied to all the rows
     $('#orderTable tbody tr').off('change', '.colorSelect, .sizeSelect');
     $('#orderTable tbody tr').off('click', '.removeItem');
+    $('.removeItem').off('click', removeRow);
     $('.cart-qty-plus').off('click', incrementQty);
     $('.cart-qty-minus').off('click', decrementQty);
     // Add event listener to last row
@@ -704,10 +784,10 @@
   });
 
 
-  $('#sendToCart').click(function() {
-    var items = [];
+  function getItems(selector) {
+    var itemsMap = {};
 
-    $('.itemRow').each(function() {
+    $(selector).each(function() {
       var color = $(this).find('.colorCell select').val();
       var colorName = $(this).find('.colorCell select').find('option:selected').text()
       var size = $(this).find('.sizeCell select').val();
@@ -715,18 +795,55 @@
       var qty = $(this).find('.qtyCell input').val()
 
       if (qty != 0) {
-        // add item to items array only if all values are present
-        (color && size && qty) ? items.push({
-          colorId: color,
-          colorName: colorName,
-          sizeName: sizeName,
-          sizeId: size,
-          quantity: qty
-        }): null
-      }
+        // create item key based on colorId and sizeId
+        var key = color + '-' + size; //so that duplicate color and size can be handled
 
+        if (itemsMap[key]) {
+          // update quantity of existing item
+          itemsMap[key].quantity += parseInt(qty);
+        } else {
+          // add new item to items map
+          itemsMap[key] = {
+            colorId: color,
+            colorName: colorName,
+            sizeName: sizeName,
+            sizeId: size,
+            quantity: parseInt(qty)
+          };
+        }
+      }
     });
+
+    return itemsMap;
+  }
+
+
+
+  $('#sendToCart').click(function() {
+    var items = [];
+    var itemsMap = {};
+    itemsMap = getItems('.itemRow')
+    // convert items map to array
+    var items = Object.values(itemsMap);
+
     console.log(items);
+    itemId = $('#productId').text()
+    itemCrioId = $('#productCrioId').text()
+    console.log(itemId, itemCrioId);
+    $.ajax({
+      method: 'POST',
+      url: '<?= ROOT ?>ajax_addToCart',
+      data: {
+        data_type: 'addToCart',
+        variants: items,
+        itemId: itemId,
+        itemCrioId: itemCrioId,
+      },
+      success: function(response) {
+        // addRow()
+        console.log(response);
+      }
+    });
     // send items to server using AJAX
   });
 

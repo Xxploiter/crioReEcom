@@ -115,12 +115,6 @@
 
 <div class="main margin2">
   <div class="container">
-    <!-- <h2>DASHBOARD</h2>
-    <div class="testimonials-box mt-5">
-      <div class="row">
-      </div>
-
-    </div> -->
     <div class="product-showcase">
       <h2 class="title mt-5">DASHBOARD</h2>
       <div class="sectionInfo">
@@ -138,6 +132,7 @@
           </div>
           <h3 class="title">DUE</h3>
           <p class="text">  <span class="reportsUser"> &#x20B9; </span>4500</p>
+          <a href="<?= ROOT ?>profile/orders"> RECREATION ORDERS</a>
         </div>
 
         <div class="itemUserInfo">
@@ -146,7 +141,7 @@
           </div>
           <h3 class="title">LEDGER</h3>
           <p class="text">  <span class="reportsUser">&#x20B9; </span>34000</p>
-          <a href="<?= ROOT ?>profile/ledger">View Ledger</a>
+          <a href="<?= ROOT ?>profile/ledger">VIEW LEDGER</a>
         </div>
 
       </div>

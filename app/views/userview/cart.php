@@ -1,4 +1,8 @@
 <?php $this->view("header", $data); ?>
+<?php
+// show($_SESSION);
+// die;
+?>
 <!-- before showing the header i have to be careful as include wont work as i am still in the home class so i can utilize the view function to show  -->
 <style>
     .button-container {
@@ -114,6 +118,136 @@
         }
     }
 </style>
+<style>
+    .product-name {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+</style>
+<style>
+    .notification-success {
+        position: fixed;
+        bottom: 80px;
+        left: 20px;
+        right: 20px;
+        background: var(--white);
+        max-width: 300px;
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px;
+        border-radius: var(--border-radius-md);
+        box-shadow: 0 5px 20px hsl(0deg 0% 0% / 15%);
+        transform: translateX(calc(-100% - 40px));
+    }
+
+    .success {
+
+        transition: 0.5s ease-in-out;
+        z-index: 5;
+        animation: slideInOutSuccess 3s ease-in-out;
+    }
+
+    @keyframes slideInOutSuccess {
+        0% {
+            transform: translateX(calc(-50% - 40px));
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        20% {
+            transform: translateX(calc(-100% - 40px));
+            opacity: 0;
+            visibility: visible;
+        }
+
+        50% {
+            transform: translateX(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        100% {
+            transform: translateX(calc(-100% - 40px));
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
+</style>
+<!-- below is the css for loader and modal orderplace -->
+<style>
+    .modal-orderplaced {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+    }
+
+    .modal-orderplaced-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal h2 {
+        margin-top: 0;
+    }
+
+    .modal p {
+        margin: 10px 0;
+    }
+
+    .btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #3e8e41;
+    }
+
+    .loader {
+        width: 100%;
+        height: 3px;
+        position: relative;
+        overflow: hidden;
+        background-color: #f2f2f2;
+    }
+
+    .loader::before {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: #4CAF50;
+        animation: loading 8s linear;
+    }
+
+    @keyframes loading {
+        0% {
+            left: -100%;
+        }
+
+        100% {
+            left: 100%;
+        }
+    }
+</style>
 <main>
     <div class="product-container">
 
@@ -140,7 +274,7 @@
                             <tbody>
                                 <?php if ($cartAllProductDetails) : ?>
                                     <?php foreach ($cartAllProductDetails as $cartSingleProdDetails) : ?>
-                                        <tr>
+                                        <tr class="product-row" id="<?= $cartSingleProdDetails->id ?>">
                                             <td>
 
                                                 <div class="product-img">
@@ -148,33 +282,99 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <p><?= $cartSingleProdDetails->name ?></p>
+                                                <a href="<?= ROOT ?>productDetails/<?= $cartSingleProdDetails->id ?>">
+                                                    <p class="product-name"><?= $cartSingleProdDetails->title ?></p>
+                                                </a>
 
                                             </td>
                                             <td>
                                                 <input type="hidden" class="productId" style="display: none;" name="productIdValue" value="<?= $cartSingleProdDetails->id ?>" />
                                                 <div class="button-container">
-                                                    <button class="cart-qty-plus" type="button" value="+">+</button>
-                                                    <input id="qtyValIs" type="text" name="qty" min="0" class="qty form-control" value="<?= $cartSingleProdDetails->cartQty ?>" />
-                                                    <button class="cart-qty-minus" type="button" value="-">-</button>
+                                                    <!-- <button class="cart-qty-plus" type="button" value="+">+</button>
+                                                    <input id="qtyValIs" type="text" name="qty" min="0" class="qty form-control" value= />
+                                                    <button class="cart-qty-minus" type="button" value="-">-</button> -->
+                                                    VARIANTS BELOW
                                                 </div>
                                             </td>
                                             <td>
-                                                <input type="text" value="<?= $cartSingleProdDetails->price ?>" class="price form-control" disabled>
+                                                <input type="text" value="<?= 'Avg-Price:&#x20B9;' . $cartSingleProdDetails->defaultPrice ?>" class="price form-control" disabled>
                                             </td>
-                                            <td>$ <span id="amount" class="amount">0</span></td>
+                                            <?php
+                                            $sum = 0;
+                                            $idsInCart = array_column($_SESSION['CART'], "id");
+                                            if (in_array($cartSingleProdDetails->id, $idsInCart)) {
+                                                $productsKey = array_search($cartSingleProdDetails->id, $idsInCart);
+                                                foreach ($_SESSION['CART'][$productsKey]['variants'] as $itemRow) {
+                                                    $sum += intval($itemRow['price']) * intval($itemRow['quantity']);
+                                                }
+                                            }
+                                            ?>
+                                            <td>&#x20B9; <span class="amount"><?= $sum ?></span></td>
                                             <td style="cursor: pointer; color:red" class="removeItem" onclick="removeProdCart(<?= $cartSingleProdDetails->id ?>)">
-                                                <a href="addToCart/removeItemCart/<?= $cartSingleProdDetails->id ?>">X</a>
+                                                <a href="javascript:void(0)">Remove-Item(X)</a>
                                             </td>
                                         </tr>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
+                                        <!--start  -->
+                                        <?php
+                                        $idsInCart = array_column($_SESSION['CART'], "id");
+                                        if (in_array($cartSingleProdDetails->id, $idsInCart)) {
+                                            $productsKey = array_search($cartSingleProdDetails->id, $idsInCart);
+                                            foreach ($_SESSION['CART'][$productsKey]['variants'] as $itemRow) {
 
+                                                echo '
+                      <tr class="itemRow" productIs = "' . $cartSingleProdDetails->id . '"> 
+                  <td class="colorCell">
+                    <select name="" class="colorSelect form-control">
+                      <option selected value="' . $itemRow['colorId'] . '">' . $itemRow['colorName'] . '</option>';
+
+                                                echo '
+                    </select>
+
+                  </td>
+                  <td class="sizeCell">
+                    <select name="" class="sizeSelect form-control">
+                      <option selected value="' . $itemRow['sizeId'] . '">' . $itemRow['sizeName'] . '</option>';
+
+
+
+                                                echo '
+                    </select>
+
+                  </td>
+                  <td class="qtyCell">
+                    <div class="button-container">
+                    <input type="text" value=" ' . $itemRow['quantity'] . '" class="price form-control" disabled="">
+                     
+                    </div>
+                  </td>
+                  <td style="cursor: pointer; color:red" class="price">&#x20B9;
+                  ' . $itemRow['price'] . '
+                  </td>
+                  <td style="cursor: pointer; color:red" class="amountIs">&#x20B9;
+                    ' . $itemRow['price'] * $itemRow['quantity'] . '
+                  </td>
+                  <td style="cursor: pointer; color:red" class="removeItem">
+                    <a href="javascript:void(0)">X</a>
+                  </td>
+                </tr>
+                      ';
+                                            }
+                                        }
+
+
+                                        ?>
+                                        <!--end  -->
+
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <div>CART IS EMPTY</div>
+                                <?php endif; ?>
                             </tbody>
                             <tfoot>
                                 <tr>
                                     <td colspan="4"></td>
-                                    <td><strong>TOTAL = $ <span id="total" class="total">0</span></strong></td>
+                                    <td><strong>TOTAL = &#x20B9; <span id="total" class="total">0</span></strong></td>
+                                    <td> <Button onclick="placeOrder()" class="add-cart-btn">Order now</Button></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -183,6 +383,30 @@
             </div>
         </div>
 
+    </div>
+
+    <div class="notification-success" data-toast="">
+
+        <div class="toast-detail">
+
+            <p class="toast-message">
+            <p style="color:green">Successfull</p>
+            </p>
+
+            <p class="toast-meta">
+                <time datetime="PT2M"></time>
+            </p>
+
+        </div>
+
+    </div>
+    <div class="modal-orderplaced">
+        <div class="modal-orderplaced-content">
+            <h2>Order Placed Successfully</h2>
+            <p>Your order has been placed successfully. You will receive a confirmation email shortly.</p>
+            <button class="btn" id="btn-redirect">You will now be redirected to your Profile</button>
+            <div class="loader"></div>
+        </div>
     </div>
 
 </main>
@@ -205,7 +429,7 @@
     - custom js link
   -->
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-<script src="<?php echo ASSETS . THEME  ?>js/script.js"></script>
+<!-- <script src="<?php echo ASSETS . THEME  ?>js/script.js"></script> -->
 <script>
     var swiper = new Swiper(".mySwiper", {
         navigation: {
@@ -215,144 +439,100 @@
     });
 </script>
 <script>
-    function collectValidateData(e) {
-        e.preventDefault();
-        // let CataModal = document.getElementById('addCataModal')
-        // var addCataModal = bootstrap.Modal.getOrCreateInstance(CataModal)
-        const cataData = document.querySelector('#categoryName')
-        const categoryParent = document.querySelector('#categoryParent').value
-        if (cataData.value.trim() == "" || !isNaN(cataData.value.trim())) {
-            alert("Enter a valid Category")
+    var sum = 0;
+    $('.removeItem').on('click', removeRow);
+    $('.amount').each(function(index, ele) {
+        if (Number(ele.innerHTML)) {
+            sum += Number(ele.innerHTML)
         }
-        const data = cataData.value.trim()
-        sendData({
-            category: data,
-            parentCategory: categoryParent,
-            data_type: 'add_category'
-        })
-    }
-    // sendData function to handle the sending of the data using ajax
-    function sendData(data = {}, action) {
-        const ajax = new XMLHttpRequest()
-        ajax.addEventListener('readystatechange', function() {
-            if (ajax.readyState == 4 && ajax.status == 200) {
-                handleResult(ajax.responseText)
+    });
+    $('#total').text(sum);
+
+
+    function removeProdCart(id) {
+        const singleTotal = $(`#${id}`).find('.amount').text();
+        console.log(singleTotal);
+        const total = $('#total').text()
+        $('#total').text(total - Number(singleTotal));
+        $(`tr[productis="${id}"]`).remove();
+        $(`#${id}`).remove();
+
+        $.ajax({
+            method: 'POST',
+            url: '<?= ROOT ?>ajax_addToCart',
+            data: {
+                data_type: 'removeProduct',
+                itemId: id,
+            },
+            success: function(response) {
+                // addRow()
+                console.log(response);
+                $(".notification-success").addClass("success").on("animationend", function() {
+                    $(this).removeClass("success");
+                });
             }
-        })
-        console.log("Sending to " + "ajax_cart/" + action + "/" + JSON.stringify(data));
-        ajax.open("POST", "<?= ROOT ?>ajax_cart/" + action + "/" + JSON.stringify(data), true)
-        ajax.send(JSON.stringify(data))
+        });
     }
-    // handleResult for handling all the result from the sendData function
-    function handleResult(result) {
-        console.log(result);
-        if (result != '') {
-            const obj = JSON.parse(result)
-            if (obj.data_type != 'undefined') {
-                if (obj.data_type == 'add_new') {
-                    // we check above the type of data recieved if success then we get a message type of info
-                    if (obj.message_type == 'info') {
-                        // alert(obj.message)
-                        $('#addCataModal').modal('hide')
-                        const tb = document.querySelector('#categoryTableBody')
-                        tb.innerHTML = obj.data;
-                    } else {
-                        alert(obj.message)
-                    }
-                } else if (obj.data_type == 'delete_row') {
-                    const tb = document.querySelector('#categoryTableBody')
-                    tb.innerHTML = obj.data;
-                } else if (obj.data_type == 'toggled_row') {
-                    const tb = document.querySelector('#categoryTableBody')
-                    tb.innerHTML = obj.data;
-                } else if (obj.data_type == 'edit_row') {
-                    const tb = document.querySelector('#categoryTableBody')
-                    tb.innerHTML = obj.data;
-                    $('#editCategoryModal').modal('hide')
+
+
+    function removeRow() {
+        var valueis = $(this).closest('.itemRow').find('.amountIs').text();
+        const idOfProduct = $(this).closest('.itemRow').attr('productIs');
+        const itemId = idOfProduct;
+        // now getting the value of the single total using the above id
+        const singleTotal = $(`#${idOfProduct}`).find('.amount').text();
+        let priceNumber = parseFloat(valueis.replace(/₹|\s/g, ""));
+        $(`#${idOfProduct}`).find('.amount').text(singleTotal - priceNumber);
+
+        var colorId = $(this).closest('.itemRow').find('.colorCell select').val();
+        var sizeId = $(this).closest('.itemRow').find('.sizeCell select').val();
+        console.log(colorId, sizeId);
+        // $(this).closest('.product-row').find('.amount').text(singleTotal-priceNumber);
+        total = $('#total').text();
+        $('#total').text(total - Number(priceNumber));
+        $(this).closest('.itemRow').remove();
+        console.log(total);
+
+
+
+        $.ajax({
+            method: 'POST',
+            url: '<?= ROOT ?>ajax_addToCart',
+            data: {
+                data_type: 'removeVariants',
+                sizeId: sizeId,
+                colorId: colorId,
+                itemId: itemId,
+            },
+            success: function(response) {
+
+                $(".notification-success").addClass("success").on("animationend", function() {
+                    $(this).removeClass("success");
+                });
+            }
+        });
+    }
+
+    function placeOrder() {
+        $.ajax({
+            method: 'POST',
+            url: '<?= ROOT ?>ajax_addToCart',
+            data: {
+                data_type: 'approveRequest',
+            },
+            success: function(response) {
+                if (response) {
+                    console.log(response);
+                    $('.modal-orderplaced').show()
+                    setTimeout(function() {
+                        window.location.href = "<?= ROOT ?>profile";
+                    }, 8000);
                 }
+                console.log(response);
+
             }
-        }
-    }
-
-    // -----------------for-Shopping-cart-------------
-    $(document).ready(function() {
-        update_amounts();
-        $('.qty, .price').on('keyup keypress blur change', function(e) {
-            update_amounts();
         });
-    });
-    // updates the DOM/all the tr and tds 
-    function update_amounts() {
-        var sum = 0.0;
-        $('#myTable > tbody  > tr').each(function() {
-            var qty = $(this).find('.qty').val();
-            var price = $(this).find('.price').val();
-            var amount = (qty * price)
-            sum += amount;
-            $(this).find('.amount').text('' + amount);
-        });
-        $('.total').text(sum);
-
     }
-
-
-
-    //----------------for quantity-increment-or-decrement-------
-    // for ppressing enter 
-    $('.qty, .price').on('input', function(e) {
-        console.log("observe this");
-        //IMP keypress ajax goes here
-        const qtyIs = document.querySelector('#qtyValIs').value
-        const productIdIs = $(this).closest('td').find("input[name=productIdValue]").val()
-        console.log(productIdIs);
-        sendData({
-            quantity: qtyIs,
-            productId: productIdIs
-        }, 'edit_quantity')
-        // keypress ajax ends here
-        update_amounts();
-    });
-    var incrementQty;
-    var decrementQty;
-    var plusBtn = $(".cart-qty-plus");
-    var minusBtn = $(".cart-qty-minus");
-    var incrementQty = plusBtn.click(function() {
-        var $n = $(this)
-            .parent(".button-container")
-            .find(".qty");
-        $n.val(Number($n.val()) + 1); //incrementing the qty
-        // ajax can be used here
-        const qtyIs = document.querySelector('#qtyValIs').value
-        const productIdIs = $(this).closest('td').find("input[name=productIdValue]").val()
-        console.log(productIdIs);
-        sendData({
-            quantity: qtyIs,
-            productId: productIdIs
-        }, 'edit_quantity')
-        // ajax ends here
-        update_amounts(); //updating the total value
-    });
-
-    var decrementQty = minusBtn.click(function() {
-        var $n = $(this)
-            .parent(".button-container")
-            .find(".qty");
-        var QtyVal = Number($n.val());
-        if (QtyVal > 0) {
-            $n.val(QtyVal - 1);
-        }
-        // ajax goes here
-        const qtyIs = document.querySelector('#qtyValIs').value
-        const productIdIs = $(this).closest('td').find("input[name=productIdValue]").val()
-        console.log(productIdIs);
-        sendData({
-            quantity: qtyIs,
-            productId: productIdIs
-        }, 'edit_quantity')
-        // ends hhere ajax
-
-        update_amounts();
-    });
 </script>
 <!--
     - ionicon link

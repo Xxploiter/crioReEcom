@@ -43,12 +43,14 @@ class SyncService
 
 
             $db = Database::newInstance();
-            // $limitTry = 0;
+            
+
             foreach ($apiLatestItemData as $item) {
                 $arr['crioId'] = ucwords($item->id);
                 $arr['code'] = ucwords($item->code ?: '');
                 $arr['title'] = ucwords($item->title ?: '');
                 $arr['itemtype'] = ucwords($item->itemType ?: '');
+                $arr['defaultPrice'] = ucwords($item->defaultPrice ?: '');
                 $arr['description'] = ucwords($item->description ?: '');
                 $arr['gst'] = ucwords($item->gst ?: '');
                 $arr['hsn'] = ucwords($item->hsn ?: '');
@@ -58,7 +60,7 @@ class SyncService
                 $arr['review'] =  ucwords($item->reviewIs ?: '');
                 $arr['user_url'] =  $_SESSION['user_url'];
 
-                $query = "INSERT INTO products (crioId, code, title, itemtype, description, gst, hsn, imgCrio, brand, cata, review, user_url) VALUES ( :crioId, :code, :title, :itemtype, :description, :gst, :hsn, :imgCrio, :brand, :cata, :review, :user_url)";
+                $query = "INSERT INTO products (crioId, code, title, itemtype, defaultPrice, description, gst, hsn, imgCrio, brand, cata, review, user_url) VALUES ( :crioId, :code, :title, :itemtype, :defaultPrice, :description, :gst, :hsn, :imgCrio, :brand, :cata, :review, :user_url)";
                 $db->write($query, $arr);
                 //    $limitTry++;                 
                 // if($limitTry>3){
@@ -157,6 +159,12 @@ class SyncService
             }
         }
     }
+
+
+    private function syncCategory(){
+        
+    }
+
 
     public function syncAll($productClass)
     {
