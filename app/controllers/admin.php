@@ -152,4 +152,15 @@ class Admin extends Controller
       $data['pageTitle'] = "Admin | Crio-Re";
       $this->viewAdmin("addRetailer", $data);
    }
+
+   public function advertisement($params)
+   {
+      include_once('advertisement.method.php');
+
+      $data = Advertisement($this, $params);
+      // --------include advertisement here
+      //---------invoke the advertisements function here
+      $data['admin'] = "i am from admin";
+      $this->viewAdmin("advertisement", $data);
+   }
 }

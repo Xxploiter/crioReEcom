@@ -1,32 +1,34 @@
-<?php 
-class Ajax_product extends Controller{
+<?php
+class Ajax_product extends Controller
+{
 
-   public function index(){ 
-    
-    if(count($_POST)>0){
-        $data = (object)$_POST;
-    }else{
-        $data = json_decode(file_get_contents('php://input'));
-    }
-    // $data = json_decode(file_get_contents('php://input'));
-    // print_r($_POST);
-    // print_r($_FILES);
-    // die;
-    
-    if(is_object($data) && isset($data->data_type)){
-        $db = Database::getInstance();
-        $product = $this->load_model('Product');
-        $categoryClass = $this->load_model('Category');
-        $imageProcessingClass = $this->load_model('Image');
-        if($data->data_type == 'add_product'){         
-            // here we are loading this model to get a respective method for product creation   
-            $product->create($data, $_FILES, $imageProcessingClass);     
-            if( isset($_SESSION['error']) && $_SESSION['error']!= ""){
-                $arr['message'] = $_SESSION['error'];
-                $_SESSION['error'] = '';
-                $arr['message_type'] = 'error';
-                $arr['data'] = '';
-                $arr['data_type'] = 'add_new';
+    public function index()
+    {
+
+        if (count($_POST) > 0) {
+            $data = (object)$_POST;
+        } else {
+            $data = json_decode(file_get_contents('php://input'));
+        }
+        // $data = json_decode(file_get_contents('php://input'));
+        // print_r($_POST);
+        // print_r($_FILES);
+        // die;
+
+        if (is_object($data) && isset($data->data_type)) {
+            $db = Database::getInstance();
+            $product = $this->load_model('Product');
+            $categoryClass = $this->load_model('Category');
+            $imageProcessingClass = $this->load_model('Image');
+            if ($data->data_type == 'add_product') {
+                // here we are loading this model to get a respective method for product creation   
+                $product->create($data, $_FILES, $imageProcessingClass);
+                if (isset($_SESSION['error']) && $_SESSION['error'] != "") {
+                    $arr['message'] = $_SESSION['error'];
+                    $_SESSION['error'] = '';
+                    $arr['message_type'] = 'error';
+                    $arr['data'] = '';
+                    $arr['data_type'] = 'add_new';
 
                 // Above we are taking care of all the errors and data type checks
                 echo json_encode($arr);
@@ -54,8 +56,6 @@ class Ajax_product extends Controller{
             echo json_encode($arr);
         }
         elseif($data->data_type == 'delete_row') {
-            show($data);
-            die;
             $product->delete($data->id);    
             $arr['message'] = "Row succecfully Deleted";
             $_SESSION['error'] = '';
@@ -66,22 +66,15 @@ class Ajax_product extends Controller{
             echo json_encode($arr);
         } elseif($data->data_type == 'edit_product') {
 
-            $product->edit($data, $_FILES, $imageProcessingClass);    
-            $arr['message'] = "Row succecfully Edited";
-            $_SESSION['error'] = '';
-            $arr['message_type'] = 'info';
-            $allCategory = $product->getAll();
-            $arr['data'] = $product->make_table($allCategory, $categoryClass);
-            $arr['data_type'] = 'edit_product';
-            echo json_encode($arr);
+                $product->edit($data, $_FILES, $imageProcessingClass);
+                $arr['message'] = "Row succecfully Edited";
+                $_SESSION['error'] = '';
+                $arr['message_type'] = 'info';
+                $allCategory = $product->getAll();
+                $arr['data'] = $product->make_table($allCategory, $categoryClass);
+                $arr['data_type'] = 'edit_product';
+                echo json_encode($arr);
+            }
         }
-   
-        
-    }
-
     }
 }
-
-
-
-?>

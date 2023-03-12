@@ -25,19 +25,31 @@ class Profile extends Controller
 
       $data['mostSellingProduct'] = $mostSellingProduct;
 
+
+      // Devlopment by Souvik starts
+
+      $salesByBrand = $retailerService->brandWiseProductPurchaseByRetailer($retailerCrioIdis);
+
+      $data['salesByBrand'] = $salesByBrand;
+      // show($data['salesByBrand']);
+      // die();
+      // Devlopment by souvik ends
+
+
       $htmlGeneratedLedger = $retailerService->createLedger($retailerCrioIdis); //provide retailer id 
       // show($retailerCrioIdis);
       // die;
       $timeLineData = $retailerService->returnJsonLedgerData($retailerCrioIdis);
       $data['htmlGeneratedLedger'] = $htmlGeneratedLedger;
       $data['timeLineData'] = $timeLineData['transaction'];
-      
+
       // fetching data from API ends here 
       $data['pageTitle'] = "Profile";
       $this->view("profile", $data);
    }
    // below is the ledger page method
-   public function ledger(){
+   public function ledger()
+   {
       $retailer = $this->load_model('crioretailers');
       $retailerAuthData = $retailer->check_login(true);
       if (is_object($retailerAuthData)) {
@@ -54,7 +66,7 @@ class Profile extends Controller
       if (!$retailerService) {
          throw new Exception("RetailerService class file not found");
       }
-      [$styles,$htmlGeneratedLedger] = $retailerService->createLedger($retailerCrioIdis); //provide retailer id 
+      [$styles, $htmlGeneratedLedger] = $retailerService->createLedger($retailerCrioIdis); //provide retailer id 
 
       $data['htmlGeneratedLedger'] = $htmlGeneratedLedger;
       $this->view("ledger", $data);

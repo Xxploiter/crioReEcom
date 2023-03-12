@@ -3,42 +3,42 @@
         ***********************************-->
         <div class="deznav">
             <div class="deznav-scroll">
-				<div class="main-profile">
-					<div class="image-bx">
-						<img src="<?= ASSETS . ADMIN_THEME ?>images/profile/port.jpg" alt="">
-						<a href="javascript:void(0);"><i class="fa fa-cog" aria-hidden="true"></i></a>
-					</div>
-					<h5 class="name"><span class="font-w400">Hello,</span> <?= $data['retailerAuthData']->name ?></h5>
-					<p class="email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="95f8f4e7e4e0f0efefefefd5f8f4fcf9bbf6faf8">[email&#160;protected]</a></p>
-				</div>
-				<ul class="metismenu" id="menu">
-					<li class="nav-label first">Main Menu</li>
+                <div class="main-profile">
+                    <div class="image-bx">
+                        <img src="<?= ASSETS . ADMIN_THEME ?>images/profile/port.jpg" alt="">
+                        <a href="javascript:void(0);"><i class="fa fa-cog" aria-hidden="true"></i></a>
+                    </div>
+                    <h5 class="name"><span class="font-w400">Hello,</span> <?= $data['retailerAuthData']->name ?></h5>
+                    <p class="email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="95f8f4e7e4e0f0efefefefd5f8f4fcf9bbf6faf8">[email&#160;protected]</a></p>
+                </div>
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label first">Main Menu</li>
                     <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-							<i class="flaticon-144-layout"></i>
-							<span class="nav-text">Dashboard</span>
-						</a>
+                            <i class="flaticon-144-layout"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
                         <ul aria-expanded="false">
-							<!-- <li><a href="index.html">Dashboard Light</a></li>
+                            <!-- <li><a href="index.html">Dashboard Light</a></li>
 							<li><a href="index-2.html">Dashboard Dark</a></li> -->
-							<!-- <li><a href="my-wallets.html">Wallet</a></li> -->
-							<li><a href="tranasactions.html">Transactions</a></li>
-							<li><a href="<?= ROOT ?>admin/addRetailer">Add retailer</a></li>
-							<!-- <li><a href="coin-details.html">Coin Details</a></li>
+                            <!-- <li><a href="my-wallets.html">Wallet</a></li> -->
+                            <li><a href="tranasactions.html">Transactions</a></li>
+                            <li><a href="<?= ROOT ?>admin/addRetailer">Add retailer</a></li>
+                            <!-- <li><a href="coin-details.html">Coin Details</a></li>
 							<li><a href="portofolio.html">Portofolio</a></li>
 							<li><a href="market-capital.html">Market Capital</a></li> -->
-						</ul>
+                        </ul>
 
                     </li>
-					<li class="nav-label">Add/Edit/Dlt </li>
+                    <li class="nav-label">Add/Edit/Dlt </li>
                     <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-						<i class="flaticon-077-menu-1"></i>
-							<span class="nav-text">Products</span>
-						</a>
+                            <i class="flaticon-077-menu-1"></i>
+                            <span class="nav-text">Products</span>
+                        </a>
                         <ul aria-expanded="false">
                             <li><a href="<?= ROOT ?>admin/products">Products</a></li>
                             <li><a href="<?= ROOT ?>admin/categories">Categories</a></li>
                             <li><a href="<?= ROOT ?>admin/orders">Orders</a></li>
-							<!-- <li><a href="post-details.html">Post Details</a></li>
+                            <!-- <li><a href="post-details.html">Post Details</a></li>
 							<li><a href="page-chat.html">Chat<span class="badge badge-xs badge-danger">New</span></a></li>
 							<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Project<span class="badge badge-xs badge-danger">New</span></a>
                                 <ul aria-expanded="false">
@@ -78,8 +78,16 @@
                                 </ul>
                             </li> -->
                         </ul>
+                    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                            <i class="flaticon-003-diamond"></i>
+                            <span class="nav-text">Add Advertisements</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="<?= ROOT ?>admin/advertisement">Retailers</a></li>
+                        </ul>
                     </li>
-					
+                    </li>
+
                     <!-- <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
 							<i class="flaticon-061-puzzle"></i>
 							<span class="nav-text">Banners</span>
@@ -93,17 +101,27 @@
                             <li><a href="chart-peity.html">Peity</a></li>
                         </ul>
                     </li> -->
-					<li class="nav-label">SETTINGS</li>
+                    <li class="nav-label">Advertisements</li>
                     <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-							<i class="flaticon-003-diamond"></i>
-							<span class="nav-text">User</span>
-						</a>
+                            <i class="flaticon-003-diamond"></i>
+                            <span class="nav-text">Add Advertisements</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="<?= ROOT ?>admin/users/Retailers">Retailers</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-label">SETTINGS</li>
+                    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                            <i class="flaticon-003-diamond"></i>
+                            <span class="nav-text">User</span>
+                        </a>
                         <ul aria-expanded="false">
                             <li><a href="<?= ROOT ?>admin/users/Retailers">Retailers</a></li>
                             <li><a href="<?= ROOT ?>admin/users/admins">Admins</a></li>
                             <li><a href="<?= ROOT ?>admin/settings/slider_imgs">Slider</a></li>
                             <li><a href="<?= ROOT ?>admin/settings/Ads">Advertisements</a></li>
-                            
+
                             <!-- <li><a href="ui-alert.html">Alert</a></li>
                             <li><a href="ui-badge.html">Badge</a></li>
                             <li><a href="ui-button.html">Button</a></li>
@@ -184,16 +202,16 @@
                     </li> -->
                     <li class="nav-label">BACKUP</li>
                     <li><a class="has-arrow ai-icon" href="<?= ROOT ?>admin/backup" aria-expanded="false">
-							<i class="flaticon-001-monitor"></i>
-							<span class="nav-text">Website-Backup</span>
-						</a>
+                            <i class="flaticon-001-monitor"></i>
+                            <span class="nav-text">Website-Backup</span>
+                        </a>
                     </li>
                 </ul>
-				<div class="copyright">
-					<p><strong>Crio Re Admin Dashboard</strong> © 2022 All Rights Reserved</p>
-					<p class="fs-12">Made with <span class="heart"></span> by Dipankar</p>
-				</div>
-			</div>
+                <div class="copyright">
+                    <p><strong>Crio Re Admin Dashboard</strong> © 2022 All Rights Reserved</p>
+                    <p class="fs-12">Made with <span class="heart"></span> by Dipankar</p>
+                </div>
+            </div>
         </div>
         <!--**********************************
             Sidebar end

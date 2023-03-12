@@ -15,7 +15,7 @@ class SingleProductService
     // This function will get the colors available for a specefic itemId
     private function getAvailableColorsFromInventoryByItemId($itemId)
     {
-        $url = "https://raiganj.crio77.com/api/inventory2.php?itemId=" . $itemId . "&choice=color";
+        $url = "https://raiganj.crio77.com/api/sizeNColorItem.php?itemId=".$itemId."&choice=color";
         $response = file_get_contents($url);
         $uniqueColors = json_decode($response, true);
         return $uniqueColors;
@@ -25,7 +25,7 @@ class SingleProductService
     private function getAvailableSizesFromInventoryByItemId($itemId)
     {
 
-        $url = "https://raiganj.crio77.com/api/inventory2.php?itemId=" . $itemId . "&choice=size";
+        $url = "https://raiganj.crio77.com/api/sizeNColorItem.php?itemId=".$itemId."&choice=size";
         $response = file_get_contents($url);
         $uniqueSizes = json_decode($response, true);
 
@@ -229,4 +229,7 @@ class SingleProductService
     
         return $orders;
     }
+}
+
+ 
 }

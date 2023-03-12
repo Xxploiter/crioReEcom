@@ -4,7 +4,7 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <link href="<?php echo ASSETS . THEME  ?>css/jquery.roadmap.min.css" rel="stylesheet" type="text/css" />
 <style>
-  .close{
+  .close {
     cursor: pointer;
     width: 26px;
     color: aqua;
@@ -14,6 +14,7 @@
     margin-left: 8px;
     margin-top: 8px;
   }
+
   .modal {
     animation: popup .5s ease-in-out .5s forwards;
   }
@@ -99,18 +100,18 @@
   /* Style for apex chart */
   @import url(https://fonts.googleapis.com/css?family=Roboto);
 
-  body{
+  body {
     font-family: Roboto, sans-serif;
-    }
+  }
 
-  #chart{
+  #chart {
     max-width: 650px;
     margin: 35px auto;
-    }
+  }
 </style>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="<?php echo ASSETS . THEME  ?>css/userProfile.css"   rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="<?php echo ASSETS . THEME  ?>css/userProfile.css" rel="stylesheet" type="text/css" />
 
 
 <div class="main margin2">
@@ -123,7 +124,7 @@
             <i class="fas fa-chart-line"></i>
           </div>
           <h3 class="title">SALES</h3>
-          <p class="text">  <span class="reportsUser"> &#x20B9; </span>100045</p>
+          <p class="text"> <span class="reportsUser"> &#x20B9; </span>100045</p>
         </div>
 
         <div class="itemUserInfo">
@@ -131,7 +132,7 @@
             <i class="fas fa-area-chart"></i>
           </div>
           <h3 class="title">DUE</h3>
-          <p class="text">  <span class="reportsUser"> &#x20B9; </span>4500</p>
+          <p class="text"> <span class="reportsUser"> &#x20B9; </span>4500</p>
           <a href="<?= ROOT ?>profile/orders"> RECREATION ORDERS</a>
         </div>
 
@@ -140,8 +141,8 @@
             <i class="fas fa-bar-chart"></i>
           </div>
           <h3 class="title">LEDGER</h3>
-          <p class="text">  <span class="reportsUser">&#x20B9; </span>34000</p>
-          <a href="<?= ROOT ?>profile/ledger">VIEW LEDGER</a>
+          <p class="text"> <span class="reportsUser">&#x20B9; </span>34000</p>
+          <a href="<?= ROOT ?>profile/ledger">View Ledger</a>
         </div>
 
       </div>
@@ -665,6 +666,10 @@
         <h2 class="title mt-5">QUANTITY OF PRODUCTS BOUGHT IN LAST 6 MONTH</h2>
         <canvas class="graphs" id="prodQty"></canvas>
       </div>
+      <div class="product-showcase">
+        <h2 class="title mt-5">BRAND-WISE PURCHASE OF PRODUCTS</h2>
+        <canvas class="graphs" id="brandChart"></canvas>
+      </div>
       <div id="my-roadmap"></div>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </div>
@@ -711,7 +716,7 @@
           "content" => "<a href='' class='invoiceNo' data-invoice-no='" . $entry["orderId"] . "'>" . $particulars . "</a>" . "<p class='amountTimeline'> ORDER OF:	&#8377 " . (int)$entry["amountIs"] . "</p>",
 
         ];
-      } elseif($entry["transactionType"] == "pay"){
+      } elseif ($entry["transactionType"] == "pay") {
 
         $roadmapData[] = [
           "date" => $entry["dateIs"],
@@ -745,12 +750,12 @@
             },
 
             success: function(response) {
-              
-             
+
+
               response = JSON.parse(response);
               const style = response.style;
               $('head style').remove();
-               $('head').append(style);
+              $('head').append(style);
               modal.css("display", "block");
               $('#modalInvoiceData').html(response.invoice)
             }
@@ -784,7 +789,6 @@
 </script>
 
 <script>
-
   // accordion variables
   const accordionBtn = document.querySelectorAll('[data-accordion-btn]');
   const accordion = document.querySelectorAll('[data-accordion]');
@@ -907,15 +911,15 @@
 <!-- // Devlopment by souvik starts -->
 <script>
   // product data from php
-  const mostSellingProd=<?php echo json_encode($data['mostSellingProduct']) ;?>;
+  const mostSellingProd = <?php echo json_encode($data['mostSellingProduct']); ?>;
 </script>
 <!--Graph fro product vs amount of product bought in last 6 month -->
 <script>
   const dataDonut = {
-    labels:mostSellingProd.product,
+    labels: mostSellingProd.product,
     datasets: [{
       label: 'Amount',
-      data:mostSellingProd.amount,
+      data: mostSellingProd.amount,
       backgroundColor: [
         'rgb(255, 99, 132)',
         'rgb(54, 162, 235)',
@@ -957,7 +961,34 @@
     document.getElementById('prodQty'),
     configQtyChart
   );
-          
+</script>
+<script>
+  // product data from php
+  const salesByBrandData = <?php echo json_encode($data['salesByBrand']); ?>;
+</script>
+<!--Graph for product vs amount of product bought in last 6 month -->
+<script>
+  const dataBrandSales = {
+    labels: salesByBrandData.brandName,
+    datasets: [{
+      label: 'Amount',
+      data: salesByBrandData.totalAmount,
+      backgroundColor: [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(255, 205, 86)'
+      ],
+      hoverOffset: 4
+    }]
+  };
+  const configBrandChart = {
+    type: 'bar',
+    data: dataBrandSales,
+  };
+  const brandChart = new Chart(
+    document.getElementById('brandChart'),
+    configBrandChart
+  );
 </script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
