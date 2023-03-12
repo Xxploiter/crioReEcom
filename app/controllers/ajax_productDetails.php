@@ -12,8 +12,12 @@ class Ajax_productDetails extends Controller
 
         if (is_object($data) && isset($data->data_type)) {
 
-            if ($data->data_type == 'sync') {
+            if ($data->data_type == 'getQtyFromColorSize') {
+                $returnData['qty'] = 12;
+                
+                echo json_encode($returnData);
             }
         }
     }
 }
+?>

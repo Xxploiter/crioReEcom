@@ -20,42 +20,52 @@
     .input-group-text {
         font-size: 0.675rem;
     }
-   /* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-}
 
-/* Modal Content/Box */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
-}
+    /* The Modal (background) */
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Black w/ opacity */
+    }
 
-/* Close Button */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 25%;
+        /* Could be more or less, depending on screen size */
+    }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-} 
+    /* Close Button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
 </style>
 <div class="content-body">
     <div class="container-fluid">
@@ -575,13 +585,6 @@
 
         sendDataFiles(formdata)
 
-
-        // sendData({
-        //     data_type: "edit_row",
-        //     id: editProductId,
-        //     product: editProductVal
-        // })
-
     }
 
 
@@ -648,98 +651,98 @@
     }
 </script>
 <script>
+    // const syncHandler = document.querySelector('#startSyncProduct')
+    // syncHandler.addEventListener('click', () => {
+    //             console.log('sync Handler working');
 
-    const syncHandler = document.querySelector('#startSyncProduct')
-    syncHandler.addEventListener('click', () => {
-        console.log('sync Handler working');
+    //            
 
-  // Get the success modal and its message element
-  const successModal = document.getElementById("success-modal");
-  const successMessage = document.getElementById("success-message");
+    // }
+    //Get the success modal and its message element
+                const successModal = document.getElementById("success-modal");
+                const successMessage = document.getElementById("success-message");
 
-  // Get the processing modal
-  const processingModal = document.getElementById("processing-modal");
+                // Get the processing modal
+                const processingModal = document.getElementById("processing-modal");
 
-  // Function to show the success modal with the given message
-  function showSuccessModal(message) {
-    // Set the success message
-    successMessage.textContent = message;
+                // Function to show the success modal with the given message
+                function showSuccessModal(message) {
+                    // Set the success message
+                    successMessage.textContent = message;
 
-    // Show the success modal
-    successModal.style.display = "block";
+                    // Show the success modal
+                    successModal.style.display = "block";
 
-    // Hide the success modal after 3 seconds
-    setTimeout(function() {
-      successModal.style.display = "none";
-    }, 4000);
-  }
+                    // Hide the success modal after 3 seconds
+                    setTimeout(function() {
+                        successModal.style.display = "none";
+                    }, 4000);
+                }
 
-  // Function to show the processing modal
-  function showProcessingModal() {
-    // Show the processing modal
-    processingModal.style.display = "block";
-  }
+                // Function to show the processing modal
+                function showProcessingModal() {
+                    // Show the processing modal
+                    processingModal.style.display = "block";
+                }
 
-  // Function to hide the processing modal
-  function hideProcessingModal() {
-    // Hide the processing modal
-    processingModal.style.display = "none";
-  }
+                // Function to hide the processing modal
+                function hideProcessingModal() {
+                    // Hide the processing modal
+                    processingModal.style.display = "none";
+                }
+                const syncHandler = document.querySelector('#startSyncProduct')
+                syncHandler.addEventListener('click', () => {
+                    console.log('sync Handler working');
+                    showProcessingModal();
+                    sendSyncRequest({
+                        data_type: "sync",
+                        sync: "product"
+                    })
+                })
 
+                function sendSyncRequest(data = {}) {
+                    const ajax = new XMLHttpRequest()
+                    ajax.addEventListener('readystatechange', function() {
+                        if (ajax.readyState == 4 && ajax.status == 200) {
+                            hideProcessingModal();
+                            handleResult(ajax.responseText)
+                        }
+                    })
+                    ajax.open("POST", "<?= ROOT ?>ajax_syncData", true)
+                    ajax.send(JSON.stringify(data))
+                }
 
-    const syncHandler = document.querySelector('#startSyncProduct')
-    syncHandler.addEventListener('click', () => {
-        console.log('sync Handler working');
-        showProcessingModal();
-        sendSyncRequest({
-            data_type: "sync",
-            sync: "product"
-        })
-    })
-
-    function sendSyncRequest(data = {}) {
-        const ajax = new XMLHttpRequest()
-        ajax.addEventListener('readystatechange', function() {
-            if (ajax.readyState == 4 && ajax.status == 200) {
-                hideProcessingModal();
-                handleResult(ajax.responseText)
-            }
-        })
-        ajax.open("POST", "<?= ROOT ?>ajax_syncData", true)
-        ajax.send(JSON.stringify(data))
-    }
-
-    function handleSyncResult(result) {
-        console.log(result);
-        const obj = JSON.parse(result)
-        if (obj.status == success) {
-            showSuccessModal(obj.status);
-        }
-        // if (result != '') {
-        //     const obj = JSON.parse(result)
-        //     if (obj.data_type != 'undefined') {
-        //         if (obj.data_type == 'add_new') {
-        //             // we check above the type of data recieved if success then we get a message type of info
-        //             if (obj.message_type == 'info') {
-        //                 // alert(obj.message)
-        //                 $('#addProductModal').modal('hide')
-        //                 const tb = document.querySelector('#productTableBody')
-        //                 tb.innerHTML = obj.data;
-        //             } else {
-        //                 alert(obj.message)
-        //             }
-        //         } else if (obj.data_type == 'delete_row') {
-        //             const tb = document.querySelector('#productTableBody')
-        //             tb.innerHTML = obj.data;
-        //         } else if (obj.data_type == 'toggled_row') {
-        //             const tb = document.querySelector('#productTableBody')
-        //             tb.innerHTML = obj.data;
-        //         } else if (obj.data_type == 'edit_product') {
-        //             const tb = document.querySelector('#productTableBody')
-        //             tb.innerHTML = obj.data;
-        //             $('#editProductModal').modal('hide')
-        //         }
-        //     }
-        // }
-    }
+                function handleSyncResult(result) {
+                    console.log(result);
+                    const obj = JSON.parse(result)
+                    if (obj.status == success) {
+                        showSuccessModal(obj.status);
+                    }
+                    // if (result != '') {
+                    //     const obj = JSON.parse(result)
+                    //     if (obj.data_type != 'undefined') {
+                    //         if (obj.data_type == 'add_new') {
+                    //             // we check above the type of data recieved if success then we get a message type of info
+                    //             if (obj.message_type == 'info') {
+                    //                 // alert(obj.message)
+                    //                 $('#addProductModal').modal('hide')
+                    //                 const tb = document.querySelector('#productTableBody')
+                    //                 tb.innerHTML = obj.data;
+                    //             } else {
+                    //                 alert(obj.message)
+                    //             }
+                    //         } else if (obj.data_type == 'delete_row') {
+                    //             const tb = document.querySelector('#productTableBody')
+                    //             tb.innerHTML = obj.data;
+                    //         } else if (obj.data_type == 'toggled_row') {
+                    //             const tb = document.querySelector('#productTableBody')
+                    //             tb.innerHTML = obj.data;
+                    //         } else if (obj.data_type == 'edit_product') {
+                    //             const tb = document.querySelector('#productTableBody')
+                    //             tb.innerHTML = obj.data;
+                    //             $('#editProductModal').modal('hide')
+                    //         }
+                    //     }
+                    // }
+                    }
 </script>

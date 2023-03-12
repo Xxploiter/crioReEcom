@@ -7,37 +7,45 @@ class ProductDetails extends Controller
    public function index($id)
    {
       $id = $id;
-
-
       $retailer = $this->load_model('crioretailers');
 
-
       $retailerAuthData = $retailer->check_login();
+       // retailerAuthData contains an array if user exist and false if no user exist   
+       if (is_object($retailerAuthData)) {
+         // here if needed i can write code to unable users to enter the site 
+         // if theyy dont have an account if no acc then simply redirect the control to the login page
+         $data['retailerAuthData'] = $retailerAuthData;
+      }
       $db = Database::newInstance();
       $singleProductDetails = $db->read("SELECT * FROM products WHERE id = :id", ['id' => $id]); //adding the slag toan array as key value remember that we are using pdo and data needs to be in key value format 
 
       $singleProductDetailsService = $this->load_service('singleproductservice');
-
+    
       $productCrioId = $singleProductDetails[0]->crioId;
-      // show($productCrioId);
-      // die;
+     
       // gettin unique colors and sizes from the API
       [$availableColors, $availableSizes] = $singleProductDetailsService->getUniqueColorAndSize($productCrioId);
-
-      $data['availableSizes'] = $availableSizes;
-      $data['availableColors'] = $availableColors;
-      // show($data['availableSizes']);
-      // show($data['availableColors']);
-      // die;
-      // retailerAuthData contains an array if user exist and false if no user exist   
-      if (is_object($retailerAuthData)) {
-         // here if needed i can write code to unable users to enter the site 
-         // if theyy dont have an account if no acc then simply redirect the control to the login page
-
-         $data['retailerAuthData'] = $retailerAuthData;
+      
+      // below calling the service for total available items no matter color and size
+      $availableQuantityOfItem = $singleProductDetailsService->getQuantityFromInventoryByItemIdColorIdSizeId($productCrioId);
+      
+      // now making sure if the items variants or if a single item are actuallyy available in the inventory
+      // if the available size and color is empty then fetching all the colors and size from the database
+      if($availableSizes && $availableColors){
+         $data['availableSizes'] = $availableSizes;
+         $data['availableColors'] = $availableColors;
+      }else{
+         // if there is no variants in crios inventory fetching all the colors and sizes from our database
+         // make sure to pass array of objects into the variable
+        [$data['availableColorsDb'], $data['availableSizesDb']] = $singleProductDetailsService->getAllColorsSizesFromDb();
+      //   show($data['availableSizesDb']);
+      //   die;
       }
-
-
+      $data['availableQuantityOfItem'] = is_string($availableQuantityOfItem)? 'productNotAvailable' : $availableQuantityOfItem;
+      
+      // getting the category and brand name
+      [$data['brandName'], $data['categoryName']] = $singleProductDetailsService->getCategoryAndBrand($singleProductDetails[0]->brand, $singleProductDetails[0]->cata);
+     
 
       $data['pageTitle'] = "Product Details | Crio-Re";
       $data['singleProductDetails'] = $singleProductDetails[0] ?? false;

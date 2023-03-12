@@ -41398,8 +41398,12 @@ code {
 }
 
 .modal-backdrop {
+<<<<<<< HEAD
   z-index: 0 !important;
 }
+=======
+  z-index: 0 !important; }
+>>>>>>> master
 
 .pagination .page-item .page-link:hover {
   background: var(--primary);

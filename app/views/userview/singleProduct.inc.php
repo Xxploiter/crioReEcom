@@ -50,6 +50,9 @@
   <a href="<?php echo ROOT ?>productDetails/<?= $data->id ?>">
     <h3 class="showcase-title"><?= $data->name ?></h3>
   </a>
+  <a href="<?php echo ROOT ?>productDetails/<?= $data->id ?>">
+    <h3 class="showcase-title"><?= $data->title ?></h3>
+  </a>
 
   <div class="showcase-rating">
     <ion-icon name="star"></ion-icon>
@@ -60,10 +63,10 @@
   </div>
 
   <div class="price-box">
-    <p class="price">$<?= $data->price ?></p>
-    <del>$75.00</del>
+    <p class="price">&#x20B9;<?= empty($data->price)?$data->defaultPrice: $data->price ?></p>
+    <del>&#x20B9;575.00</del>
   </div>
-  <a href="<?= ROOT ?>addToCart/<?= $data->id?>"><button class="add-cart-btnproduct">add to cart</button></a> 
+  <a href="<?= ROOT ?>productDetails/<?= $data->id?>"><button class="add-cart-btnproduct">view Product</button></a> 
 </div>
 
 </div>

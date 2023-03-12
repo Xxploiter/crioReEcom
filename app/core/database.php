@@ -46,7 +46,7 @@ class Database{
         $result = $stmt->execute($data);
         // after executing lets check if the result was ok 
         if($result){
-            return true;   
+            return true;  
         }
         return false;
     }

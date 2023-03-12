@@ -4,7 +4,6 @@ class Cart extends Controller{
    public function index(){ 
       
       $retailer = $this->load_model('crioretailers');
-      $imageProcessingClass = $this->load_model('Image');
       $retailerAuthData = $retailer->check_login();
       // retailerAuthData contains an array if user exist and false if no user exist   
       if(is_object($retailerAuthData)){
@@ -23,10 +22,6 @@ class Cart extends Controller{
         $cartAllProductDetails = $db->read("SELECT * FROM products WHERE id in ($idsForQuery)");
       
       }
-
-   //   show($cartAllProductDetails);
-   //   show($_SESSION['CART']);
-     
       // in the below nested foreach i am adding the cart qty field to the data that i got from the db 
    if(is_array($cartAllProductDetails)){ //is array true means we got the data from the db
       foreach($cartAllProductDetails as $cartSingleProdDetails => $details){
@@ -38,20 +33,9 @@ class Cart extends Controller{
          }     
         }
    }
-   //   foreach ends here
-   //   show($cartAllProductDetails);
-   //   die;
-    
-   $productsMainSection = $db->read("SELECT * FROM products");
-    $data['pageTitle'] = "Cart | Crio-Re";
-    if ($productsMainSection) {
-      foreach($productsMainSection as $singleProduct => $images){
-         if(isset( $productsMainSection[$singleProduct]->image1)){
-            $productsMainSection[$singleProduct]->image1 = $imageProcessingClass->get_thumb_post($productsMainSection[$singleProduct]->image1); //doing this for only the first image as one img is needed for showing in home page our first image is image1
-         }
-      }
-    }
-    $data['productsMainSection'] = $productsMainSection;
+   $singleProductDetailsService = $this->load_service('singleproductservice');
+   $allProductsAndPrice = $singleProductDetailsService->getPriceForProducts($_SESSION['CART'] ?? 0);
+   // IMP here i have to provide the data which contains the variants of a specific product
     $data['cartAllProductDetails'] = $cartAllProductDetails;
        $this->view("cart",$data);
 
