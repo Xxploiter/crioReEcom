@@ -2,37 +2,37 @@
 include_once '../app/Cache/cacheHandler.php';
 class RetailerService
 {
-  // about the getLedgerDataFromAPI function this gets data from the api the cache time is one day
-  private function getLedgerDataFromAPI($retailerId)
-  {
+   // about the getLedgerDataFromAPI function this gets data from the api the cache time is one day
+   private function getLedgerDataFromAPI($retailerId)
+   {
 
-    $data = cacheHandler::getRetailerDataFromCacheOrAPI('ledger_data', 'https://raiganj.crio77.com/api/ledger_data.php?id=' . $retailerId, 60 * 60 * 24, $retailerId);
-    return $data;
-  }
-  private function getInvoiceDataFromAPI($invoiceId)
-  {
-    $apiData = file_get_contents('https://raiganj.crio77.com/api/invoice.php?id=' . $invoiceId);
-    // Perform data processing, if necessary
-    $processedInvoiceData = json_decode($apiData, true);
-    return $processedInvoiceData;
-  }
+      $data = cacheHandler::getRetailerDataFromCacheOrAPI('ledger_data', 'https://raiganj.crio77.com/api/ledger_data.php?id=' . $retailerId, 60 * 60 * 24, $retailerId);
+      return $data;
+   }
+   private function getInvoiceDataFromAPI($invoiceId)
+   {
+      $apiData = file_get_contents('https://raiganj.crio77.com/api/invoice.php?id=' . $invoiceId);
+      // Perform data processing, if necessary
+      $processedInvoiceData = json_decode($apiData, true);
+      return $processedInvoiceData;
+   }
 
-  public function returnJsonLedgerData($retailerId)
-  {
-    $data = cacheHandler::getRetailerDataFromCacheOrAPI('ledger_data', 'https://raiganj.crio77.com/api/ledger_data.php?id=' . $retailerId, 60 * 60 * 24, $retailerId);
-    return $data;
-  }
+   public function returnJsonLedgerData($retailerId)
+   {
+      $data = cacheHandler::getRetailerDataFromCacheOrAPI('ledger_data', 'https://raiganj.crio77.com/api/ledger_data.php?id=' . $retailerId, 60 * 60 * 24, $retailerId);
+      return $data;
+   }
 
-  public function createLedger($retailerId)
-  {
-    $ledgerData = $this->getLedgerDataFromAPI($retailerId);
-    // show($ledgerData->transaction);
-    // die;
-    $transactions = $ledgerData['transaction'];
-    // Initialize variables for ledger
-    $balance = 0;
-    $ledger = '';
-    $ledger .= '
+   public function createLedger($retailerId)
+   {
+      $ledgerData = $this->getLedgerDataFromAPI($retailerId);
+      // show($ledgerData->transaction);
+      // die;
+      $transactions = $ledgerData['transaction'];
+      // Initialize variables for ledger
+      $balance = 0;
+      $ledger = '';
+      $ledger .= '
                 <!-- begin table-responsive -->
                 <div class="table-responsive">
                    <table class="table table-invoice">
@@ -47,67 +47,67 @@ class RetailerService
                       </thead>
                       <tbody>';
 
-    foreach ($transactions as $transaction) {
+      foreach ($transactions as $transaction) {
 
-      if ($transaction['transactionType'] === 'pay') {
-        $ledger .= '<tr>';
-        $ledger .= '<td>' . $transaction['dateIs'] . '</td>';
-        if ($transaction["payVia"] == "Bank of CriO") {
-          $payVia = "NEFT";
-        } elseif ($transaction["payVia"] == "Bank of reciever") {
-          $payVia = "UPI";
-        } elseif ($transaction["payVia"] == "cash") {
-          $payVia = "cash";
-        } elseif ($transaction["payVia"] == "PDC") {
-          $payVia = "PDC";
-        }
-        // particulars here is a custom string made up of some keywords related to CriO
-        $particulars = $payVia . '-' . $transaction["orderId"];
-        $ledger .= '<td  class="text-center">' . $particulars . '</td>';
-        $balance -= $transaction['amountIs'];
-        $ledger .= '<td class="text-center">-</td>';
-        $ledger .= '<td class="text-center">' . $transaction['amountIs'] . '</td>';
-        $ledger .= '<td class="text-right">' . $balance . '</td>';
-        $ledger .= '</tr>';
-        // now checking wether there was a discount made while payment if true generating a discount row wit a different particulars value
-        if ($transaction['transactionType'] === 'pay' & intval($transaction['payDiscount']) > 0) {
-          $ledger .= '<tr>';
-          $ledger .= '<td>' . $transaction['dateIs'] . '</td>';
-          // starting discount
-          $payVia = "DISC";
-          $particulars = $payVia . '-' . $transaction["orderId"];
-          $ledger .= '<td  class="text-center">' . $particulars . '</td>';
-          $balance -= $transaction['payDiscount'];
-          $ledger .= '<td class="text-center">-</td>';
-          $ledger .= '<td class="text-center">' . $transaction['payDiscount'] . '</td>';
-          // ending discount
-          $ledger .= '<td class="text-right">' . $balance . '</td>';
-          $ledger .= '</tr>';
-        }
-      } else if ($transaction['transactionType'] === 'order'){
-        // the control moves here when transaction type is order
-        $ledger .= '<tr>';
-        $ledger .= '<td>' . $transaction['dateIs'] . '</td>';
-        $balance += $transaction['amountIs'];
-        $formatted_date = date("my", strtotime($transaction["dateIs"]));
-        $number_of_digits = strlen((string)$transaction["orderId"]);
-        if ($number_of_digits == 3) {
-          $endNumber = '0' . $transaction["orderId"];
-        } elseif ($number_of_digits == 2) {
-          $endNumber = '00' . $transaction["orderId"];
-        } elseif ($number_of_digits == 1) {
-          $endNumber = '000' . $transaction["orderId"];
-        }
-        $particulars = 'CF/' . $formatted_date . '/INV' . $endNumber;
-        $ledger .= '<td  class="text-center">' . $particulars . '</td>';
-        $ledger .= '<td class="text-center">' . $transaction['amountIs'] . '</td>';
-        $ledger .= '<td class="text-center">-</td>';
-        $ledger .= '<td class="text-right">' . $balance . '</td>';
-        $ledger .= '</tr>';
+         if ($transaction['transactionType'] === 'pay') {
+            $ledger .= '<tr>';
+            $ledger .= '<td>' . $transaction['dateIs'] . '</td>';
+            if ($transaction["payVia"] == "Bank of CriO") {
+               $payVia = "NEFT";
+            } elseif ($transaction["payVia"] == "Bank of reciever") {
+               $payVia = "UPI";
+            } elseif ($transaction["payVia"] == "cash") {
+               $payVia = "cash";
+            } elseif ($transaction["payVia"] == "PDC") {
+               $payVia = "PDC";
+            }
+            // particulars here is a custom string made up of some keywords related to CriO
+            $particulars = $payVia . '-' . $transaction["orderId"];
+            $ledger .= '<td  class="text-center">' . $particulars . '</td>';
+            $balance -= $transaction['amountIs'];
+            $ledger .= '<td class="text-center">-</td>';
+            $ledger .= '<td class="text-center">' . $transaction['amountIs'] . '</td>';
+            $ledger .= '<td class="text-right">' . $balance . '</td>';
+            $ledger .= '</tr>';
+            // now checking wether there was a discount made while payment if true generating a discount row wit a different particulars value
+            if ($transaction['transactionType'] === 'pay' & intval($transaction['payDiscount']) > 0) {
+               $ledger .= '<tr>';
+               $ledger .= '<td>' . $transaction['dateIs'] . '</td>';
+               // starting discount
+               $payVia = "DISC";
+               $particulars = $payVia . '-' . $transaction["orderId"];
+               $ledger .= '<td  class="text-center">' . $particulars . '</td>';
+               $balance -= $transaction['payDiscount'];
+               $ledger .= '<td class="text-center">-</td>';
+               $ledger .= '<td class="text-center">' . $transaction['payDiscount'] . '</td>';
+               // ending discount
+               $ledger .= '<td class="text-right">' . $balance . '</td>';
+               $ledger .= '</tr>';
+            }
+         } else if ($transaction['transactionType'] === 'order') {
+            // the control moves here when transaction type is order
+            $ledger .= '<tr>';
+            $ledger .= '<td>' . $transaction['dateIs'] . '</td>';
+            $balance += $transaction['amountIs'];
+            $formatted_date = date("my", strtotime($transaction["dateIs"]));
+            $number_of_digits = strlen((string)$transaction["orderId"]);
+            if ($number_of_digits == 3) {
+               $endNumber = '0' . $transaction["orderId"];
+            } elseif ($number_of_digits == 2) {
+               $endNumber = '00' . $transaction["orderId"];
+            } elseif ($number_of_digits == 1) {
+               $endNumber = '000' . $transaction["orderId"];
+            }
+            $particulars = 'CF/' . $formatted_date . '/INV' . $endNumber;
+            $ledger .= '<td  class="text-center">' . $particulars . '</td>';
+            $ledger .= '<td class="text-center">' . $transaction['amountIs'] . '</td>';
+            $ledger .= '<td class="text-center">-</td>';
+            $ledger .= '<td class="text-right">' . $balance . '</td>';
+            $ledger .= '</tr>';
+         }
       }
-    }
 
-    $ledger .= '</tbody>
+      $ledger .= '</tbody>
 
    <thead class="thead-dark">
     <tr>
@@ -120,7 +120,7 @@ class RetailerService
     </tr>
    </thead>
  </table>';
-    $style = '
+      $style = '
 <style type="text/css">
 body {
    margin-top: 20px;
@@ -280,31 +280,31 @@ body {
 </style>
 ';
 
-    return array($style, $ledger);
-  }
+      return array($style, $ledger);
+   }
 
-  public function createInvoice($invoiceId)
-  {
-    $invoiceData = $this->getInvoiceDataFromAPI($invoiceId);
-    // show($invoiceData->transaction);
-    // die;
-    $orderInfo = $invoiceData['orderInfo'];
-    $shopInfo = $invoiceData['shopInfo'];
-    $payInfo = $invoiceData['payInfo'];
-    $deliveryInfo = $invoiceData['deliveryInfo'];
+   public function createInvoice($invoiceId)
+   {
+      $invoiceData = $this->getInvoiceDataFromAPI($invoiceId);
+      // show($invoiceData->transaction);
+      // die;
+      $orderInfo = $invoiceData['orderInfo'];
+      $shopInfo = $invoiceData['shopInfo'];
+      $payInfo = $invoiceData['payInfo'];
+      $deliveryInfo = $invoiceData['deliveryInfo'];
 
-    $orderedProducts = $invoiceData['orderedProducts'];
-    $normOrderedProducts = $invoiceData['normOrderedProducts'];
-    
-    if (!empty($orderedProducts) && !empty($normOrderedProducts)) {
-      $allProducts = array_merge($orderedProducts, $normOrderedProducts);
-    } else {
-      $allProducts = !empty($orderedProducts) ? $orderedProducts : $normOrderedProducts;
-    }
-    // Initialize variables for ledger
-    $total = 0;
-    $invoice = '';
-    $invoice .= '
+      $orderedProducts = $invoiceData['orderedProducts'];
+      $normOrderedProducts = $invoiceData['normOrderedProducts'];
+
+      if (!empty($orderedProducts) && !empty($normOrderedProducts)) {
+         $allProducts = array_merge($orderedProducts, $normOrderedProducts);
+      } else {
+         $allProducts = !empty($orderedProducts) ? $orderedProducts : $normOrderedProducts;
+      }
+      // Initialize variables for ledger
+      $total = 0;
+      $invoice = '';
+      $invoice .= '
                <!-- begin table-responsive -->
                <div class="table-responsive">
                   <table class="table table-invoice">
@@ -323,45 +323,44 @@ body {
                      </thead>
                      <tbody>';
 
-    foreach ($allProducts as $singleProduct) {
-      $invoice .= '<tr>';
-      if (isset($singleProduct['itemType']) || isset($singleProduct['itemName'])) {
-        $itemIs = !empty($singleProduct['itemType']) ? $singleProduct['itemType'] : (!empty($singleProduct['itemName']) ? $singleProduct['itemName'] : '');
-        $invoice .= '<td class="text-center productNameCell">' . $itemIs . '</td>';
-      }
-      
-      if (isset($singleProduct['hsn']) || isset($singleProduct['hsnIs'])) {
-        $itemHsnIs = !empty($singleProduct['hsn']) ? $singleProduct['hsn'] : (!empty($singleProduct['hsnIs']) ? $singleProduct['hsnIs'] : '');
-        $invoice .= '<td class="text-center hsnCell">' . $itemHsnIs . '</td>';
-      }
-      
-      if (isset($singleProduct['colorName']) || isset($singleProduct['colorIs'])) {
-        $itemColorIs = !empty($singleProduct['colorName']) ? $singleProduct['colorName'] : (!empty($singleProduct['colorIs']) ? $singleProduct['colorIs'] : '');
-        $invoice .= '<td class="text-center">' . $itemColorIs . '</td>';
-      }
-      
-      if (isset($singleProduct['sizeName']) || isset($singleProduct['sizeIs'])) {
-        $itemSizeIs = !empty($singleProduct['sizeName']) ? $singleProduct['sizeName'] : (!empty($singleProduct['sizeIs']) ? $singleProduct['sizeIs'] : '');
-        $invoice .= '<td class="text-center">' . $itemSizeIs . '</td>';
-      }
-      
-      if (isset($singleProduct['gst']) || isset($singleProduct['gstIs'])) {
-        $itemGstIs = !empty($singleProduct['gst']) ? $singleProduct['gst'] : (!empty($singleProduct['gstIs']) ? $singleProduct['gstIs'] : '');
-        $invoice .= '<td class="text-center">' . $itemGstIs . '</td>';
-      }
-      
-      $invoice .= '<td class="text-center">' . $singleProduct['quantityIs'] . '-Pieces</td>';
-      $invoice .= '<td class="text-center"> &#x20B9; <b>' . $singleProduct['priceIs'] . '</b></td>';
-      $totalQtyPrice = $singleProduct['quantityIs'] * $singleProduct['priceIs'];
-      $invoice .= '<td class="text-center"> &#x20B9; <b>' . $totalQtyPrice . '</b></td>';
-      
-      $invoice .= '</tr>';
-      
-      $total += $totalQtyPrice;
-     
-    }
+      foreach ($allProducts as $singleProduct) {
+         $invoice .= '<tr>';
+         if (isset($singleProduct['itemType']) || isset($singleProduct['itemName'])) {
+            $itemIs = !empty($singleProduct['itemType']) ? $singleProduct['itemType'] : (!empty($singleProduct['itemName']) ? $singleProduct['itemName'] : '');
+            $invoice .= '<td class="text-center productNameCell">' . $itemIs . '</td>';
+         }
 
-    $invoice .= '</tbody>
+         if (isset($singleProduct['hsn']) || isset($singleProduct['hsnIs'])) {
+            $itemHsnIs = !empty($singleProduct['hsn']) ? $singleProduct['hsn'] : (!empty($singleProduct['hsnIs']) ? $singleProduct['hsnIs'] : '');
+            $invoice .= '<td class="text-center hsnCell">' . $itemHsnIs . '</td>';
+         }
+
+         if (isset($singleProduct['colorName']) || isset($singleProduct['colorIs'])) {
+            $itemColorIs = !empty($singleProduct['colorName']) ? $singleProduct['colorName'] : (!empty($singleProduct['colorIs']) ? $singleProduct['colorIs'] : '');
+            $invoice .= '<td class="text-center">' . $itemColorIs . '</td>';
+         }
+
+         if (isset($singleProduct['sizeName']) || isset($singleProduct['sizeIs'])) {
+            $itemSizeIs = !empty($singleProduct['sizeName']) ? $singleProduct['sizeName'] : (!empty($singleProduct['sizeIs']) ? $singleProduct['sizeIs'] : '');
+            $invoice .= '<td class="text-center">' . $itemSizeIs . '</td>';
+         }
+
+         if (isset($singleProduct['gst']) || isset($singleProduct['gstIs'])) {
+            $itemGstIs = !empty($singleProduct['gst']) ? $singleProduct['gst'] : (!empty($singleProduct['gstIs']) ? $singleProduct['gstIs'] : '');
+            $invoice .= '<td class="text-center">' . $itemGstIs . '</td>';
+         }
+
+         $invoice .= '<td class="text-center">' . $singleProduct['quantityIs'] . '-Pieces</td>';
+         $invoice .= '<td class="text-center"> &#x20B9; <b>' . $singleProduct['priceIs'] . '</b></td>';
+         $totalQtyPrice = $singleProduct['quantityIs'] * $singleProduct['priceIs'];
+         $invoice .= '<td class="text-center"> &#x20B9; <b>' . $totalQtyPrice . '</b></td>';
+
+         $invoice .= '</tr>';
+
+         $total += $totalQtyPrice;
+      }
+
+      $invoice .= '</tbody>
   <thead class="thead-dark">
    <tr>
       <th style="border-bottom-left-radius:20px; padding-left: 30px;">DISCOUNT IS EXCLUDED</th>
@@ -377,7 +376,7 @@ body {
    </tr>
   </thead>
 </table>';
-    $style = '<style type="text/css">
+      $style = '<style type="text/css">
     thead.thead-dark {
 
    }
@@ -577,27 +576,61 @@ div#modalInvoiceData {
 ';
 
 
-    return array($style, $invoice, $orderInfo, $shopInfo, $payInfo, $deliveryInfo);
-  }
+      return array($style, $invoice, $orderInfo, $shopInfo, $payInfo, $deliveryInfo);
+   }
 
-  public function getMostSellingProduct($retId)
-  {
-    $url = "https://raiganj.crio77.com/api/products.php?id=" . $retId . "&limit=180Days";
-    //First we need to get the data from api
-    $response = file_get_contents($url);
-    $decodedResponce = json_decode($response, true);
+   public function getMostSellingProduct($retId)
+   {
+      $url = "https://raiganj.crio77.com/api/products.php?id=" . $retId . "&limit=180Days";
+      //First we need to get the data from api
+      $response = file_get_contents($url);
+      $decodedResponce = json_decode($response, true);
 
-    //Now we need to process data
-    for ($i = 0; $i < sizeof($decodedResponce); $i++) {
-      $product[$i] = $decodedResponce[$i]['itemName'];
-      $quantity[$i] = $decodedResponce[$i]['totQuantity'];
-      $amount[$i] = $decodedResponce[$i]['totAmount'];
-    }
-    $data = array(
-      'product' => $product,
-      'quantity' => $quantity,
-      'amount' => $amount
-    );
-    return $data;
-  }
+      //Now we need to process data
+      for ($i = 0; $i < sizeof($decodedResponce); $i++) {
+         $product[$i] = $decodedResponce[$i]['itemName'];
+         $quantity[$i] = $decodedResponce[$i]['totQuantity'];
+         $amount[$i] = $decodedResponce[$i]['totAmount'];
+      }
+      $data = array(
+         'product' => $product,
+         'quantity' => $quantity,
+         'amount' => $amount
+      );
+      return $data;
+   }
+
+   //   Devlopment by souvik starts
+   public function brandWiseProductPurchaseByRetailer($retailerId)
+   {
+      // By default it will fetch data based on sales of last 6 month however it can be letter change from the
+      // controller layer or the service layer 
+      // last_90, last_180, last_365, allTime
+      $timeFrame = "last_180";
+
+      // Api url
+      $url = "https://raiganj.crio77.com/api/brandSales.php?id=" . $retailerId . "&type=" . $timeFrame;
+
+      // Api call
+      $response = file_get_contents($url);
+      $decodedResponce = json_decode($response, true);
+
+      // Data process
+      for ($i = 0; $i < sizeof($decodedResponce); $i++) {
+         $brandName[$i] = $decodedResponce[$i]["brandName"];
+         $totalQuantity[$i] = $decodedResponce[$i]["totalQuantity"];
+         $totalAmount[$i] = $decodedResponce[$i]["totalAmount"];
+      }
+
+      // Processing data so that we can easily use the data in graph
+      $data = array(
+         "brandName" => $brandName,
+         "totalQuantity" => $totalQuantity,
+         "totalAmount" => $totalAmount
+      );
+
+      return $data;
+   }
+
+   // Devlopment by souvik ends
 }
