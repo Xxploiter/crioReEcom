@@ -54,8 +54,6 @@ class Ajax_product extends Controller{
             echo json_encode($arr);
         }
         elseif($data->data_type == 'delete_row') {
-            show($data);
-            die;
             $product->delete($data->id);    
             $arr['message'] = "Row succecfully Deleted";
             $_SESSION['error'] = '';
